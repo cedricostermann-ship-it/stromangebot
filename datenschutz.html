@@ -7,8 +7,9 @@
 
   <style>
     :root{
-      --bg:#F2EBDF;
-      --card:#ffffff;
+      --bg:#F2EBDF;                 /* ✅ eure Hintergrundfarbe */
+      --card:rgba(242,235,223,.92); /* ✅ gelb auch für alle Boxen */
+      --card2:rgba(242,235,223,.72);/* ✅ etwas „leichter“ für Nav/Footer */
       --text:#101828;
       --muted:#475467;
       --border:rgba(16,24,40,.16);
@@ -16,6 +17,7 @@
       --radius:18px;
       --shadow:0 18px 50px rgba(16,24,40,.10);
     }
+
     *{box-sizing:border-box;}
     body{
       margin:0;
@@ -26,44 +28,125 @@
     }
     a{color:var(--primary);text-decoration:none;}
     a:hover{text-decoration:underline;}
+
     .wrap{max-width:980px;margin:0 auto;padding:18px 16px 40px;}
-    .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:8px 0 14px;}
-    .brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.2px;}
+
+    .topbar{
+      display:flex;align-items:center;justify-content:space-between;
+      gap:12px;margin:8px 0 14px;
+    }
+    .brand{
+      display:flex;align-items:center;gap:10px;
+      font-weight:800;letter-spacing:.2px;
+    }
     .badge{
-      font-size:12px;padding:6px 10px;border:1px solid var(--border);
-      border-radius:999px;background:rgba(255,255,255,.55);color:var(--muted);white-space:nowrap;
+      font-size:12px;
+      padding:6px 10px;
+      border:1px solid var(--border);
+      border-radius:999px;
+      background:var(--card);      /* ✅ gelb */
+      color:var(--muted);
+      white-space:nowrap;
+      backdrop-filter:saturate(120%) blur(2px);
     }
-    .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;}
+
+    /* ✅ Haupt-Card gelb */
+    .card{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+      backdrop-filter:saturate(120%) blur(2px);
+    }
+
+    /* ✅ Header auf gelbem Grund */
     .hero{
-      padding:18px 18px 14px;border-bottom:1px solid var(--border);
-      background:linear-gradient(180deg, rgba(0,112,215,.06), rgba(0,112,215,0));
+      padding:18px 18px 14px;
+      border-bottom:1px solid var(--border);
+      background:
+        linear-gradient(180deg, rgba(0,112,215,.07), rgba(0,112,215,0)),
+        var(--card);
     }
+
     h1{margin:0;font-size:22px;}
     .meta{margin-top:6px;color:var(--muted);font-size:13px;}
-    .content{display:grid;grid-template-columns:280px 1fr;gap:16px;padding:16px;}
-    .nav{
-      border:1px solid var(--border);border-radius:16px;padding:12px;
-      background:rgba(242,235,223,.35);position:sticky;top:14px;height:fit-content;
+
+    .content{
+      display:grid;
+      grid-template-columns:280px 1fr;
+      gap:16px;
+      padding:16px;
     }
-    .nav h2{margin:0 0 8px;font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;}
-    .nav a{display:block;padding:10px 10px;border-radius:12px;color:var(--text);}
-    .nav a:hover{background:rgba(0,112,215,.08);text-decoration:none;}
+
+    /* ✅ Inhaltsbox links gelb */
+    .nav{
+      border:1px solid var(--border);
+      border-radius:16px;
+      padding:12px;
+      background:var(--card2);
+      position:sticky;top:14px;height:fit-content;
+    }
+    .nav h2{
+      margin:0 0 8px;
+      font-size:13px;
+      color:var(--muted);
+      text-transform:uppercase;
+      letter-spacing:.08em;
+    }
+    .nav a{
+      display:block;
+      padding:10px 10px;
+      border-radius:12px;
+      color:var(--text);
+    }
+    .nav a:hover{
+      background:rgba(0,112,215,.10);
+      text-decoration:none;
+    }
+
+    /* ✅ ALLE Felder/Sections gelb */
     .section{
-      padding:14px;border:1px solid var(--border);border-radius:16px;margin-bottom:12px;background:#fff;
+      padding:14px;
+      border:1px solid var(--border);
+      border-radius:16px;
+      margin-bottom:12px;
+      background:var(--card);
     }
     .section h2{margin:0 0 10px;font-size:16px;}
     .lead{color:var(--muted);margin-top:-4px;margin-bottom:12px;font-size:14px;}
+
     ul{margin:10px 0 0 18px;}
-    .kv{display:grid;grid-template-columns:200px 1fr;gap:10px 14px;font-size:14px;}
+    .kv{
+      display:grid;
+      grid-template-columns:200px 1fr;
+      gap:10px 14px;
+      font-size:14px;
+    }
     .k{color:var(--muted);}
     .v{color:var(--text);word-break:break-word;}
+
     .pill{
-      display:inline-block;font-size:12px;padding:5px 10px;border-radius:999px;
-      border:1px solid var(--border);background:rgba(0,112,215,.06);color:var(--text);margin:2px 6px 0 0;
+      display:inline-block;
+      font-size:12px;
+      padding:5px 10px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      background:rgba(0,112,215,.06);
+      color:var(--text);
+      margin:2px 6px 0 0;
     }
+
     .foot{
-      padding:14px 16px;border-top:1px solid var(--border);
-      color:var(--muted);font-size:12px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;
+      padding:14px 16px;
+      border-top:1px solid var(--border);
+      color:var(--muted);
+      font-size:12px;
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+      background:var(--card2);     /* ✅ gelb */
     }
 
     @media (max-width: 860px){
@@ -75,8 +158,9 @@
     @media print{
       body{background:#fff;}
       .wrap{padding:0;}
-      .card{box-shadow:none;border:0;}
+      .card{box-shadow:none;border:0;background:#fff;}
       .nav{display:none;}
+      .section{background:#fff;}
       a{text-decoration:underline;color:#000;}
     }
   </style>
@@ -105,7 +189,7 @@
           <a href="#zwecke">2. Zwecke & Rechtsgrundlagen</a>
           <a href="#kategorien">3. Datenkategorien</a>
           <a href="#lead">4. Lead-Formular / Anfrage</a>
-          <a href="#google">5. Google Apps Script / Sheets</a>
+          <a href="#google">5. Google Apps Script / Google Sheets</a>
           <a href="#hosting">6. Hosting & Logs</a>
           <a href="#empfaenger">7. Empfänger</a>
           <a href="#dauer">8. Speicherdauer</a>
