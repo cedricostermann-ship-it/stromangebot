@@ -120,19 +120,19 @@
     a{color:var(--primary);text-decoration:underline;}
     .hidden{display:none;}
 
-    /* Mid-section (between form and FAQ) */
+    /* Mid-section (between form and FAQ) — NOW STACKED + FULL WIDTH LIKE FORM */
     .section{
       margin-top:18px;
       display:grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr;  /* ✅ undereinander */
       gap:14px;
     }
     .section .box{
-      background:rgba(255,255,255,.72);
+      background:var(--card);       /* ✅ same as form card */
       border:1px solid var(--border);
       border-radius:var(--radius);
-      padding:18px;
-      box-shadow:0 10px 24px rgba(0,0,0,.04);
+      box-shadow:0 10px 30px rgba(0,0,0,.06);
+      padding:22px;
     }
     .section h2{
       margin:0 0 10px;
@@ -184,9 +184,6 @@
     }
 
     /* mobile */
-    @media (max-width:820px){
-      .section{grid-template-columns:1fr;}
-    }
     @media (max-width:420px){
       .btnrow.nav{flex-wrap:wrap;}
       .btnrow.nav button{flex:unset;width:100%;}
