@@ -99,7 +99,7 @@
        REASONS / Hero (unten)
        ========================= */
 
-    /* ✅ Headline & Subline exakt mittig wie oben */
+    /* Headline & Subline exakt mittig */
     .tw24-why-head{
       text-align:center;
       margin:0 0 18px;
@@ -127,7 +127,6 @@
       gap:16px;
       align-items:stretch;
     }
-
     @media (max-width: 759px){
       .tw24-hero{ grid-template-columns:1fr; }
     }
@@ -150,6 +149,7 @@
       font-weight:900;
       box-shadow:0 10px 26px rgba(0,0,0,.06);
       backdrop-filter:saturate(120%) blur(2px);
+      overflow:hidden;
     }
 
     .tw24-pill-ico{
@@ -167,10 +167,11 @@
       color:var(--green);
     }
 
-    /* ✅ Formular-Link + Trust ebenfalls mittig */
+    /* ✅ Formular-Link + Trust: wirklich mittig über volle Breite (nicht nur linke Spalte) */
     .tw24-formlink{
-      margin-top:16px;
+      margin-top:18px;
       text-align:center;
+      width:100%;
     }
     .tw24-hero-cta{
       display:inline-block;
@@ -180,7 +181,6 @@
       border-bottom:2px solid rgba(0,112,215,.25);
     }
     .tw24-hero-cta:hover{ border-bottom-color:rgba(0,112,215,.45); }
-
     .tw24-trust{
       margin-top:8px;
       color:var(--muted);
@@ -204,19 +204,30 @@
       backdrop-filter:saturate(120%) blur(2px);
     }
 
-    /* ✅ Jahresabrechnung-Karte soll tiefer liegen */
-    .tw24-illus{ width:100%; max-width:420px; height:auto; display:block; opacity:.96; transform: translateY(12px); }
+    /* SVG minimal tiefer, damit es “sitzt” */
+    .tw24-illus{
+      width:100%;
+      max-width:420px;
+      height:auto;
+      display:block;
+      opacity:.96;
+      transform: translateY(10px);
+    }
 
+    /* ✅ Schnell geprüft Badge: mittig im kleinen Kasten + Kasten zentriert */
     .tw24-illus-badge{
       position:absolute;
-      left:14px;
+      left:50%;
+      transform:translateX(-50%);
       bottom:14px;
       background:rgba(255,255,255,.92);
       border:1px solid rgba(16,24,40,.12);
       border-radius:16px;
-      padding:10px 12px;
+      padding:10px 14px;
       color:var(--text);
       box-shadow:0 10px 26px rgba(0,0,0,.08);
+      text-align:center;
+      min-width:170px;
     }
     .tw24-illus-badge-top{ font-weight:950; }
     .tw24-illus-badge-sub{ font-weight:750; color:var(--muted); font-size:13px; }
@@ -264,7 +275,6 @@
     <!-- ✅ BLOCK 2 (unten): WHY -->
     <section class="tw24-section" id="whyus">
 
-      <!-- ✅ Headline mittig wie oben -->
       <div class="tw24-why-head">
         <h2 class="tw24-why-title">
           Deswegen setzen so viele auf <span class="tw24-accent-green">Tarifwechsel24</span>
@@ -294,12 +304,6 @@
               <span>Persönlich geprüft – kein Algorithmus-Blindflug</span>
             </div>
           </div>
-
-          <!-- ✅ Formular-Link + Trust mittig -->
-          <div class="tw24-formlink">
-            <a class="tw24-hero-cta" href="#formular">Zum Formular ↑</a>
-            <div class="tw24-trust">Kostenlos · unverbindlich · kein Spam</div>
-          </div>
         </div>
 
         <div>
@@ -312,32 +316,42 @@
                 </linearGradient>
               </defs>
 
+              <!-- Outer card -->
               <rect x="20" y="22" width="480" height="316" rx="22" fill="rgba(255,255,255,.60)" stroke="rgba(16,24,40,.12)" />
+              <!-- Inner content area -->
               <rect x="48" y="56" width="424" height="232" rx="18" fill="url(#g)" opacity=".42" />
 
+              <!-- Mock header -->
               <circle cx="118" cy="128" r="44" fill="rgba(16,24,40,.10)"/>
               <rect x="190" y="96" width="240" height="22" rx="11" fill="rgba(16,24,40,.12)"/>
               <rect x="190" y="132" width="200" height="16" rx="8" fill="rgba(16,24,40,.10)"/>
               <rect x="190" y="162" width="220" height="16" rx="8" fill="rgba(16,24,40,.10)"/>
 
-              <!-- ✅ Jahresabrechnung tiefer + Text zentriert -->
-              <rect x="92" y="236" width="336" height="52" rx="16" fill="rgba(255,255,255,.62)" stroke="rgba(16,24,40,.12)"/>
-              <text x="260" y="270"
+              <!-- ✅ Dropdown / Jahresabrechnung: größer + oben im Kästchen -->
+              <rect x="152" y="86" width="216" height="40" rx="14" fill="rgba(255,255,255,.70)" stroke="rgba(16,24,40,.12)"/>
+              <text x="260" y="112"
                     text-anchor="middle"
-                    font-size="20"
-                    font-weight="800"
-                    fill="rgba(16,24,40,.80)"
+                    font-size="18"
+                    font-weight="900"
+                    fill="rgba(16,24,40,.78)"
                     font-family="system-ui, -apple-system, Segoe UI, Roboto">
                 Jahresabrechnung ✓
               </text>
             </svg>
 
+            <!-- ✅ Badge mittig -->
             <div class="tw24-illus-badge">
               <div class="tw24-illus-badge-top">Schnell geprüft</div>
               <div class="tw24-illus-badge-sub">in wenigen Minuten</div>
             </div>
           </div>
         </div>
+      </div>
+
+      <!-- ✅ Formular/Trust jetzt unter beiden Spalten und wirklich mittig -->
+      <div class="tw24-formlink">
+        <a class="tw24-hero-cta" href="#formular">Zum Formular ↑</a>
+        <div class="tw24-trust">Kostenlos · unverbindlich · kein Spam</div>
       </div>
     </section>
 
