@@ -31,6 +31,7 @@
       border-radius:var(--radius);
       box-shadow:0 10px 30px rgba(0,0,0,.06);
       padding:22px;
+      position:relative;
     }
 
     h1{
@@ -126,6 +127,7 @@
     }
 
     .small{font-size:13px;color:var(--muted);margin-top:10px}
+    .hint{margin-top:8px}
     .check{display:flex;gap:10px;align-items:flex-start;margin-top:14px}
     .check input{width:auto;margin-top:3px}
     a{color:var(--primary);text-decoration:underline;}
@@ -249,21 +251,23 @@
         <label for="name">Vor- & Nachname *</label>
         <input id="name" autocomplete="name" placeholder="Max Mustermann" />
 
-        <label for="phone">Telefonnummer * (nur +49)</label>
+        <label for="phone">Telefonnummer * (deutsche Vorwahl +49)</label>
         <input id="phone" inputmode="tel" autocomplete="tel"
                placeholder="+49 176 12345678"
                value="+49 "
         />
+        <div class="small hint">Beispiele: <b>+49 176 12345678</b> (Handy) · <b>+49 (0)30 123456</b> (Festnetz)</div>
 
-        <label>Wie möchten Sie kontaktiert werden? (optional)</label>
-        <div class="choices" id="contactPref">
-          <div class="chip" data-value="Telefon">Telefon</div>
-          <div class="chip" data-value="WhatsApp">WhatsApp</div>
-          <div class="chip" data-value="E-Mail">E-Mail</div>
-        </div>
+        <label for="email">E-Mail (optional)</label>
+        <input id="email" type="email" inputmode="email" autocomplete="email" placeholder="max@beispiel.de" />
+        <div class="small hint">Falls Sie Unterlagen/Infos per E-Mail möchten.</div>
 
-        <!-- Honeypot (unsichtbar) -->
+        <!-- Anti-Bot Felder (unsichtbar) -->
         <input id="website" autocomplete="off" tabindex="-1"
+               style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;" />
+        <input id="tw24_ch" autocomplete="off" tabindex="-1"
+               style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;" />
+        <input id="tw24_ts" autocomplete="off" tabindex="-1"
                style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;" />
 
         <div class="check">
@@ -306,12 +310,12 @@
   </div>
 
   <script>
-    // ✅ DEIN WEBHOOK (neu)
+    // ✅ DEIN WEBHOOK
     const WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbx9zpv9FCsSKPY77wyD131W2MDb8eG7zsI5dticQvc77mUIKv53xHUtukY3s2QD3CUQUA/exec";
     const TOKEN = "3007972026";
     const WA_NUMBER = "4917672530039";
 
-    const state = { plz:"", type:"", usage:"", name:"", phone:"", pref:"" };
+    const state = { plz:"", type:"", usage:"", name:"", phone:"", email:"" };
 
     const $ = (id) => document.getElementById(id);
     const steps = Array.from(document.querySelectorAll(".step"));
@@ -320,6 +324,27 @@
 
     // Debug toggle: ?debug=1
     const DEBUG = new URLSearchParams(location.search).get("debug") === "1";
+
+    // ✅ Anti-Bot: Minimum-Zeit + einfache Session-Challenge + Client Rate Limit
+    const startedAt = Date.now();
+    let hadHumanInput = false;
+
+    function makeChallenge(){
+      // rein clientseitig (kein Geheimnis) – soll nur simple Bots rausfiltern
+      const seed = (Math.random().toString(36).slice(2) + Date.now().toString(36)).slice(0, 24);
+      sessionStorage.setItem("tw24_seed", seed);
+      $("tw24_ts").value = String(startedAt);
+      $("tw24_ch").value = btoa(seed + "|" + location.host + "|" + startedAt);
+    }
+
+    function clientRateLimit(){
+      const key = "tw24_last_submit";
+      const last = Number(localStorage.getItem(key) || "0");
+      const now = Date.now();
+      if (last && (now - last) < 30000) return false; // 30s
+      localStorage.setItem(key, String(now));
+      return true;
+    }
 
     // ✅ Height (stabil für Durable iframe)
     let __lastSent = 0;
@@ -393,29 +418,67 @@
       return s.replace(",", "");
     }
 
-    // ✅ Telefon: nur +49 erlaubt
+    // ✅ Telefon: akzeptiert +49..., +49 (0)... oder 0... (wird zu +49 normalisiert)
     function normalizeDE(phoneRaw){
-      const raw = (phoneRaw || "").trim();
-      if(!raw.startsWith("+49")) return null;
+      let raw = (phoneRaw || "").trim();
 
-      const cleaned = raw.replace(/[^\d+]/g, "");
+      // 00 -> +
+      if(raw.startsWith("00")) raw = "+" + raw.slice(2);
+
+      // alles außer Ziffern/+ raus
+      let cleaned = raw.replace(/[^\d+]/g, "");
+
+      // Wenn User nur national tippt (030... / 0176...), zu +49 normalisieren
+      if(!cleaned.startsWith("+") && cleaned.startsWith("0")){
+        cleaned = "+49" + cleaned.replace(/^0+/, "");
+      }
+
       if(!cleaned.startsWith("+49")) return null;
 
-      const rest = cleaned.slice(3);
-      if(!rest || rest.startsWith("0")) return null;
+      // Optionales (0) nach +49 erlauben: +490... -> +49...
+      if(cleaned.startsWith("+490")) cleaned = "+49" + cleaned.slice(4);
 
+      const rest = cleaned.slice(3);
+      if(!rest) return null;
+
+      // Plausible Länge (DE): nach +49 typischerweise 7–14 Ziffern
       if(!/^\+49\d{7,14}$/.test(cleaned)) return null;
+
       return cleaned;
     }
 
-    // UX: +49 nicht löschbar / wird auto nachgezogen
+    function isValidEmail(v){
+      const s = (v || "").trim();
+      if(!s) return true; // optional
+      // simple/robust
+      return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(s);
+    }
+
+    // Human-Input Flag
+    ["plz","name","phone","email"].forEach(id=>{
+      const el = $(id);
+      if(!el) return;
+      el.addEventListener("input", () => { hadHumanInput = true; scheduleHeight(); });
+      el.addEventListener("keydown", () => { hadHumanInput = true; });
+      el.addEventListener("focus", () => { hadHumanInput = true; });
+    });
+
+    // UX: Telefonfeld freundlich halten
     const phoneEl = $("phone");
     phoneEl.addEventListener("focus", () => {
-      if(!phoneEl.value.trim().startsWith("+49")) phoneEl.value = "+49 ";
+      const v = phoneEl.value.trim();
+      if(!v) phoneEl.value = "+49 ";
+      if(v && !v.startsWith("+") && v.startsWith("0")){
+        phoneEl.value = "+49 " + v.replace(/^0+/, "");
+      }
+      if(!phoneEl.value.startsWith("+49")) phoneEl.value = "+49 ";
     });
+
     phoneEl.addEventListener("input", () => {
-      if(!phoneEl.value.startsWith("+49")) {
-        phoneEl.value = "+49 " + phoneEl.value.replace(/[^\d]/g, "").replace(/^49/, "");
+      // wenn Nutzer 0... tippt, zu +49 machen
+      const v = phoneEl.value.trim();
+      if(v.startsWith("0")){
+        phoneEl.value = "+49 " + v.replace(/^0+/, "");
       }
       scheduleHeight();
     });
@@ -438,13 +501,6 @@
       const chip = e.target.closest(".chip"); if(!chip) return;
       state.usage = chip.dataset.value;
       setActive("usageBusiness", state.usage);
-      scheduleHeight();
-    });
-
-    $("contactPref").addEventListener("click", (e)=>{
-      const chip = e.target.closest(".chip"); if(!chip) return;
-      state.pref = chip.dataset.value;
-      setActive("contactPref", state.pref);
       scheduleHeight();
     });
 
@@ -493,7 +549,7 @@
       if(out.ok !== true){
         throw new Error(out.error || "Webhook error");
       }
-      return out; // out.sms enthält ggf. Details
+      return out;
     }
 
     function showDebug(obj){
@@ -506,12 +562,29 @@
     }
 
     $("submit").onclick = async () => {
+      // --- Anti Bot (Client) ---
+      if(($("website").value || "").trim()){
+        return showError("Ups – bitte Seite neu laden und erneut versuchen.");
+      }
+      if(!hadHumanInput){
+        return showError("Bitte füllen Sie das Formular aus, bevor Sie absenden.");
+      }
+      if(Date.now() - startedAt < 1800){
+        return showError("Bitte einen Moment warten und dann erneut absenden.");
+      }
+      if(!clientRateLimit()){
+        return showError("Bitte 30 Sekunden warten und dann erneut versuchen.");
+      }
+
+      // --- Validierung ---
       state.name = $("name").value.trim();
       const phoneNormalized = normalizeDE($("phone").value);
+      state.email = ($("email").value || "").trim();
       const consent = $("consent").checked;
 
       if(!state.name) return showError("Bitte Vor- & Nachname eintragen.");
-      if(!phoneNormalized) return showError("Telefonnummer muss im Format +49XXXXXXXXX sein (nur +49 erlaubt).");
+      if(!phoneNormalized) return showError("Bitte Telefonnummer im deutschen Format eingeben (z. B. +49 176 12345678 oder +49 (0)30 123456).");
+      if(!isValidEmail(state.email)) return showError("Bitte eine gültige E-Mail eingeben (oder Feld leer lassen).");
       if(!consent) return showError("Bitte bestätigen Sie die Datenschutzeinwilligung.");
 
       const btn = $("submit");
@@ -521,13 +594,17 @@
 
       const payload = {
         token: TOKEN,
+        // Anti-Bot Infos (auch serverseitig prüfen!)
         website: ($("website").value || "").trim(),
+        ch: ($("tw24_ch").value || "").trim(),
+        startedAt: ($("tw24_ts").value || "").trim(),
+
         timestamp: tsBerlin(),
         name: state.name,
         telefon: phoneNormalized,
+        email: state.email,
         verbrauch: state.usage,
         plz: state.plz,
-        "kontaktmöglichkeit": state.pref || "",
         source: location.href
       };
 
@@ -542,12 +619,6 @@
         const out = await postLead(payload);
         console.log("WEBHOOK RESPONSE:", out);
         showDebug(out);
-
-        // Wenn SMS failt, nur warnen (Lead bleibt)
-        if(out.sms && out.sms.attempted && !out.sms.ok){
-          console.warn("SMS failed:", out.sms);
-        }
-
       }catch(e){
         console.error(e);
         go("4");
@@ -559,6 +630,7 @@
     };
 
     window.addEventListener("load", () => {
+      makeChallenge();
       go("1");
       scheduleHeight();
     });
