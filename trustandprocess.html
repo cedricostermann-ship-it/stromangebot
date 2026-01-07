@@ -13,15 +13,11 @@
       --border:rgba(16,24,40,.14);
       --primary:#0070D7;
       --green:#66b21d;
-
       --g1: rgba(102,178,29,.22);
-
-      /* Kontur */
       --greenBorder: rgba(102,178,29,.55);
     }
 
     *{box-sizing:border-box;}
-    html{ scroll-behavior:smooth; } /* ✅ sanft zum Anfang springen */
     body{
       margin:0;
       font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
@@ -39,9 +35,6 @@
       border-radius:999px;
     }
 
-    /* =========================
-       STEPS / Timeline (oben)
-       ========================= */
     .tw24-steps-title{
       margin:0 0 14px;
       text-align:center;
@@ -99,9 +92,6 @@
       font-size:13px;
     }
 
-    /* =========================
-       REASONS / Hero (unten)
-       ========================= */
     .tw24-why-head{
       text-align:center;
       margin:0 0 18px;
@@ -186,6 +176,7 @@
       font-weight:900;
       text-decoration:none;
       border-bottom:2px solid rgba(0,112,215,.25);
+      cursor:pointer;
     }
     .tw24-hero-cta:hover{ border-bottom-color:rgba(0,112,215,.45); }
     .tw24-trust{
@@ -196,9 +187,6 @@
       text-align:center;
     }
 
-    /* =========================
-       Rechte Karte (Illustration)
-       ========================= */
     .tw24-illus-card{
       border-radius:20px;
       background:linear-gradient(180deg, var(--g1) 0%, rgba(102,178,29,.06) 55%, rgba(102,178,29,.04) 100%);
@@ -206,12 +194,11 @@
       box-shadow: inset 0 0 0 2px rgba(255,255,255,.55);
       position:relative;
       overflow:visible;
-
       min-height:285px;
       display:flex;
       align-items:center;
       justify-content:center;
-      padding:10px 14px 26px; /* ✅ etwas mehr Bottom-Padding */
+      padding:10px 14px 26px;
       backdrop-filter:saturate(120%) blur(2px);
     }
 
@@ -237,7 +224,6 @@
       font-size:16px;
       line-height:1;
       color:rgba(16,24,40,.86);
-      box-shadow:none;
       white-space:nowrap;
       z-index:4;
       backdrop-filter:saturate(120%) blur(2px);
@@ -253,7 +239,6 @@
       border-radius:14px;
       padding:8px 16px;
       color:var(--text);
-      box-shadow:none;
       text-align:center;
       min-width:220px;
       z-index:3;
@@ -266,10 +251,7 @@
 
 <body>
   <div class="wrap" id="tw24Content">
-    <!-- ✅ ANKER: Anfang der Seite -->
-    <div id="top"></div>
 
-    <!-- ✅ BLOCK 1 (oben): SO EINFACH GEHT'S -->
     <section class="tw24-section" id="howitworks">
       <h2 class="tw24-steps-title">So <span class="em">einfach</span> geht’s</h2>
 
@@ -304,7 +286,6 @@
 
     <div class="tw24-divider"></div>
 
-    <!-- ✅ BLOCK 2 (unten): WHY -->
     <section class="tw24-section" id="whyus">
       <div class="tw24-why-head">
         <h2 class="tw24-why-title">
@@ -373,19 +354,27 @@
       </div>
 
       <div class="tw24-formlink">
-        <!-- ✅ Klick springt zum Anfang der Seite -->
-        <a class="tw24-hero-cta" href="#top">Zum Formular ↑</a>
+        <!-- ✅ scrollt die DURABLE-Seite (Parent) zum Formular-Anker -->
+        <a class="tw24-hero-cta" href="#" id="goForm">Zum Formular ↑</a>
         <div class="tw24-trust">Kostenlos · unverbindlich · kein Spam</div>
       </div>
     </section>
+
   </div>
 
   <script>
+    // ✅ Klick -> Parent soll zum Formular springen
+    document.getElementById("goForm")?.addEventListener("click", (e) => {
+      e.preventDefault();
+      window.parent?.postMessage({ type: "TW24_GOTO_FORM", targetId: "formular" }, "*");
+    });
+
+    // ✅ Height fürs Embed (damit kein Scroll im iframe nötig ist)
     function sendEmbedHeight(){
       const root = document.getElementById("tw24Content");
       if(!root) return;
       const h = Math.ceil(root.scrollHeight + 32);
-      window.parent && window.parent.postMessage({ type: "TW24_HEIGHT", height: h }, "*");
+      window.parent?.postMessage({ type: "TW24_HEIGHT", height: h }, "*");
     }
 
     window.addEventListener("load", () => {
