@@ -3,19 +3,18 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Tarifwechsel24 – Stromangebot</title>
+  <title>Tarifwechsel24 – Content Block</title>
 
   <style>
     :root{
-      /* ✅ Deine CI (wie Formular) */
+      /* ✅ Deine CI */
       --bg:#f6f0e6;
-      --card:#ffffff;
       --text:#101828;
       --muted:#475467;
-      --border:rgba(16,24,40,.18);
+      --border:rgba(16,24,40,.14);
       --primary:#0070D7;   /* Blau */
       --green:#66b21d;     /* Grün */
-      --radius:16px;
+      --radius:18px;
     }
 
     *{box-sizing:border-box;}
@@ -28,125 +27,89 @@
 
     .wrap{max-width:920px;margin:0 auto;padding:16px;}
 
-    .card{
-      background:var(--card);
-      border:1px solid var(--border);
-      border-radius:var(--radius);
-      box-shadow:0 10px 30px rgba(0,0,0,.06);
-      padding:22px;
-    }
-
-    /* Form */
-    .progress{
-      height:6px;
-      background:rgba(0,0,0,.06);
-      border-radius:999px;
-      overflow:hidden;
-      margin:0 0 18px;
-    }
-    .bar{height:100%;width:0;background:var(--primary);transition:width .25s ease;}
-
-    h1{
-      font-size:28px;
-      line-height:1.15;
-      margin:0 0 10px;
-      letter-spacing:-0.01em;
-    }
-    .h1line{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-    .sub{color:var(--muted);margin:0;}
-    .spacer{height:12px;}
-
-    label{display:block;font-weight:800;margin:14px 0 8px;}
-    input{
-      width:100%;
-      padding:12px 12px;
-      border:1px solid var(--border);
-      border-radius:12px;
-      font-size:16px;
-      outline:none;
-      background:#fff;
-    }
-    input:focus{
-      border-color:rgba(0,112,215,.55);
-      box-shadow:0 0 0 4px rgba(0,112,215,.12);
-    }
-
-    .btnrow{display:flex;gap:12px;margin-top:18px;flex-wrap:wrap;}
-    .btnrow button{width:100%;}
-    .btnrow.nav{flex-wrap:nowrap;align-items:stretch;}
-    .btnrow.nav button{width:auto;flex:1;}
-
-    button{
-      border:0;
-      border-radius:12px;
-      padding:14px 14px;
-      font-size:16px;
-      font-weight:900;
-      cursor:pointer;
-    }
-    .primary{background:var(--primary);color:white;}
-    .ghost{background:#f2f4f7;color:var(--text);}
-    .primary:active,.ghost:active{transform:translateY(1px);}
-
-    .choices{display:flex;flex-direction:column;gap:12px;margin-top:6px;}
-    .chip{
-      width:100%;
-      border:1px solid var(--border);
-      background:#fff;
-      border-radius:14px;
-      padding:14px 14px;
-      cursor:pointer;
-      font-weight:900;
-      text-align:left;
-      box-shadow:0 1px 0 rgba(16,24,40,.04);
-    }
-    .chip[data-active="true"]{
-      border-color:rgba(0,112,215,.55);
-      box-shadow:0 0 0 4px rgba(0,112,215,.12);
-      background:rgba(0,112,215,.06);
-    }
-
-    .error{
-      color:#b42318;
-      background:#fef3f2;
-      border:1px solid #fecdca;
-      border-radius:12px;
-      padding:10px;
-      margin-top:12px;
-      display:none;
-      font-weight:800;
-    }
-    .small{font-size:13px;color:var(--muted);margin-top:10px}
-    .check{display:flex;gap:10px;align-items:flex-start;margin-top:14px}
-    .check input{width:auto;margin-top:3px}
-    a{color:var(--primary);text-decoration:underline;}
-    .hidden{display:none;}
-
-    /* =========================================================
-       ✅ BELOW-FORM SECTION — CI, beige bleibt, nix "kaputt"
-       ========================================================= */
-    .tw24-below{
+    /* ✅ KEIN weißer Container mehr um beide Blöcke */
+    .tw24-section{
       margin-top:18px;
-      border-radius:22px;
-      overflow:hidden;
-      border:1px solid rgba(16,24,40,.12);
+      padding:0;
+      background:transparent;
+      border:0;
+      box-shadow:none;
+    }
 
-      /* ✅ Ruhiger, sauberer Hintergrund (kein "broken" Look) */
-      background:
-        radial-gradient(900px 340px at 12% 8%, rgba(0,112,215,.06), transparent 62%),
-        radial-gradient(820px 340px at 88% 12%, rgba(102,178,29,.06), transparent 62%),
-        linear-gradient(180deg, rgba(255,255,255,.55), rgba(255,255,255,.12));
-      box-shadow:0 14px 40px rgba(0,0,0,.08);
+    /* Optional: ganz dezente Trennlinie zwischen Bereichen */
+    .tw24-divider{
+      height:1px;
+      background:rgba(16,24,40,.08);
+      margin:18px 0;
+      border-radius:999px;
+    }
+
+    /* =========================
+       STEPS / Timeline (oben)
+       ========================= */
+    .tw24-steps-title{
+      margin:0 0 14px;
+      text-align:center;
+      color:var(--text);
+      font-size:28px;
+      letter-spacing:-0.02em;
+    }
+    .tw24-steps-title .em{ color:var(--green); }
+
+    .tw24-timeline{
       position:relative;
+      padding:10px 0 6px;
+      display:grid;
+      gap:16px;
     }
 
-    .tw24-below-inner{
-      padding:24px 22px 18px;
+    .tw24-stepcard{
+      display:flex;
+      gap:12px;
+      align-items:flex-start;
+      background:rgba(255,255,255,.92);
+      border-radius:18px;
+      padding:16px 16px;
+      border:1px solid rgba(16,24,40,.12);
+      box-shadow:0 10px 26px rgba(0,0,0,.06);
+      max-width:440px;
+      backdrop-filter:saturate(120%) blur(2px);
     }
 
+    .tw24-dot{
+      width:34px;height:34px;
+      border-radius:999px;
+      display:grid;place-items:center;
+      background:var(--primary);
+      color:#fff;
+      font-weight:950;
+      flex:0 0 auto;
+      box-shadow:0 10px 18px rgba(0,0,0,.12);
+    }
+    .tw24-dot.green{ background:var(--green); }
+
+    .tw24-step-head{ font-weight:950; }
+    .tw24-step-sub{ margin-top:4px; color:var(--muted); font-weight:650; }
+
+    @media (min-width: 760px){
+      .tw24-stepcard:nth-child(odd){ margin-right:auto; }
+      .tw24-stepcard:nth-child(even){ margin-left:auto; }
+    }
+
+    .tw24-steps-foot{
+      margin-top:12px;
+      text-align:center;
+      color:var(--muted);
+      font-weight:850;
+      font-size:13px;
+    }
+
+    /* =========================
+       REASONS / Hero (unten)
+       ========================= */
     .tw24-hero{
       display:grid;
-      grid-template-columns: 1.35fr .65fr; /* ✅ links etwas mehr Platz -> Title bleibt eher 1 Zeile */
+      grid-template-columns: 1.35fr .65fr;
       gap:16px;
       align-items:stretch;
     }
@@ -157,9 +120,7 @@
       letter-spacing:-0.02em;
       color:var(--text);
     }
-
     .tw24-accent-green{ color: var(--green); }
-    .tw24-accent-blue{ color: var(--primary); }
 
     .tw24-hero-sub{
       margin:0 0 14px;
@@ -167,7 +128,8 @@
       font-weight:650;
     }
 
-    /* ✅ Screen 2: Desktop lieber 1 Zeile + etwas kleiner */
+    /* ✅ Keine gelben Glows / Schatten im Hintergrund mehr */
+    /* (nur typografie + cards, alles auf Beige „verschmilzt“) */
     @media (min-width: 760px){
       .tw24-hero-title{
         font-size:clamp(22px, 2.25vw, 28px);
@@ -183,6 +145,7 @@
       }
     }
     @media (max-width: 759px){
+      .tw24-hero{ grid-template-columns:1fr; }
       .tw24-hero-title{ font-size:26px; white-space:normal; }
       .tw24-hero-sub{ font-size:15px; white-space:normal; }
     }
@@ -203,7 +166,8 @@
       border-radius:999px;
       padding:14px 16px;
       font-weight:900;
-      box-shadow:0 10px 26px rgba(0,0,0,.08);
+      box-shadow:0 10px 26px rgba(0,0,0,.06);
+      backdrop-filter:saturate(120%) blur(2px);
     }
 
     .tw24-pill-ico{
@@ -238,15 +202,12 @@
       font-size:13px;
     }
 
-    /* ✅ Screen 1: Illustration Card sauberer (SVG-Gradient valid, Background ruhig) */
+    /* Illustration Card (darf „weißlich“ sein, aber ohne gelbe Aura außenrum) */
     .tw24-illus-card{
       border-radius:20px;
       border:1px solid rgba(16,24,40,.12);
-      background:
-        radial-gradient(320px 260px at 25% 25%, rgba(0,112,215,.10), transparent 60%),
-        radial-gradient(320px 260px at 75% 75%, rgba(102,178,29,.10), transparent 60%),
-        rgba(255,255,255,.84);
-      box-shadow:0 14px 34px rgba(0,0,0,.10);
+      background:rgba(255,255,255,.84);
+      box-shadow:0 14px 34px rgba(0,0,0,.08);
       position:relative;
       overflow:hidden;
       min-height:260px;
@@ -254,6 +215,7 @@
       align-items:center;
       justify-content:center;
       padding:14px;
+      backdrop-filter:saturate(120%) blur(2px);
     }
 
     .tw24-illus{
@@ -273,477 +235,135 @@
       border-radius:16px;
       padding:10px 12px;
       color:var(--text);
-      box-shadow:0 10px 26px rgba(0,0,0,.10);
+      box-shadow:0 10px 26px rgba(0,0,0,.08);
     }
     .tw24-illus-badge-top{ font-weight:950; }
     .tw24-illus-badge-sub{ font-weight:750; color:var(--muted); font-size:13px; }
-
-    /* Steps / Timeline */
-    .tw24-steps{
-      margin-top:18px;
-      padding-top:16px;
-      border-top:1px solid rgba(16,24,40,.10);
-    }
-
-    .tw24-steps-title{
-      margin:0 0 14px;
-      text-align:center;
-      color:var(--text);
-      font-size:28px;
-      letter-spacing:-0.02em;
-    }
-
-    .tw24-steps-title .em{
-      color:var(--green);
-    }
-
-    .tw24-timeline{
-      position:relative;
-      padding:10px 0 6px;
-      display:grid;
-      gap:16px;
-    }
-
-    /* ✅ Screen 3: Nerviger Mittel-Strich komplett raus */
-    /* (vorher: .tw24-timeline::before ...) */
-
-    .tw24-stepcard{
-      display:flex;
-      gap:12px;
-      align-items:flex-start;
-      background:rgba(255,255,255,.92);
-      border-radius:18px;
-      padding:16px 16px;
-      border:1px solid rgba(16,24,40,.12);
-      box-shadow:0 12px 30px rgba(0,0,0,.08);
-      max-width:440px;
-    }
-
-    .tw24-dot{
-      width:34px; height:34px;
-      border-radius:999px;
-      display:grid; place-items:center;
-      background:var(--primary);
-      color:#fff;
-      font-weight:950;
-      flex:0 0 auto;
-      box-shadow:0 10px 22px rgba(0,0,0,.14);
-    }
-    .tw24-dot.green{
-      background:var(--green);
-    }
-
-    .tw24-step-head{ font-weight:950; }
-    .tw24-step-sub{ margin-top:4px; color:var(--muted); font-weight:650; }
-
-    @media (min-width: 760px){
-      .tw24-stepcard:nth-child(odd){ margin-right:auto; }
-      .tw24-stepcard:nth-child(even){ margin-left:auto; }
-    }
-
-    .tw24-steps-foot{
-      margin-top:12px;
-      text-align:center;
-      color:var(--muted);
-      font-weight:850;
-      font-size:13px;
-    }
-
-    @media (max-width:420px){
-      .btnrow.nav{flex-wrap:wrap;}
-      .btnrow.nav button{flex:unset;width:100%;}
-      h1{font-size:24px;}
-    }
   </style>
 </head>
 
 <body>
-  <div class="wrap">
+  <div class="wrap" id="tw24Content">
 
-    <!-- FORM CARD -->
-    <div class="card" id="top">
-      <div class="progress"><div class="bar" id="bar"></div></div>
-      <div id="err" class="error"></div>
+    <!-- ✅ BLOCK 1 (oben): SO EINFACH GEHT'S -->
+    <section class="tw24-section" id="howitworks">
+      <h2 class="tw24-steps-title">So <span class="em">einfach</span> geht’s</h2>
 
-      <!-- STEP 1 -->
-      <section class="stepview" data-step="1">
-        <h1 class="h1line">🔍 Ihr persönliches Stromangebot in 2&nbsp;Minuten ⚡</h1>
-        <p class="sub">Kostenlos · unverbindlich · persönlich geprüft</p>
-        <div class="spacer"></div>
-
-        <label for="plz">👉 Postleitzahl</label>
-        <input id="plz" inputmode="numeric" autocomplete="postal-code" placeholder="z. B. 10115" maxlength="5" />
-
-        <div class="btnrow">
-          <button class="primary" id="to2">Weiter →</button>
-        </div>
-      </section>
-
-      <!-- STEP 2 -->
-      <section class="stepview hidden" data-step="2">
-        <h1>Sind Sie Privat- oder Gewerbekunde?</h1>
-        <p class="sub">Gewerbe- und Privatkunden haben unterschiedliche Tarife & Konditionen.</p>
-        <div class="spacer"></div>
-
-        <div class="choices" id="customerType">
-          <div class="chip" data-value="Privat">Privat</div>
-          <div class="chip" data-value="Gewerbe">Gewerbe</div>
-        </div>
-
-        <div class="btnrow nav">
-          <button class="ghost" id="back1">← Zurück</button>
-          <button class="primary" id="to3">Weiter →</button>
-        </div>
-      </section>
-
-      <!-- STEP 3 PRIVAT -->
-      <section class="stepview hidden" data-step="3p">
-        <h1 class="h1line">Wie hoch ist Ihr jährlicher Stromverbrauch?</h1>
-        <p class="sub">Falls Sie es nicht genau wissen: grobe Schätzung reicht.</p>
-        <div class="spacer"></div>
-
-        <div class="choices" id="usagePrivate">
-          <div class="chip" data-value="Bis 2.000 kWh">Bis 2.000 kWh</div>
-          <div class="chip" data-value="2.000 – 3.500 kWh">2.000 – 3.500 kWh</div>
-          <div class="chip" data-value="3.500 – 5.000 kWh">3.500 – 5.000 kWh</div>
-          <div class="chip" data-value="Über 5.000 kWh">Über 5.000 kWh</div>
-          <div class="chip" data-value="Weiß ich nicht">Weiß ich nicht</div>
-        </div>
-
-        <div class="btnrow nav">
-          <button class="ghost" id="back2a">← Zurück</button>
-          <button class="primary" id="to4a">Weiter →</button>
-        </div>
-      </section>
-
-      <!-- STEP 3 GEWERBE -->
-      <section class="stepview hidden" data-step="3g">
-        <h1 class="h1line">Wie hoch ist Ihr jährlicher Stromverbrauch?</h1>
-        <p class="sub">Richtwert genügt – wir klären Details im Gespräch.</p>
-        <div class="spacer"></div>
-
-        <div class="choices" id="usageBusiness">
-          <div class="chip" data-value="Bis 50.000 kWh">Bis 50.000 kWh</div>
-          <div class="chip" data-value="50.000 – 100.000 kWh">50.000 – 100.000 kWh</div>
-          <div class="chip" data-value="Über 100.000 kWh">Über 100.000 kWh</div>
-        </div>
-
-        <div class="btnrow nav">
-          <button class="ghost" id="back2b">← Zurück</button>
-          <button class="primary" id="to4b">Weiter →</button>
-        </div>
-      </section>
-
-      <!-- STEP 4 CONTACT -->
-      <section class="stepview hidden" data-step="4">
-        <h1 class="h1line">⚡ Fast geschafft – wir erstellen jetzt Ihr Stromangebot</h1>
-        <p class="sub">Ein Energieberater meldet sich kurz, um die besten Optionen zu bestätigen.</p>
-        <div class="spacer"></div>
-
-        <label for="name">Vor- & Nachname *</label>
-        <input id="name" autocomplete="name" placeholder="Max Mustermann" />
-
-        <label for="phone">Telefonnummer *</label>
-        <input id="phone" inputmode="tel" autocomplete="tel" placeholder="0176 12345678" />
-
-        <label>Wie möchten Sie kontaktiert werden? (optional)</label>
-        <div class="choices" id="contactPref">
-          <div class="chip" data-value="Telefon">Telefon</div>
-          <div class="chip" data-value="WhatsApp">WhatsApp</div>
-          <div class="chip" data-value="E-Mail">E-Mail</div>
-        </div>
-
-        <div class="check">
-          <input id="consent" type="checkbox" />
-          <div class="small">
-            Ich willige ein, dass meine Angaben zur Erstellung eines Stromangebots verarbeitet werden und ich hierzu telefonisch,
-            per WhatsApp oder per E-Mail kontaktiert werde. Weitere Informationen in der
-            <a href="/datenschutz" target="_blank" rel="noopener">Datenschutzerklärung</a>.
-            <span style="color:#b42318;">*</span>
-          </div>
-        </div>
-
-        <div class="btnrow nav">
-          <button class="ghost" id="back3">← Zurück</button>
-          <button class="primary" id="submit">Stromangebot anfordern →</button>
-        </div>
-
-        <div class="small">Kostenlos & unverbindlich. Kein Spam.</div>
-      </section>
-
-      <!-- THANK YOU -->
-      <section class="stepview hidden" data-step="5">
-        <h1>✅ Danke! Anfrage erhalten.</h1>
-        <p class="sub">Unser Energieberater setzt sich in Kürze mit Ihnen in Verbindung.</p>
-        <div class="spacer"></div>
-
-        <div class="btnrow">
-          <a class="primary"
-             style="display:inline-block;text-decoration:none;padding:14px 14px;border-radius:12px;width:100%;font-weight:900;text-align:center;"
-             id="waLink" href="#" target="_blank" rel="noopener">Optional: per WhatsApp schreiben</a>
-        </div>
-
-        <div class="spacer"></div>
-        <div class="small">Hinweis: WhatsApp ist freiwillig.</div>
-      </section>
-    </div>
-
-    <!-- ✅ BELOW FORM (CI-friendly, beige background stays) -->
-    <section class="tw24-below" id="howitworks">
-      <div class="tw24-below-inner">
-
-        <div class="tw24-hero">
+      <div class="tw24-timeline">
+        <div class="tw24-stepcard">
+          <div class="tw24-dot">1</div>
           <div>
-            <h2 class="tw24-hero-title">
-              Deswegen setzen so viele auf <span class="tw24-accent-green">Tarifwechsel24</span>
-            </h2>
-            <p class="tw24-hero-sub">
-              Verständlich, persönlich und ohne unnötigen Aufwand – <b>kostenlos</b> & unverbindlich.
-            </p>
-
-            <div class="tw24-pills">
-              <div class="tw24-pill">
-                <span class="tw24-pill-ico green">🌿</span>
-                <span>Nachhaltig weniger bezahlen</span>
-              </div>
-              <div class="tw24-pill">
-                <span class="tw24-pill-ico">🔁</span>
-                <span>Automatischer Wechsel, kein Aufwand</span>
-              </div>
-              <div class="tw24-pill">
-                <span class="tw24-pill-ico">🎧</span>
-                <span>Persönlicher Support</span>
-              </div>
-              <div class="tw24-pill">
-                <span class="tw24-pill-ico green">✅</span>
-                <span>Persönlich geprüft – kein Algorithmus-Blindflug</span>
-              </div>
-            </div>
-
-            <a class="tw24-hero-cta" href="#top">Zum Formular ↑</a>
-            <div class="tw24-trust">Kostenlos · unverbindlich · kein Spam</div>
+            <div class="tw24-step-head">Gespräch vereinbaren</div>
+            <div class="tw24-step-sub">Kurz Daten angeben – wir melden uns persönlich.</div>
           </div>
+        </div>
 
+        <div class="tw24-stepcard">
+          <div class="tw24-dot green">2</div>
           <div>
-            <div class="tw24-illus-card">
-              <!-- ✅ Valid SVG gradient (kein rgba() im stop-color) -->
-              <svg viewBox="0 0 520 360" class="tw24-illus" aria-hidden="true">
-                <defs>
-                  <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-                    <stop offset="0" stop-color="#0070D7" stop-opacity=".18"></stop>
-                    <stop offset="1" stop-color="#66b21d" stop-opacity=".16"></stop>
-                  </linearGradient>
-                </defs>
-
-                <rect x="20" y="22" width="480" height="316" rx="22" fill="rgba(255,255,255,.60)" stroke="rgba(16,24,40,.12)" />
-                <rect x="48" y="56" width="424" height="232" rx="18" fill="url(#g)" opacity=".42" />
-
-                <circle cx="118" cy="128" r="44" fill="rgba(16,24,40,.10)"/>
-                <rect x="190" y="96" width="240" height="22" rx="11" fill="rgba(16,24,40,.12)"/>
-                <rect x="190" y="132" width="200" height="16" rx="8" fill="rgba(16,24,40,.10)"/>
-                <rect x="190" y="162" width="220" height="16" rx="8" fill="rgba(16,24,40,.10)"/>
-
-                <rect x="92" y="214" width="336" height="52" rx="16" fill="rgba(255,255,255,.62)" stroke="rgba(16,24,40,.12)"/>
-                <text x="115" y="246" font-size="16" fill="rgba(16,24,40,.72)" font-family="system-ui, -apple-system, Segoe UI, Roboto">
-                  Jahresabrechnung ✓
-                </text>
-              </svg>
-
-              <div class="tw24-illus-badge">
-                <div class="tw24-illus-badge-top">Schnell geprüft</div>
-                <div class="tw24-illus-badge-sub">in wenigen Minuten</div>
-              </div>
-            </div>
+            <div class="tw24-step-head">Angebot bekommen</div>
+            <div class="tw24-step-sub">Passende Tarife für Ihre Situation – verständlich erklärt.</div>
           </div>
         </div>
 
-        <div class="tw24-steps">
-          <h3 class="tw24-steps-title">So <span class="em">einfach</span> geht’s</h3>
+        <div class="tw24-stepcard">
+          <div class="tw24-dot">3</div>
+          <div>
+            <div class="tw24-step-head">Wechsel erledigen</div>
+            <div class="tw24-step-sub">Wenn alles passt: Wir unterstützen – transparent & stressfrei.</div>
+          </div>
+        </div>
+      </div>
 
-          <div class="tw24-timeline">
-            <div class="tw24-stepcard">
-              <div class="tw24-dot">1</div>
-              <div>
-                <div class="tw24-step-head">Gespräch vereinbaren</div>
-                <div class="tw24-step-sub">Kurz Daten angeben – wir melden uns persönlich.</div>
-              </div>
+      <div class="tw24-steps-foot">Kostenlos & unverbindlich · Persönlich geprüft</div>
+    </section>
+
+    <div class="tw24-divider"></div>
+
+    <!-- ✅ BLOCK 2 (unten): DESWEGEN... -->
+    <section class="tw24-section" id="whyus">
+      <div class="tw24-hero">
+        <div>
+          <h2 class="tw24-hero-title">
+            Deswegen setzen so viele auf <span class="tw24-accent-green">Tarifwechsel24</span>
+          </h2>
+          <p class="tw24-hero-sub">
+            Verständlich, persönlich und ohne unnötigen Aufwand – <b>kostenlos</b> & unverbindlich.
+          </p>
+
+          <div class="tw24-pills">
+            <div class="tw24-pill">
+              <span class="tw24-pill-ico green">🌿</span>
+              <span>Nachhaltig weniger bezahlen</span>
             </div>
-
-            <div class="tw24-stepcard">
-              <div class="tw24-dot green">2</div>
-              <div>
-                <div class="tw24-step-head">Angebot bekommen</div>
-                <div class="tw24-step-sub">Passende Tarife für Ihre Situation – verständlich erklärt.</div>
-              </div>
+            <div class="tw24-pill">
+              <span class="tw24-pill-ico">🔁</span>
+              <span>Automatischer Wechsel, kein Aufwand</span>
             </div>
-
-            <div class="tw24-stepcard">
-              <div class="tw24-dot">3</div>
-              <div>
-                <div class="tw24-step-head">Wechsel erledigen</div>
-                <div class="tw24-step-sub">Wenn alles passt: Wir unterstützen – transparent & stressfrei.</div>
-              </div>
+            <div class="tw24-pill">
+              <span class="tw24-pill-ico">🎧</span>
+              <span>Persönlicher Support</span>
+            </div>
+            <div class="tw24-pill">
+              <span class="tw24-pill-ico green">✅</span>
+              <span>Persönlich geprüft – kein Algorithmus-Blindflug</span>
             </div>
           </div>
 
-          <div class="tw24-steps-foot">Kostenlos & unverbindlich · Persönlich geprüft</div>
+          <!-- ✅ an dein separates Formular anpassen (Anchor/URL) -->
+          <a class="tw24-hero-cta" href="#formular">Zum Formular ↑</a>
+          <div class="tw24-trust">Kostenlos · unverbindlich · kein Spam</div>
         </div>
 
+        <div>
+          <div class="tw24-illus-card">
+            <svg viewBox="0 0 520 360" class="tw24-illus" aria-hidden="true">
+              <defs>
+                <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0" stop-color="#0070D7" stop-opacity=".18"></stop>
+                  <stop offset="1" stop-color="#66b21d" stop-opacity=".16"></stop>
+                </linearGradient>
+              </defs>
+
+              <rect x="20" y="22" width="480" height="316" rx="22" fill="rgba(255,255,255,.60)" stroke="rgba(16,24,40,.12)" />
+              <rect x="48" y="56" width="424" height="232" rx="18" fill="url(#g)" opacity=".42" />
+
+              <circle cx="118" cy="128" r="44" fill="rgba(16,24,40,.10)"/>
+              <rect x="190" y="96" width="240" height="22" rx="11" fill="rgba(16,24,40,.12)"/>
+              <rect x="190" y="132" width="200" height="16" rx="8" fill="rgba(16,24,40,.10)"/>
+              <rect x="190" y="162" width="220" height="16" rx="8" fill="rgba(16,24,40,.10)"/>
+
+              <rect x="92" y="214" width="336" height="52" rx="16" fill="rgba(255,255,255,.62)" stroke="rgba(16,24,40,.12)"/>
+              <text x="115" y="246" font-size="16" fill="rgba(16,24,40,.72)" font-family="system-ui, -apple-system, Segoe UI, Roboto">
+                Jahresabrechnung ✓
+              </text>
+            </svg>
+
+            <div class="tw24-illus-badge">
+              <div class="tw24-illus-badge-top">Schnell geprüft</div>
+              <div class="tw24-illus-badge-sub">in wenigen Minuten</div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
   </div>
 
   <script>
-    const WEBHOOK_URL = "PASTE_YOUR_WEBHOOK_URL_HERE";
-    const WA_NUMBER = "4917672530039";
-
-    const state = { plz:"", type:"", usage:"", name:"", phone:"", pref:"" };
-
-    const $ = (id) => document.getElementById(id);
-    const steps = Array.from(document.querySelectorAll(".stepview"));
-    const err = $("err");
-    const bar = $("bar");
-
-    function showError(msg){
-      err.textContent = msg;
-      err.style.display = "block";
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-    function clearError(){ err.style.display = "none"; err.textContent=""; }
-
-    function setActive(containerId, value){
-      const el = $(containerId);
-      el.querySelectorAll(".chip").forEach(c => c.dataset.active = (c.dataset.value === value) ? "true" : "false");
-    }
-
-    function currentProgress(stepKey){
-      const map = { "1": 20, "2": 40, "3p": 60, "3g": 60, "4": 85, "5": 100 };
-      bar.style.width = (map[stepKey] || 0) + "%";
-    }
-
+    /* ✅ iFrame Auto-Height (falls du es wie vorher brauchst) */
     function sendEmbedHeight(){
-      const wrap = document.querySelector(".wrap");
-      const section = document.getElementById("howitworks");
-      const card = document.querySelector(".card");
-      if(!wrap || !card) return;
+      const root = document.getElementById("tw24Content");
+      if(!root) return;
 
-      const wrapRect = wrap.getBoundingClientRect();
-      const lastRect = (section ? section.getBoundingClientRect() : card.getBoundingClientRect());
-      const h = Math.ceil((lastRect.bottom - wrapRect.top) + 16);
+      const rect = root.getBoundingClientRect();
+      const h = Math.ceil(rect.height + 32);
 
       window.parent && window.parent.postMessage({ type: "TW24_HEIGHT", height: h }, "*");
     }
 
-    function go(stepKey){
-      clearError();
-      steps.forEach(s => s.classList.add("hidden"));
-      document.querySelector(`.stepview[data-step="${stepKey}"]`).classList.remove("hidden");
-      currentProgress(stepKey);
-
-      setTimeout(sendEmbedHeight, 20);
-      setTimeout(sendEmbedHeight, 120);
-    }
-
-    $("customerType").addEventListener("click", (e)=>{
-      const chip = e.target.closest(".chip"); if(!chip) return;
-      state.type = chip.dataset.value;
-      setActive("customerType", state.type);
-      setTimeout(sendEmbedHeight, 20);
-    });
-
-    $("usagePrivate").addEventListener("click", (e)=>{
-      const chip = e.target.closest(".chip"); if(!chip) return;
-      state.usage = chip.dataset.value;
-      setActive("usagePrivate", state.usage);
-      setTimeout(sendEmbedHeight, 20);
-    });
-
-    $("usageBusiness").addEventListener("click", (e)=>{
-      const chip = e.target.closest(".chip"); if(!chip) return;
-      state.usage = chip.dataset.value;
-      setActive("usageBusiness", state.usage);
-      setTimeout(sendEmbedHeight, 20);
-    });
-
-    $("contactPref").addEventListener("click", (e)=>{
-      const chip = e.target.closest(".chip"); if(!chip) return;
-      state.pref = chip.dataset.value;
-      setActive("contactPref", state.pref);
-      setTimeout(sendEmbedHeight, 20);
-    });
-
-    $("to2").onclick = () => {
-      const plz = $("plz").value.trim();
-      if(!/^\d{5}$/.test(plz)) return showError("Bitte eine gültige Postleitzahl (5 Ziffern) eingeben.");
-      state.plz = plz;
-      go("2");
-    };
-
-    $("back1").onclick = () => go("1");
-
-    $("to3").onclick = () => {
-      if(!state.type) return showError("Bitte wählen Sie Privat oder Gewerbe.");
-      if(state.type === "Privat") go("3p"); else go("3g");
-    };
-
-    $("back2a").onclick = () => go("2");
-    $("back2b").onclick = () => go("2");
-
-    $("to4a").onclick = () => {
-      if(!state.usage) return showError("Bitte wählen Sie eine Verbrauchsangabe.");
-      go("4");
-    };
-    $("to4b").onclick = () => {
-      if(!state.usage) return showError("Bitte wählen Sie eine Verbrauchsangabe.");
-      go("4");
-    };
-
-    $("back3").onclick = () => {
-      if(state.type === "Privat") go("3p"); else go("3g");
-    };
-
-    $("submit").onclick = async () => {
-      state.name = $("name").value.trim();
-      state.phone = $("phone").value.trim();
-      const consent = $("consent").checked;
-
-      if(!state.name) return showError("Bitte Vor- & Nachname eintragen.");
-      if(state.phone.length < 6) return showError("Bitte eine gültige Telefonnummer eintragen.");
-      if(!consent) return showError("Bitte bestätigen Sie die Datenschutzeinwilligung.");
-
-      const payload = {
-        plz: state.plz,
-        kundentyp: state.type,
-        verbrauch: state.usage,
-        name: state.name,
-        telefon: state.phone,
-        kontaktpraeferenz: state.pref || "",
-        timestamp: new Date().toISOString(),
-        source: location.href
-      };
-
-      const msg = encodeURIComponent(`Hi, ich habe gerade ein Stromangebot angefordert. PLZ: ${state.plz}`);
-      $("waLink").href = `https://wa.me/${WA_NUMBER}?text=${msg}`;
-
-      try{
-        if(WEBHOOK_URL && WEBHOOK_URL.startsWith("http")){
-          await fetch(WEBHOOK_URL, {
-            method:"POST",
-            headers:{ "Content-Type":"application/json" },
-            body: JSON.stringify(payload),
-            keepalive: true
-          });
-        }
-        go("5");
-      }catch(e){
-        showError("Ups – technisch gab es kurz ein Problem. Bitte versuchen Sie es erneut oder kontaktieren Sie uns direkt.");
-        console.error(e);
-      }
-    };
-
     window.addEventListener("load", () => {
-      go("1");
+      sendEmbedHeight();
       setTimeout(sendEmbedHeight, 120);
     });
     window.addEventListener("resize", () => setTimeout(sendEmbedHeight, 80));
