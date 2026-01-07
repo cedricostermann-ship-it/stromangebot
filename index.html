@@ -89,6 +89,7 @@
     .primary{background:var(--primary);color:white;}
     .ghost{background:#f2f4f7;color:var(--text);}
     .primary:active,.ghost:active{transform:translateY(1px);}
+    button:disabled{opacity:.65; cursor:not-allowed;}
 
     .choices{
       display:flex;
@@ -130,6 +131,7 @@
     a{color:var(--primary);text-decoration:underline;}
     .hidden{display:none;}
 
+    /* ✅ MOBILE */
     @media (max-width: 480px){
       .wrap{padding:12px 12px;}
       .card{padding:16px;border-radius:14px;}
@@ -247,8 +249,11 @@
         <label for="name">Vor- & Nachname *</label>
         <input id="name" autocomplete="name" placeholder="Max Mustermann" />
 
-        <label for="phone">Telefonnummer *</label>
-        <input id="phone" inputmode="tel" autocomplete="tel" placeholder="0176 12345678" />
+        <label for="phone">Telefonnummer * (nur +49)</label>
+        <input id="phone" inputmode="tel" autocomplete="tel"
+               placeholder="+49 176 12345678"
+               value="+49 "
+               />
 
         <label>Wie möchten Sie kontaktiert werden? (optional)</label>
         <div class="choices" id="contactPref">
@@ -309,6 +314,7 @@
     const err = $("err");
     const bar = $("bar");
 
+    // ✅ Height (stabil für Durable iframe)
     let __lastSent = 0;
     let __t = 0;
 
@@ -364,6 +370,58 @@
       currentProgress(stepKey);
       scheduleHeight();
     }
+
+    // ✅ Timestamp: Datum + Uhrzeit (Berlin)
+    function tsBerlin(){
+      const d = new Date();
+      const s = new Intl.DateTimeFormat("de-DE", {
+        timeZone: "Europe/Berlin",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit"
+      }).format(d);
+      return s.replace(",", ""); // "07.01.2026 15:04:12"
+    }
+
+    // ✅ Telefon: nur +49 erlaubt
+    function normalizeDE(phoneRaw){
+      const raw = (phoneRaw || "").trim();
+
+      // muss mit +49 starten
+      if(!raw.startsWith("+49")) return null;
+
+      // alles außer + und ziffern raus
+      const cleaned = raw.replace(/[^\d+]/g, "");
+
+      // +49 muss bleiben
+      if(!cleaned.startsWith("+49")) return null;
+
+      // nach +49 nur ziffern, kein führendes 0
+      const rest = cleaned.slice(3);
+      if(!rest || rest.startsWith("0")) return null;
+
+      // Länge grob validieren (deutsche Nummern variieren)
+      // +49 + 7..14 Ziffern als praxisnah
+      if(!/^\+49\d{7,14}$/.test(cleaned)) return null;
+
+      return cleaned;
+    }
+
+    // UX: +49 nicht löschbar / wird auto nachgezogen
+    const phoneEl = $("phone");
+    phoneEl.addEventListener("focus", () => {
+      if(!phoneEl.value.trim().startsWith("+49")) phoneEl.value = "+49 ";
+    });
+    phoneEl.addEventListener("input", () => {
+      if(!phoneEl.value.startsWith("+49")) {
+        // wenn user alles löscht / überschreibt
+        phoneEl.value = "+49 " + phoneEl.value.replace(/[^\d]/g, "").replace(/^49/, "");
+      }
+      scheduleHeight();
+    });
 
     $("customerType").addEventListener("click", (e)=>{
       const chip = e.target.closest(".chip"); if(!chip) return;
@@ -426,7 +484,7 @@
     async function postLead(payload){
       const res = await fetch(WEBHOOK_URL, {
         method: "POST",
-        headers: { "Content-Type": "text/plain;charset=utf-8" }, // CORS-stabil
+        headers: { "Content-Type": "text/plain;charset=utf-8" }, // CORS-stabil (iframe)
         body: JSON.stringify(payload),
         keepalive: true
       });
@@ -440,20 +498,25 @@
 
     $("submit").onclick = async () => {
       state.name = $("name").value.trim();
-      state.phone = $("phone").value.trim();
+      const phoneNormalized = normalizeDE($("phone").value);
       const consent = $("consent").checked;
 
       if(!state.name) return showError("Bitte Vor- & Nachname eintragen.");
-      if(state.phone.replace(/\s+/g,"").length < 6) return showError("Bitte eine gültige Telefonnummer eintragen.");
+      if(!phoneNormalized) return showError("Telefonnummer muss im Format +49XXXXXXXXX sein (nur +49 erlaubt).");
       if(!consent) return showError("Bitte bestätigen Sie die Datenschutzeinwilligung.");
+
+      const btn = $("submit");
+      btn.disabled = true;
+      const oldText = btn.textContent;
+      btn.textContent = "Wird gesendet…";
 
       const payload = {
         token: TOKEN,
         website: ($("website").value || "").trim(), // honeypot
-        timestamp: new Date().toISOString(),
+        timestamp: tsBerlin(), // ✅ Datum + Uhrzeit
         name: state.name,
-        telefon: state.phone,
-        verbrauch: state.usage,         // (wenn du willst: `${state.type} | ${state.usage}`)
+        telefon: phoneNormalized, // ✅ nur +49, sauber
+        verbrauch: state.usage,
         plz: state.plz,
         "kontaktmöglichkeit": state.pref || "",
         source: location.href
@@ -462,12 +525,18 @@
       const msg = encodeURIComponent(`Hi, ich habe gerade ein Stromangebot angefordert. PLZ: ${state.plz}`);
       $("waLink").href = `https://wa.me/${WA_NUMBER}?text=${msg}`;
 
+      // ✅ UI sofort weiter (kein "Hängen")
+      go("5");
+
       try{
         await postLead(payload);
-        go("5");
       }catch(e){
         console.error(e);
-        showError("Ups – technisch gab es kurz ein Problem. Bitte versuchen Sie es erneut oder kontaktieren Sie uns direkt.");
+        go("4");
+        showError("Ups – Senden hat nicht geklappt. Bitte nochmal.");
+      }finally{
+        btn.disabled = false;
+        btn.textContent = oldText;
       }
     };
 
