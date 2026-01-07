@@ -12,7 +12,7 @@
       --muted:#475467;
       --border:rgba(16,24,40,.14);
       --primary:#0070D7;
-      --green:#66b21d;
+      --green:#66b21d; /* Tarifwechsel-Grün */
       --radius:18px;
     }
 
@@ -129,10 +129,9 @@
       .tw24-hero{ grid-template-columns:1fr; }
     }
 
-    /* ✅ Desktop: unten sauber ausrichten, dann kann die rechte Box "nach oben wachsen" */
     @media (min-width: 760px){
       .tw24-hero{ align-items:end; }
-      .tw24-hero-right{ margin-top:0; } /* vorheriger Offset raus */
+      .tw24-hero-right{ margin-top:0; }
     }
 
     .tw24-pills{
@@ -192,28 +191,37 @@
       text-align:center;
     }
 
+    /* =========================
+       Rechte Karte (Illustration)
+       ========================= */
     .tw24-illus-card{
       border-radius:20px;
 
-      /* ✅ sanftes Grün */
-      background:linear-gradient(180deg, rgba(102,178,29,.10), rgba(255,255,255,.88));
-      border:1px solid rgba(16,24,40,.12);
+      /* ✅ sanftes Tarifwechsel-Grün */
+      background:linear-gradient(
+        180deg,
+        rgba(102,178,29,.14) 0%,
+        rgba(255,255,255,.92) 62%
+      );
 
-      /* ✅ weiches Grün-Glühen + normales Shadow */
-      box-shadow:
-        0 14px 34px rgba(0,0,0,.08),
-        0 18px 40px rgba(102,178,29,.10);
+      /* ✅ keine Schatten */
+      box-shadow:none;
+
+      /* ✅ leicht grünlicher Rand */
+      border:1px solid rgba(102,178,29,.22);
 
       position:relative;
       overflow:visible;
 
-      /* ✅ etwas höher, damit es oben besser "mitzieht" */
-      min-height:300px;
+      /* ✅ etwas weniger “oben” als vorher */
+      min-height:285px;
 
       display:flex;
       align-items:center;
       justify-content:center;
-      padding:14px;
+
+      /* oben minimal kleiner, damit es nicht so “hoch” wirkt */
+      padding:10px 14px 14px;
       backdrop-filter:saturate(120%) blur(2px);
     }
 
@@ -223,7 +231,9 @@
       height:auto;
       display:block;
       opacity:.96;
-      transform: translateY(10px);
+
+      /* ✅ weniger nach unten geschoben (weniger Luft oben) */
+      transform: translateY(4px);
     }
 
     .tw24-illus-dropdown{
@@ -239,7 +249,10 @@
       font-size:18px;
       line-height:1;
       color:rgba(16,24,40,.84);
-      box-shadow:0 10px 26px rgba(0,0,0,.10);
+
+      /* ✅ kein Schatten */
+      box-shadow:none;
+
       white-space:nowrap;
       z-index:4;
     }
@@ -254,7 +267,10 @@
       border-radius:16px;
       padding:10px 14px;
       color:var(--text);
-      box-shadow:0 10px 26px rgba(0,0,0,.08);
+
+      /* ✅ kein Schatten */
+      box-shadow:none;
+
       text-align:center;
       min-width:170px;
       z-index:3;
