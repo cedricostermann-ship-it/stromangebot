@@ -15,15 +15,11 @@
       --green:#66b21d; /* Tarifwechsel-Grün */
       --radius:18px;
 
-      /* ✅ neue, sanfte Grüntöne (für die rechte Illustration) */
-      --g1: rgba(102,178,29,.22); /* oben */
-      --g2: rgba(102,178,29,.14); /* mittel */
-      --g3: rgba(102,178,29,.10); /* innen */
-      --g4: rgba(102,178,29,.08); /* badge/chip */
-      --gStroke: rgba(102,178,29,.28);
-      --lineGrey: rgba(16,24,40,.18);
-      --lineGrey2: rgba(16,24,40,.14);
-      --circleGrey: rgba(16,24,40,.14);
+      /* sanfte Grüntöne (rechte Illustration) */
+      --g1: rgba(102,178,29,.22);
+      --g2: rgba(102,178,29,.14);
+      --g3: rgba(102,178,29,.10);
+      --g4: rgba(102,178,29,.08);
     }
 
     *{box-sizing:border-box;}
@@ -206,8 +202,6 @@
        ========================= */
     .tw24-illus-card{
       border-radius:20px;
-
-      /* ✅ Alles grün (Kästchen außen) */
       background:linear-gradient(180deg, var(--g1) 0%, rgba(102,178,29,.06) 55%, rgba(102,178,29,.04) 100%);
       border:1px solid rgba(102,178,29,.30);
       box-shadow:none;
@@ -232,18 +226,18 @@
       transform: translateY(4px);
     }
 
-    /* Chip auch grün */
+    /* ✅ Chip: kleiner + etwas tiefer, damit er nicht oben anliegt */
     .tw24-illus-dropdown{
       position:absolute;
       left:50%;
-      top:0px;
+      top:10px; /* vorher 0px */
       transform:translateX(-50%);
       background:rgba(102,178,29,.14);
       border:1px solid rgba(102,178,29,.28);
       border-radius:999px;
-      padding:9px 14px;
+      padding:7px 12px; /* kleiner */
       font-weight:950;
-      font-size:18px;
+      font-size:16px;   /* kleiner */
       line-height:1;
       color:rgba(16,24,40,.86);
       box-shadow:none;
@@ -252,25 +246,25 @@
       backdrop-filter:saturate(120%) blur(2px);
     }
 
-    /* Badge auch grün */
+    /* ✅ Badge: kleiner + breiter + minimal tiefer, damit keine Kollision */
     .tw24-illus-badge{
       position:absolute;
       left:50%;
       transform:translateX(-50%);
-      bottom:14px;
+      bottom:8px;                 /* vorher 14px */
       background:rgba(102,178,29,.14);
       border:1px solid rgba(102,178,29,.28);
-      border-radius:16px;
-      padding:10px 14px;
+      border-radius:14px;
+      padding:8px 16px;           /* kleiner */
       color:var(--text);
       box-shadow:none;
       text-align:center;
-      min-width:170px;
+      min-width:220px;            /* breiter */
       z-index:3;
       backdrop-filter:saturate(120%) blur(2px);
     }
-    .tw24-illus-badge-top{ font-weight:950; }
-    .tw24-illus-badge-sub{ font-weight:750; color:rgba(16,24,40,.70); font-size:13px; }
+    .tw24-illus-badge-top{ font-weight:950; font-size:15px; }
+    .tw24-illus-badge-sub{ font-weight:750; color:rgba(16,24,40,.70); font-size:12px; }
   </style>
 </head>
 
@@ -350,31 +344,26 @@
 
             <div class="tw24-illus-dropdown">Jahresabrechnung ✓</div>
 
-            <!-- ✅ Alle Kästchen in der Illustration grün, Inhalte (Kreis/Lines) leicht grau -->
+            <!-- ✅ Alle Kästchen grün, Kreis/Lines leicht grau -->
             <svg viewBox="0 0 520 360" class="tw24-illus" aria-hidden="true">
               <defs>
-                <!-- Grüner Verlauf für die “Innenfläche” -->
                 <linearGradient id="gGreen" x1="0" y1="0" x2="1" y2="1">
                   <stop offset="0" stop-color="rgba(102,178,29,.22)"></stop>
                   <stop offset="1" stop-color="rgba(102,178,29,.10)"></stop>
                 </linearGradient>
 
-                <!-- sehr sanftes Grün für äußere Fläche -->
                 <linearGradient id="gOuter" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="0" stop-color="rgba(102,178,29,.16)"></stop>
                   <stop offset="1" stop-color="rgba(102,178,29,.06)"></stop>
                 </linearGradient>
               </defs>
 
-              <!-- äußeres Kästchen -->
               <rect x="20" y="22" width="480" height="316" rx="22"
                     fill="url(#gOuter)" stroke="rgba(102,178,29,.28)" />
 
-              <!-- inneres Kästchen -->
               <rect x="48" y="56" width="424" height="232" rx="18"
                     fill="url(#gGreen)" stroke="rgba(102,178,29,.22)" />
 
-              <!-- Kreis & Linien bleiben sichtbar in leichtem Grau -->
               <circle cx="118" cy="128" r="44" fill="rgba(16,24,40,.12)"/>
               <rect x="190" y="96"  width="240" height="22" rx="11" fill="rgba(16,24,40,.18)"/>
               <rect x="190" y="132" width="200" height="16" rx="8"  fill="rgba(16,24,40,.14)"/>
