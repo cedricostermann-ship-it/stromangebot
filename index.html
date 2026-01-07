@@ -251,7 +251,7 @@
         <label for="name">Vor- & Nachname *</label>
         <input id="name" autocomplete="name" placeholder="Max Mustermann" />
 
-        <label for="phone">Telefonnummer * (deutsche Vorwahl +49)</label>
+        <label for="phone">Telefonnummer *</label>
         <input id="phone" inputmode="tel" autocomplete="tel"
                placeholder="+49 176 12345678"
                value="+49 "
@@ -325,25 +325,15 @@
     // Debug toggle: ?debug=1
     const DEBUG = new URLSearchParams(location.search).get("debug") === "1";
 
-    // ✅ Anti-Bot: Minimum-Zeit + einfache Session-Challenge + Client Rate Limit
+    // ✅ Anti-Bot: einfache Session-Challenge (ohne nervige 30s Meldung)
     const startedAt = Date.now();
     let hadHumanInput = false;
 
     function makeChallenge(){
-      // rein clientseitig (kein Geheimnis) – soll nur simple Bots rausfiltern
       const seed = (Math.random().toString(36).slice(2) + Date.now().toString(36)).slice(0, 24);
       sessionStorage.setItem("tw24_seed", seed);
       $("tw24_ts").value = String(startedAt);
       $("tw24_ch").value = btoa(seed + "|" + location.host + "|" + startedAt);
-    }
-
-    function clientRateLimit(){
-      const key = "tw24_last_submit";
-      const last = Number(localStorage.getItem(key) || "0");
-      const now = Date.now();
-      if (last && (now - last) < 30000) return false; // 30s
-      localStorage.setItem(key, String(now));
-      return true;
     }
 
     // ✅ Height (stabil für Durable iframe)
@@ -450,7 +440,6 @@
     function isValidEmail(v){
       const s = (v || "").trim();
       if(!s) return true; // optional
-      // simple/robust
       return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(s);
     }
 
@@ -475,7 +464,6 @@
     });
 
     phoneEl.addEventListener("input", () => {
-      // wenn Nutzer 0... tippt, zu +49 machen
       const v = phoneEl.value.trim();
       if(v.startsWith("0")){
         phoneEl.value = "+49 " + v.replace(/^0+/, "");
@@ -569,12 +557,7 @@
       if(!hadHumanInput){
         return showError("Bitte füllen Sie das Formular aus, bevor Sie absenden.");
       }
-      if(Date.now() - startedAt < 1800){
-        return showError("Bitte einen Moment warten und dann erneut absenden.");
-      }
-      if(!clientRateLimit()){
-        return showError("Bitte 30 Sekunden warten und dann erneut versuchen.");
-      }
+      // ❌ kein 30-Sekunden-Warten mehr
 
       // --- Validierung ---
       state.name = $("name").value.trim();
@@ -583,7 +566,7 @@
       const consent = $("consent").checked;
 
       if(!state.name) return showError("Bitte Vor- & Nachname eintragen.");
-      if(!phoneNormalized) return showError("Bitte Telefonnummer im deutschen Format eingeben (z. B. +49 176 12345678 oder +49 (0)30 123456).");
+      if(!phoneNormalized) return showError("Bitte Telefonnummer im Format +49… eingeben (z. B. +49 176 12345678).");
       if(!isValidEmail(state.email)) return showError("Bitte eine gültige E-Mail eingeben (oder Feld leer lassen).");
       if(!consent) return showError("Bitte bestätigen Sie die Datenschutzeinwilligung.");
 
