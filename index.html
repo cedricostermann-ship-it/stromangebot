@@ -430,5 +430,41 @@
   // start
   go("1");
 </script>
+
+  <script>
+  // Send current document height to parent (for embeds)
+  (function () {
+    function sendHeight() {
+      const h = Math.max(
+        document.body.scrollHeight,
+        document.documentElement.scrollHeight,
+        document.body.offsetHeight,
+        document.documentElement.offsetHeight
+      );
+      window.parent && window.parent.postMessage({ type: "TW24_HEIGHT", height: h }, "*");
+    }
+
+    // initial + after layout changes
+    window.addEventListener("load", sendHeight);
+    window.addEventListener("resize", sendHeight);
+
+    // call whenever step changes (we hook into your go() if it exists)
+    const _go = window.go;
+    if (typeof _go === "function") {
+      window.go = function(stepKey){
+        const res = _go.apply(this, arguments);
+        setTimeout(sendHeight, 50);
+        setTimeout(sendHeight, 250);
+        return res;
+      };
+    } else {
+      // fallback: observe DOM changes
+      const mo = new MutationObserver(() => sendHeight());
+      mo.observe(document.body, { childList: true, subtree: true, attributes: true });
+    }
+  })();
+</script>
+
+  
 </body>
 </html>
