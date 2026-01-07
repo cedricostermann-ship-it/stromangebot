@@ -253,7 +253,7 @@
         <input id="phone" inputmode="tel" autocomplete="tel"
                placeholder="+49 176 12345678"
                value="+49 "
-               />
+        />
 
         <label>Wie möchten Sie kontaktiert werden? (optional)</label>
         <div class="choices" id="contactPref">
@@ -298,12 +298,16 @@
 
         <div class="spacer"></div>
         <div class="small">Hinweis: WhatsApp ist freiwillig.</div>
+
+        <!-- Debug (nur wenn ?debug=1) -->
+        <div id="debugBox" class="small" style="display:none;margin-top:12px;padding:10px;border:1px dashed rgba(16,24,40,.25);border-radius:12px;white-space:pre-wrap;"></div>
       </section>
     </div>
   </div>
 
   <script>
-    const WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbyXd2-9oIqISsyJvgk-GWGctKBlU7Aeg9B3RoHEjvQ40O9J0a9i18qNH5Itl7dfkduc/exec";
+    // ✅ DEIN WEBHOOK (neu)
+    const WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbx9zpv9FCsSKPY77wyD131W2MDb8eG7zsI5dticQvc77mUIKv53xHUtukY3s2QD3CUQUA/exec";
     const TOKEN = "3007972026";
     const WA_NUMBER = "4917672530039";
 
@@ -313,6 +317,9 @@
     const steps = Array.from(document.querySelectorAll(".step"));
     const err = $("err");
     const bar = $("bar");
+
+    // Debug toggle: ?debug=1
+    const DEBUG = new URLSearchParams(location.search).get("debug") === "1";
 
     // ✅ Height (stabil für Durable iframe)
     let __lastSent = 0;
@@ -383,30 +390,21 @@
         minute: "2-digit",
         second: "2-digit"
       }).format(d);
-      return s.replace(",", ""); // "07.01.2026 15:04:12"
+      return s.replace(",", "");
     }
 
     // ✅ Telefon: nur +49 erlaubt
     function normalizeDE(phoneRaw){
       const raw = (phoneRaw || "").trim();
-
-      // muss mit +49 starten
       if(!raw.startsWith("+49")) return null;
 
-      // alles außer + und ziffern raus
       const cleaned = raw.replace(/[^\d+]/g, "");
-
-      // +49 muss bleiben
       if(!cleaned.startsWith("+49")) return null;
 
-      // nach +49 nur ziffern, kein führendes 0
       const rest = cleaned.slice(3);
       if(!rest || rest.startsWith("0")) return null;
 
-      // Länge grob validieren (deutsche Nummern variieren)
-      // +49 + 7..14 Ziffern als praxisnah
       if(!/^\+49\d{7,14}$/.test(cleaned)) return null;
-
       return cleaned;
     }
 
@@ -417,7 +415,6 @@
     });
     phoneEl.addEventListener("input", () => {
       if(!phoneEl.value.startsWith("+49")) {
-        // wenn user alles löscht / überschreibt
         phoneEl.value = "+49 " + phoneEl.value.replace(/[^\d]/g, "").replace(/^49/, "");
       }
       scheduleHeight();
@@ -490,10 +487,22 @@
       });
 
       const out = await res.json().catch(() => null);
-      if(!res.ok || !out || out.ok !== true){
+      if(!res.ok || !out){
         throw new Error("Webhook failed");
       }
-      return out;
+      if(out.ok !== true){
+        throw new Error(out.error || "Webhook error");
+      }
+      return out; // out.sms enthält ggf. Details
+    }
+
+    function showDebug(obj){
+      if(!DEBUG) return;
+      const box = $("debugBox");
+      if(!box) return;
+      box.style.display = "block";
+      box.textContent = typeof obj === "string" ? obj : JSON.stringify(obj, null, 2);
+      scheduleHeight();
     }
 
     $("submit").onclick = async () => {
@@ -512,10 +521,10 @@
 
       const payload = {
         token: TOKEN,
-        website: ($("website").value || "").trim(), // honeypot
-        timestamp: tsBerlin(), // ✅ Datum + Uhrzeit
+        website: ($("website").value || "").trim(),
+        timestamp: tsBerlin(),
         name: state.name,
-        telefon: phoneNormalized, // ✅ nur +49, sauber
+        telefon: phoneNormalized,
         verbrauch: state.usage,
         plz: state.plz,
         "kontaktmöglichkeit": state.pref || "",
@@ -527,9 +536,18 @@
 
       // ✅ UI sofort weiter (kein "Hängen")
       go("5");
+      showDebug("Sende…");
 
       try{
-        await postLead(payload);
+        const out = await postLead(payload);
+        console.log("WEBHOOK RESPONSE:", out);
+        showDebug(out);
+
+        // Wenn SMS failt, nur warnen (Lead bleibt)
+        if(out.sms && out.sms.attempted && !out.sms.ok){
+          console.warn("SMS failed:", out.sms);
+        }
+
       }catch(e){
         console.error(e);
         go("4");
