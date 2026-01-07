@@ -136,33 +136,20 @@
       .card{padding:16px;border-radius:14px;}
       .progress{margin:0 0 14px;}
 
-      h1{
-        font-size:18px;
-        line-height:1.15;
-        margin:0 0 8px;
-        letter-spacing:-0.01em;
-      }
-
+      h1{font-size:18px;line-height:1.15;margin:0 0 8px;}
       .step[data-step="1"] h1.h1line{
         font-size:16px !important;
-        line-height:1.15 !important;
-        margin:0 0 8px !important;
         white-space:normal !important;
         overflow:visible !important;
         text-overflow:clip !important;
       }
-
-      .h1line{
-        white-space:normal;
-        overflow:visible;
-        text-overflow:clip;
-      }
+      .h1line{white-space:normal;overflow:visible;text-overflow:clip;}
 
       .sub{font-size:13px;}
       label{margin:12px 0 6px;}
-      input{padding:11px 12px; border-radius:12px;}
-      button{padding:12px 14px; font-size:15px; border-radius:12px;}
-      .chip{padding:12px 12px; border-radius:13px;}
+      input{padding:11px 12px;}
+      button{padding:12px 14px;font-size:15px;}
+      .chip{padding:12px 12px;}
       .small{font-size:12px;}
     }
 
@@ -318,6 +305,38 @@
     const err = $("err");
     const bar = $("bar");
 
+    // ✅ Height (einfach + stabil)
+    let __lastSent = 0;
+    let __t = 0;
+
+    function sendEmbedHeight(){
+      const wrap = document.getElementById("wrap");
+      if(!wrap) return;
+
+      const h = Math.ceil(wrap.getBoundingClientRect().height) + 2; // echtes Content-Height
+      if (!h || h < 280) return;
+
+      if (Math.abs(h - __lastSent) < 4) return;
+      __lastSent = h;
+
+      window.parent && window.parent.postMessage({ type: "TW24_HEIGHT", height: h }, "*");
+    }
+
+    function scheduleHeight(){
+      clearTimeout(__t);
+      __t = setTimeout(() => {
+        sendEmbedHeight();
+        setTimeout(sendEmbedHeight, 180); // nach Layout/Fonts
+      }, 30);
+    }
+
+    // ✅ Parent darf aktiv pingen (iOS)
+    window.addEventListener("message", (event) => {
+      if (!event.data || event.data.type !== "TW24_PING") return;
+      sendEmbedHeight();
+      setTimeout(sendEmbedHeight, 180);
+    });
+
     function showError(msg){
       err.textContent = msg;
       err.style.display = "block";
@@ -335,36 +354,6 @@
       const map = { "1": 20, "2": 40, "3p": 60, "3g": 60, "4": 85, "5": 100 };
       bar.style.width = (map[stepKey] || 0) + "%";
     }
-
-    /* ✅ Stable Height: misst die CARD (nicht wrap), kein Drift */
-    let __lastSent = 0;
-    let __raf = 0;
-
-    function sendEmbedHeight(){
-      __raf = 0;
-      const card = document.getElementById("card");
-      if(!card) return;
-
-      const h = Math.ceil(card.getBoundingClientRect().height) + 32; // kleiner Puffer
-      if (!h || h < 300) return;
-
-      if (Math.abs(h - __lastSent) < 6) return;
-      __lastSent = h;
-
-      window.parent && window.parent.postMessage({ type: "TW24_HEIGHT", height: h }, "*");
-    }
-
-    function scheduleHeight(){
-      if (__raf) return;
-      __raf = requestAnimationFrame(() => {
-        sendEmbedHeight();
-        setTimeout(sendEmbedHeight, 120);
-      });
-    }
-
-    // ✅ ResizeObserver auf card (präziser)
-    const ro = new ResizeObserver(() => scheduleHeight());
-    ro.observe(document.getElementById("card"));
 
     function go(stepKey){
       clearError();
@@ -471,17 +460,11 @@
       }
     };
 
-    // ✅ PING listener: NICHT im load-Handler, nur 1x global
-    window.addEventListener("message", (event) => {
-      if (!event.data || event.data.type !== "TW24_PING") return;
-      sendEmbedHeight();
-      setTimeout(sendEmbedHeight, 120);
-    });
-
     window.addEventListener("load", () => {
       go("1");
       scheduleHeight();
     });
+    window.addEventListener("resize", () => scheduleHeight());
   </script>
 </body>
 </html>
