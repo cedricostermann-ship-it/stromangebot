@@ -130,6 +130,24 @@
     a{color:var(--primary);text-decoration:underline;}
     .hidden{display:none;}
 
+    /* ✅ MOBILE: Überschrift + Card kompakter (statt alles zu skalieren) */
+    @media (max-width: 480px){
+      .wrap{padding:12px 12px;}
+      .card{padding:16px;border-radius:14px;}
+      .progress{margin:0 0 14px;}
+
+      h1{font-size:22px; line-height:1.12; margin:0 0 8px;}
+      .sub{font-size:13px;}
+
+      label{margin:12px 0 6px;}
+      input{padding:11px 12px; border-radius:12px;}
+
+      button{padding:12px 14px; font-size:15px; border-radius:12px;}
+
+      .chip{padding:12px 12px; border-radius:13px;}
+      .small{font-size:12px;}
+    }
+
     @media (max-width:420px){
       .btnrow.nav{flex-wrap:wrap;}
       .btnrow.nav button{flex:unset;width:100%;}
@@ -298,14 +316,10 @@
     }
 
     function sendEmbedHeight(){
-      const wrap = document.querySelector(".wrap");
-      const card = document.querySelector(".card");
-      if(!wrap || !card) return;
-
-      const wrapRect = wrap.getBoundingClientRect();
-      const cardRect = card.getBoundingClientRect();
-      const h = Math.ceil((cardRect.bottom - wrapRect.top) + 16);
-
+      const h = Math.max(
+        document.documentElement.scrollHeight,
+        document.body.scrollHeight
+      );
       window.parent && window.parent.postMessage({ type: "TW24_HEIGHT", height: h }, "*");
     }
 
