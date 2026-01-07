@@ -212,25 +212,25 @@
       opacity:.96;
       transform: translateY(10px);
     }
-
-    /* ✅ Jahresabrechnung als Overlay außerhalb des SVG (höher + größer) */
+    
     .tw24-illus-dropdown{
       position:absolute;
       left:50%;
-      top:-18px; /* ✅ noch höher (mehr? -24px / -30px) */
+      top:6px;                 /* ✅ tiefer (vorher -18px) */
       transform:translateX(-50%);
       background:rgba(255,255,255,.94);
       border:1px solid rgba(16,24,40,.12);
       border-radius:999px;
-      padding:12px 18px;
+      padding:9px 14px;        /* ✅ kleiner */
       font-weight:950;
-      font-size:22px; /* ✅ größer */
+      font-size:18px;          /* ✅ kleiner */
       line-height:1;
       color:rgba(16,24,40,.84);
       box-shadow:0 10px 26px rgba(0,0,0,.10);
       white-space:nowrap;
       z-index:4;
     }
+
 
     .tw24-illus-badge{
       position:absolute;
