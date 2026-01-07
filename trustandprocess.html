@@ -25,20 +25,13 @@
     }
 
     .wrap{max-width:920px;margin:0 auto;padding:16px;}
+    .tw24-section{margin-top:18px;background:transparent;border:0;box-shadow:none;}
 
-    .tw24-section{
-      margin-top:18px;
-      padding:0;
-      background:transparent;
-      border:0;
-      box-shadow:none;
-    }
-
-    /* ✅ MEHR LUFT zwischen "Persönlich geprüft" und "Deswegen setzen..." */
+    /* Abstand zwischen den Bereichen */
     .tw24-divider{
       height:1px;
       background:rgba(16,24,40,.08);
-      margin:72px 0;              /* vorher 44px -> deutlich mehr Abstand */
+      margin:72px 0;
       border-radius:999px;
     }
 
@@ -55,7 +48,6 @@
     .tw24-steps-title .em{ color:var(--green); }
 
     .tw24-timeline{
-      position:relative;
       padding:10px 0 6px;
       display:grid;
       gap:16px;
@@ -96,7 +88,7 @@
 
     .tw24-steps-foot{
       margin-top:12px;
-      margin-bottom:10px;         /* ✅ bisschen mehr “Luft” unter der Zeile */
+      margin-bottom:10px;
       text-align:center;
       color:var(--muted);
       font-weight:850;
@@ -106,6 +98,29 @@
     /* =========================
        REASONS / Hero (unten)
        ========================= */
+
+    /* ✅ Headline & Subline exakt mittig wie oben */
+    .tw24-why-head{
+      text-align:center;
+      margin:0 0 18px;
+    }
+    .tw24-why-title{
+      margin:0 0 10px;
+      line-height:1.1;
+      letter-spacing:-0.02em;
+      color:var(--text);
+      font-size:clamp(22px, 2.25vw, 28px);
+      font-weight:900;
+    }
+    .tw24-accent-green{ color: var(--green); }
+
+    .tw24-why-sub{
+      margin:0;
+      color:var(--muted);
+      font-weight:650;
+      font-size:15px;
+    }
+
     .tw24-hero{
       display:grid;
       grid-template-columns: 1.35fr .65fr;
@@ -113,38 +128,8 @@
       align-items:stretch;
     }
 
-    .tw24-hero-title{
-      margin:0 0 10px;
-      line-height:1.1;
-      letter-spacing:-0.02em;
-      color:var(--text);
-    }
-    .tw24-accent-green{ color: var(--green); }
-
-    .tw24-hero-sub{
-      margin:0 0 14px;
-      color:var(--muted);
-      font-weight:650;
-    }
-
-    @media (min-width: 760px){
-      .tw24-hero-title{
-        font-size:clamp(22px, 2.25vw, 28px);
-        white-space:nowrap;
-        overflow:hidden;
-        text-overflow:ellipsis;
-      }
-      .tw24-hero-sub{
-        font-size:15px;
-        white-space:nowrap;
-        overflow:hidden;
-        text-overflow:ellipsis;
-      }
-    }
     @media (max-width: 759px){
       .tw24-hero{ grid-template-columns:1fr; }
-      .tw24-hero-title{ font-size:26px; white-space:normal; }
-      .tw24-hero-sub{ font-size:15px; white-space:normal; }
     }
 
     .tw24-pills{
@@ -182,9 +167,9 @@
       color:var(--green);
     }
 
-    /* ✅ Unten “Zum Formular” zentriert */
+    /* ✅ Formular-Link + Trust ebenfalls mittig */
     .tw24-formlink{
-      margin-top:14px;
+      margin-top:16px;
       text-align:center;
     }
     .tw24-hero-cta{
@@ -201,7 +186,7 @@
       color:var(--muted);
       font-weight:800;
       font-size:13px;
-      text-align:center;          /* ✅ ebenfalls zentriert */
+      text-align:center;
     }
 
     .tw24-illus-card{
@@ -219,13 +204,8 @@
       backdrop-filter:saturate(120%) blur(2px);
     }
 
-    .tw24-illus{
-      width:100%;
-      max-width:420px;
-      height:auto;
-      display:block;
-      opacity:.96;
-    }
+    /* ✅ Jahresabrechnung-Karte soll tiefer liegen */
+    .tw24-illus{ width:100%; max-width:420px; height:auto; display:block; opacity:.96; transform: translateY(12px); }
 
     .tw24-illus-badge{
       position:absolute;
@@ -279,20 +259,23 @@
       <div class="tw24-steps-foot">Kostenlos & unverbindlich · Persönlich geprüft</div>
     </section>
 
-    <!-- ✅ MEHR LUFT -->
     <div class="tw24-divider"></div>
 
-    <!-- ✅ BLOCK 2 (unten): DESWEGEN... -->
+    <!-- ✅ BLOCK 2 (unten): WHY -->
     <section class="tw24-section" id="whyus">
+
+      <!-- ✅ Headline mittig wie oben -->
+      <div class="tw24-why-head">
+        <h2 class="tw24-why-title">
+          Deswegen setzen so viele auf <span class="tw24-accent-green">Tarifwechsel24</span>
+        </h2>
+        <p class="tw24-why-sub">
+          Verständlich, persönlich und ohne unnötigen Aufwand – <b>kostenlos</b> & unverbindlich.
+        </p>
+      </div>
+
       <div class="tw24-hero">
         <div>
-          <h2 class="tw24-hero-title">
-            Deswegen setzen so viele auf <span class="tw24-accent-green">Tarifwechsel24</span>
-          </h2>
-          <p class="tw24-hero-sub">
-            Verständlich, persönlich und ohne unnötigen Aufwand – <b>kostenlos</b> & unverbindlich.
-          </p>
-
           <div class="tw24-pills">
             <div class="tw24-pill">
               <span class="tw24-pill-ico green">🌿</span>
@@ -312,7 +295,7 @@
             </div>
           </div>
 
-          <!-- ✅ Zentriert -->
+          <!-- ✅ Formular-Link + Trust mittig -->
           <div class="tw24-formlink">
             <a class="tw24-hero-cta" href="#formular">Zum Formular ↑</a>
             <div class="tw24-trust">Kostenlos · unverbindlich · kein Spam</div>
@@ -337,10 +320,9 @@
               <rect x="190" y="132" width="200" height="16" rx="8" fill="rgba(16,24,40,.10)"/>
               <rect x="190" y="162" width="220" height="16" rx="8" fill="rgba(16,24,40,.10)"/>
 
-              <!-- ✅ Karte + Text tiefer -->
-              <rect x="92" y="224" width="336" height="52" rx="16" fill="rgba(255,255,255,.62)" stroke="rgba(16,24,40,.12)"/>
-              <!-- ✅ "Jahresabrechnung" größer + zentriert -->
-              <text x="260" y="258"
+              <!-- ✅ Jahresabrechnung tiefer + Text zentriert -->
+              <rect x="92" y="236" width="336" height="52" rx="16" fill="rgba(255,255,255,.62)" stroke="rgba(16,24,40,.12)"/>
+              <text x="260" y="270"
                     text-anchor="middle"
                     font-size="20"
                     font-weight="800"
