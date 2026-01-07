@@ -20,6 +20,9 @@
       --g2: rgba(102,178,29,.14);
       --g3: rgba(102,178,29,.10);
       --g4: rgba(102,178,29,.08);
+
+      /* ✅ neuer grüner Rand wie "Jahresabrechnung" */
+      --greenBorder: rgba(102,178,29,.30);
     }
 
     *{box-sizing:border-box;}
@@ -65,7 +68,10 @@
       background:rgba(255,255,255,.92);
       border-radius:18px;
       padding:16px 16px;
-      border:1px solid rgba(16,24,40,.12);
+
+      /* ✅ grüner Rand */
+      border:1px solid var(--greenBorder);
+
       box-shadow:0 10px 26px rgba(0,0,0,.06);
       max-width:440px;
       backdrop-filter:saturate(120%) blur(2px);
@@ -152,7 +158,10 @@
       align-items:center;
       gap:12px;
       background:rgba(255,255,255,.92);
-      border:1px solid rgba(16,24,40,.12);
+
+      /* ✅ grüner Rand */
+      border:1px solid var(--greenBorder);
+
       border-radius:999px;
       padding:14px 16px;
       font-weight:900;
@@ -203,7 +212,7 @@
     .tw24-illus-card{
       border-radius:20px;
       background:linear-gradient(180deg, var(--g1) 0%, rgba(102,178,29,.06) 55%, rgba(102,178,29,.04) 100%);
-      border:1px solid rgba(102,178,29,.30);
+      border:1px solid var(--greenBorder);
       box-shadow:none;
 
       position:relative;
@@ -226,18 +235,17 @@
       transform: translateY(4px);
     }
 
-    /* ✅ Chip: kleiner + etwas tiefer, damit er nicht oben anliegt */
     .tw24-illus-dropdown{
       position:absolute;
       left:50%;
-      top:10px; /* vorher 0px */
+      top:10px;
       transform:translateX(-50%);
       background:rgba(102,178,29,.14);
       border:1px solid rgba(102,178,29,.28);
       border-radius:999px;
-      padding:7px 12px; /* kleiner */
+      padding:7px 12px;
       font-weight:950;
-      font-size:16px;   /* kleiner */
+      font-size:16px;
       line-height:1;
       color:rgba(16,24,40,.86);
       box-shadow:none;
@@ -246,20 +254,19 @@
       backdrop-filter:saturate(120%) blur(2px);
     }
 
-    /* ✅ Badge: kleiner + breiter + minimal tiefer, damit keine Kollision */
     .tw24-illus-badge{
       position:absolute;
       left:50%;
       transform:translateX(-50%);
-      bottom:8px;                 /* vorher 14px */
+      bottom:8px;
       background:rgba(102,178,29,.14);
       border:1px solid rgba(102,178,29,.28);
       border-radius:14px;
-      padding:8px 16px;           /* kleiner */
+      padding:8px 16px;
       color:var(--text);
       box-shadow:none;
       text-align:center;
-      min-width:220px;            /* breiter */
+      min-width:220px;
       z-index:3;
       backdrop-filter:saturate(120%) blur(2px);
     }
@@ -344,14 +351,12 @@
 
             <div class="tw24-illus-dropdown">Jahresabrechnung ✓</div>
 
-            <!-- ✅ Alle Kästchen grün, Kreis/Lines leicht grau -->
             <svg viewBox="0 0 520 360" class="tw24-illus" aria-hidden="true">
               <defs>
                 <linearGradient id="gGreen" x1="0" y1="0" x2="1" y2="1">
                   <stop offset="0" stop-color="rgba(102,178,29,.22)"></stop>
                   <stop offset="1" stop-color="rgba(102,178,29,.10)"></stop>
                 </linearGradient>
-
                 <linearGradient id="gOuter" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="0" stop-color="rgba(102,178,29,.16)"></stop>
                   <stop offset="1" stop-color="rgba(102,178,29,.06)"></stop>
@@ -360,7 +365,6 @@
 
               <rect x="20" y="22" width="480" height="316" rx="22"
                     fill="url(#gOuter)" stroke="rgba(102,178,29,.28)" />
-
               <rect x="48" y="56" width="424" height="232" rx="18"
                     fill="url(#gGreen)" stroke="rgba(102,178,29,.22)" />
 
