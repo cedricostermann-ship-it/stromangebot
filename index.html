@@ -1,15 +1,148 @@
 <!doctype html>
 <html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Tarifwechsel24 – Stromangebot</title>
+
+  <style>
+    :root{
+      --bg:#f6f0e6;
+      --card:#ffffff;
+      --text:#101828;
+      --muted:#475467;
+      --border:rgba(16,24,40,.18);
+      --primary:#0070D7;
+      --radius:16px;
+    }
+
+    *{box-sizing:border-box;}
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
+      background:var(--bg);
+      color:var(--text);
+    }
+
+    .wrap{max-width:780px;margin:0 auto;padding:16px 16px;} /* weniger Top-Padding */
+    .card{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow:0 10px 30px rgba(0,0,0,.06);
+      padding:22px;
+    }
+
+    h1{
+      font-size:28px;
+      line-height:1.15;
+      margin:0 0 10px;
+      letter-spacing:-0.01em;
+    }
+    .h1line{
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .sub{color:var(--muted);margin:0;}
+    .spacer{height:12px;}
+
+    .progress{
+      height:6px;
+      background:rgba(0,0,0,.06);
+      border-radius:999px;
+      overflow:hidden;
+      margin:0 0 18px;
+    }
+    .bar{height:100%;width:0;background:var(--primary);transition:width .25s ease;}
+
+    label{display:block;font-weight:700;margin:14px 0 8px;}
+
+    input{
+      width:100%;
+      padding:12px 12px;
+      border:1px solid var(--border);
+      border-radius:12px;
+      font-size:16px;
+      outline:none;
+      background:#fff;
+    }
+    input:focus{
+      border-color:rgba(0,112,215,.55);
+      box-shadow:0 0 0 4px rgba(0,112,215,.12);
+    }
+
+    .btnrow{display:flex;gap:12px;margin-top:18px;flex-wrap:wrap;}
+    .btnrow button{width:100%;}
+    .btnrow.nav{flex-wrap:nowrap;align-items:stretch;}
+    .btnrow.nav button{width:auto;flex:1;}
+
+    button{
+      border:0;
+      border-radius:12px;
+      padding:14px 14px;
+      font-size:16px;
+      font-weight:800;
+      cursor:pointer;
+    }
+    .primary{background:var(--primary);color:white;}
+    .ghost{background:#f2f4f7;color:var(--text);}
+    .primary:active,.ghost:active{transform:translateY(1px);}
+
+    .choices{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      margin-top:6px;
+    }
+    .chip{
+      width:100%;
+      border:1px solid var(--border);
+      background:#fff;
+      border-radius:14px;
+      padding:14px 14px;
+      cursor:pointer;
+      font-weight:800;
+      text-align:left;
+      box-shadow:0 1px 0 rgba(16,24,40,.04);
+    }
+    .chip[data-active="true"]{
+      border-color:rgba(0,112,215,.55);
+      box-shadow:0 0 0 4px rgba(0,112,215,.12);
+      background:rgba(0,112,215,.06);
+    }
+
+    .error{
+      color:#b42318;
+      background:#fef3f2;
+      border:1px solid #fecdca;
+      border-radius:12px;
+      padding:10px;
+      margin-top:12px;
+      display:none;
+      font-weight:700;
+    }
+
+    .small{font-size:13px;color:var(--muted);margin-top:10px}
+    .check{display:flex;gap:10px;align-items:flex-start;margin-top:14px}
+    .check input{width:auto;margin-top:3px}
+    a{color:var(--primary);text-decoration:underline;}
+    .hidden{display:none;}
+
+    @media (max-width:420px){
+      .btnrow.nav{flex-wrap:wrap;}
+      .btnrow.nav button{flex:unset;width:100%;}
+    }
+  </style>
+</head>
 
 <body>
   <div class="wrap">
-    <div class="logo">
-      <strong style="font-size:22px;">Tarifwechsel<span style="color:#66b21d;">24</span></strong>
-    </div>
+    <!-- ✅ Logo/“Tarifwechsel24” oben entfernt -->
 
     <div class="card">
       <div class="progress"><div class="bar" id="bar"></div></div>
-
       <div id="err" class="error"></div>
 
       <!-- STEP 1 -->
@@ -133,171 +266,161 @@
         <div class="spacer"></div>
         <div class="small">Hinweis: WhatsApp ist freiwillig.</div>
       </section>
-
     </div>
   </div>
 
-<script>
-  const WEBHOOK_URL = "PASTE_YOUR_WEBHOOK_URL_HERE";
-  const WA_NUMBER = "4917672530039";
+  <script>
+    const WEBHOOK_URL = "PASTE_YOUR_WEBHOOK_URL_HERE";
+    const WA_NUMBER = "4917672530039";
 
-  const state = { plz:"", type:"", usage:"", name:"", phone:"", pref:"" };
+    const state = { plz:"", type:"", usage:"", name:"", phone:"", pref:"" };
 
-  const $ = (id) => document.getElementById(id);
-  const steps = Array.from(document.querySelectorAll(".step"));
-  const err = $("err");
-  const bar = $("bar");
+    const $ = (id) => document.getElementById(id);
+    const steps = Array.from(document.querySelectorAll(".step"));
+    const err = $("err");
+    const bar = $("bar");
 
-  function showError(msg){
-    err.textContent = msg;
-    err.style.display = "block";
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }
-  function clearError(){ err.style.display = "none"; err.textContent=""; }
+    function showError(msg){
+      err.textContent = msg;
+      err.style.display = "block";
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+    function clearError(){ err.style.display = "none"; err.textContent=""; }
 
-  function setActive(containerId, value){
-    const el = $(containerId);
-    el.querySelectorAll(".chip").forEach(c => c.dataset.active = (c.dataset.value === value) ? "true" : "false");
-  }
+    function setActive(containerId, value){
+      const el = $(containerId);
+      el.querySelectorAll(".chip").forEach(c => c.dataset.active = (c.dataset.value === value) ? "true" : "false");
+    }
 
-  function currentProgress(stepKey){
-    const map = { "1": 20, "2": 40, "3p": 60, "3g": 60, "4": 85, "5": 100 };
-    bar.style.width = (map[stepKey] || 0) + "%";
-  }
+    function currentProgress(stepKey){
+      const map = { "1": 20, "2": 40, "3p": 60, "3g": 60, "4": 85, "5": 100 };
+      bar.style.width = (map[stepKey] || 0) + "%";
+    }
 
-  // ✅ Height sender (nur sichtbarer Inhalt, nicht scrollHeight)
-  function sendEmbedHeight(){
-    const wrap = document.querySelector(".wrap");
-    const card = document.querySelector(".card");
-    if(!wrap || !card) return;
+    function sendEmbedHeight(){
+      const wrap = document.querySelector(".wrap");
+      const card = document.querySelector(".card");
+      if(!wrap || !card) return;
 
-    const wrapRect = wrap.getBoundingClientRect();
-    const cardRect = card.getBoundingClientRect();
+      const wrapRect = wrap.getBoundingClientRect();
+      const cardRect = card.getBoundingClientRect();
+      const h = Math.ceil((cardRect.bottom - wrapRect.top) + 16);
 
-    // Höhe = von oben wrap bis unten card + bisschen Luft
-    const h = Math.ceil((cardRect.bottom - wrapRect.top) + 16);
+      window.parent && window.parent.postMessage({ type: "TW24_HEIGHT", height: h }, "*");
+    }
 
-    window.parent && window.parent.postMessage({ type: "TW24_HEIGHT", height: h }, "*");
-  }
+    function go(stepKey){
+      clearError();
+      steps.forEach(s => s.classList.add("hidden"));
+      document.querySelector(`.step[data-step="${stepKey}"]`).classList.remove("hidden");
+      currentProgress(stepKey);
 
-  function go(stepKey){
-    clearError();
-    steps.forEach(s => s.classList.add("hidden"));
-    document.querySelector(`.step[data-step="${stepKey}"]`).classList.remove("hidden");
-    currentProgress(stepKey);
+      setTimeout(sendEmbedHeight, 20);
+      setTimeout(sendEmbedHeight, 120);
+    }
 
-    // ✅ wichtig: nach jedem Stepwechsel neue Höhe schicken
-    setTimeout(sendEmbedHeight, 20);
-    setTimeout(sendEmbedHeight, 120);
-  }
+    $("customerType").addEventListener("click", (e)=>{
+      const chip = e.target.closest(".chip"); if(!chip) return;
+      state.type = chip.dataset.value;
+      setActive("customerType", state.type);
+      setTimeout(sendEmbedHeight, 20);
+    });
 
-  // Step 2 selection
-  $("customerType").addEventListener("click", (e)=>{
-    const chip = e.target.closest(".chip"); if(!chip) return;
-    state.type = chip.dataset.value;
-    setActive("customerType", state.type);
-    setTimeout(sendEmbedHeight, 20);
-  });
+    $("usagePrivate").addEventListener("click", (e)=>{
+      const chip = e.target.closest(".chip"); if(!chip) return;
+      state.usage = chip.dataset.value;
+      setActive("usagePrivate", state.usage);
+      setTimeout(sendEmbedHeight, 20);
+    });
 
-  // Usage selections
-  $("usagePrivate").addEventListener("click", (e)=>{
-    const chip = e.target.closest(".chip"); if(!chip) return;
-    state.usage = chip.dataset.value;
-    setActive("usagePrivate", state.usage);
-    setTimeout(sendEmbedHeight, 20);
-  });
-  $("usageBusiness").addEventListener("click", (e)=>{
-    const chip = e.target.closest(".chip"); if(!chip) return;
-    state.usage = chip.dataset.value;
-    setActive("usageBusiness", state.usage);
-    setTimeout(sendEmbedHeight, 20);
-  });
+    $("usageBusiness").addEventListener("click", (e)=>{
+      const chip = e.target.closest(".chip"); if(!chip) return;
+      state.usage = chip.dataset.value;
+      setActive("usageBusiness", state.usage);
+      setTimeout(sendEmbedHeight, 20);
+    });
 
-  // Contact pref (optional)
-  $("contactPref").addEventListener("click", (e)=>{
-    const chip = e.target.closest(".chip"); if(!chip) return;
-    state.pref = chip.dataset.value;
-    setActive("contactPref", state.pref);
-    setTimeout(sendEmbedHeight, 20);
-  });
+    $("contactPref").addEventListener("click", (e)=>{
+      const chip = e.target.closest(".chip"); if(!chip) return;
+      state.pref = chip.dataset.value;
+      setActive("contactPref", state.pref);
+      setTimeout(sendEmbedHeight, 20);
+    });
 
-  // Buttons
-  $("to2").onclick = () => {
-    const plz = $("plz").value.trim();
-    if(!/^\d{5}$/.test(plz)) return showError("Bitte eine gültige Postleitzahl (5 Ziffern) eingeben.");
-    state.plz = plz;
-    go("2");
-  };
-
-  $("back1").onclick = () => go("1");
-
-  $("to3").onclick = () => {
-    if(!state.type) return showError("Bitte wählen Sie Privat oder Gewerbe.");
-    if(state.type === "Privat") go("3p"); else go("3g");
-  };
-
-  $("back2a").onclick = () => go("2");
-  $("back2b").onclick = () => go("2");
-
-  $("to4a").onclick = () => {
-    if(!state.usage) return showError("Bitte wählen Sie eine Verbrauchsangabe.");
-    go("4");
-  };
-  $("to4b").onclick = () => {
-    if(!state.usage) return showError("Bitte wählen Sie eine Verbrauchsangabe.");
-    go("4");
-  };
-
-  $("back3").onclick = () => {
-    if(state.type === "Privat") go("3p"); else go("3g");
-  };
-
-  $("submit").onclick = async () => {
-    state.name = $("name").value.trim();
-    state.phone = $("phone").value.trim();
-    const consent = $("consent").checked;
-
-    if(!state.name) return showError("Bitte Vor- & Nachname eintragen.");
-    if(state.phone.length < 6) return showError("Bitte eine gültige Telefonnummer eintragen.");
-    if(!consent) return showError("Bitte bestätigen Sie die Datenschutzeinwilligung.");
-
-    const payload = {
-      plz: state.plz,
-      kundentyp: state.type,
-      verbrauch: state.usage,
-      name: state.name,
-      telefon: state.phone,
-      kontaktpraeferenz: state.pref || "",
-      timestamp: new Date().toISOString(),
-      source: location.href
+    $("to2").onclick = () => {
+      const plz = $("plz").value.trim();
+      if(!/^\d{5}$/.test(plz)) return showError("Bitte eine gültige Postleitzahl (5 Ziffern) eingeben.");
+      state.plz = plz;
+      go("2");
     };
 
-    const msg = encodeURIComponent(`Hi, ich habe gerade ein Stromangebot angefordert. PLZ: ${state.plz}`);
-    $("waLink").href = `https://wa.me/${WA_NUMBER}?text=${msg}`;
+    $("back1").onclick = () => go("1");
 
-    try{
-      if(WEBHOOK_URL && WEBHOOK_URL.startsWith("http")){
-        await fetch(WEBHOOK_URL, {
-          method:"POST",
-          headers:{ "Content-Type":"application/json" },
-          body: JSON.stringify(payload),
-          keepalive: true
-        });
+    $("to3").onclick = () => {
+      if(!state.type) return showError("Bitte wählen Sie Privat oder Gewerbe.");
+      if(state.type === "Privat") go("3p"); else go("3g");
+    };
+
+    $("back2a").onclick = () => go("2");
+    $("back2b").onclick = () => go("2");
+
+    $("to4a").onclick = () => {
+      if(!state.usage) return showError("Bitte wählen Sie eine Verbrauchsangabe.");
+      go("4");
+    };
+    $("to4b").onclick = () => {
+      if(!state.usage) return showError("Bitte wählen Sie eine Verbrauchsangabe.");
+      go("4");
+    };
+
+    $("back3").onclick = () => {
+      if(state.type === "Privat") go("3p"); else go("3g");
+    };
+
+    $("submit").onclick = async () => {
+      state.name = $("name").value.trim();
+      state.phone = $("phone").value.trim();
+      const consent = $("consent").checked;
+
+      if(!state.name) return showError("Bitte Vor- & Nachname eintragen.");
+      if(state.phone.length < 6) return showError("Bitte eine gültige Telefonnummer eintragen.");
+      if(!consent) return showError("Bitte bestätigen Sie die Datenschutzeinwilligung.");
+
+      const payload = {
+        plz: state.plz,
+        kundentyp: state.type,
+        verbrauch: state.usage,
+        name: state.name,
+        telefon: state.phone,
+        kontaktpraeferenz: state.pref || "",
+        timestamp: new Date().toISOString(),
+        source: location.href
+      };
+
+      const msg = encodeURIComponent(`Hi, ich habe gerade ein Stromangebot angefordert. PLZ: ${state.plz}`);
+      $("waLink").href = `https://wa.me/${WA_NUMBER}?text=${msg}`;
+
+      try{
+        if(WEBHOOK_URL && WEBHOOK_URL.startsWith("http")){
+          await fetch(WEBHOOK_URL, {
+            method:"POST",
+            headers:{ "Content-Type":"application/json" },
+            body: JSON.stringify(payload),
+            keepalive: true
+          });
+        }
+        go("5");
+      }catch(e){
+        showError("Ups – technisch gab es kurz ein Problem. Bitte versuchen Sie es erneut oder kontaktieren Sie uns direkt.");
+        console.error(e);
       }
-      go("5");
-    }catch(e){
-      showError("Ups – technisch gab es kurz ein Problem. Bitte versuchen Sie es erneut oder kontaktieren Sie uns direkt.");
-      console.error(e);
-    }
-  };
+    };
 
-  // initial
-  window.addEventListener("load", () => {
-    go("1");
-    setTimeout(sendEmbedHeight, 120);
-  });
-  window.addEventListener("resize", () => setTimeout(sendEmbedHeight, 80));
-</script>
-
+    window.addEventListener("load", () => {
+      go("1");
+      setTimeout(sendEmbedHeight, 120);
+    });
+    window.addEventListener("resize", () => setTimeout(sendEmbedHeight, 80));
+  </script>
 </body>
 </html>
