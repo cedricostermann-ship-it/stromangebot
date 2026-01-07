@@ -354,8 +354,8 @@
       </div>
 
       <div class="tw24-formlink">
-        <!-- ✅ scrollt die DURABLE-Seite (Parent) zum Formular-Anker -->
-        <a class="tw24-hero-cta" href="#" id="goForm">Zum Formular ↑</a>
+        <!-- ✅ springt GANZ nach oben auf der Durable-Seite -->
+        <a class="tw24-hero-cta" href="#" id="goTop">Zum Anfang ↑</a>
         <div class="tw24-trust">Kostenlos · unverbindlich · kein Spam</div>
       </div>
     </section>
@@ -363,13 +363,13 @@
   </div>
 
   <script>
-    // ✅ Klick -> Parent soll zum Formular springen
-    document.getElementById("goForm")?.addEventListener("click", (e) => {
+    // ✅ Klick -> Parent ganz nach oben
+    document.getElementById("goTop")?.addEventListener("click", (e) => {
       e.preventDefault();
-      window.parent?.postMessage({ type: "TW24_GOTO_FORM", targetId: "formular" }, "*");
+      window.parent?.postMessage({ type: "TW24_SCROLL_TOP" }, "*");
     });
 
-    // ✅ Height fürs Embed (damit kein Scroll im iframe nötig ist)
+    // ✅ Height fürs Embed
     function sendEmbedHeight(){
       const root = document.getElementById("tw24Content");
       if(!root) return;
