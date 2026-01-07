@@ -12,17 +12,18 @@
       --muted:#475467;
       --border:rgba(16,24,40,.14);
       --primary:#0070D7;
-      --green:#66b21d; /* Tarifwechsel-Grün */
+      --green:#66b21d;
       --radius:18px;
 
-      /* sanfte Grüntöne (rechte Illustration) */
+      /* Grüntöne */
       --g1: rgba(102,178,29,.22);
       --g2: rgba(102,178,29,.14);
       --g3: rgba(102,178,29,.10);
       --g4: rgba(102,178,29,.08);
 
-      /* ✅ neuer grüner Rand wie "Jahresabrechnung" */
-      --greenBorder: rgba(102,178,29,.30);
+      /* ✅ Kontur deutlich sichtbarer */
+      --greenBorder: rgba(102,178,29,.55);   /* vorher .30 */
+      --greenBorderSoft: rgba(102,178,29,.22);
     }
 
     *{box-sizing:border-box;}
@@ -69,10 +70,10 @@
       border-radius:18px;
       padding:16px 16px;
 
-      /* ✅ grüner Rand */
-      border:1px solid var(--greenBorder);
+      /* ✅ kräftiger + doppelte Kontur (Inset) */
+      border:2px solid var(--greenBorder);
+      box-shadow:0 10px 26px rgba(0,0,0,.06), inset 0 0 0 2px rgba(255,255,255,.55);
 
-      box-shadow:0 10px 26px rgba(0,0,0,.06);
       max-width:440px;
       backdrop-filter:saturate(120%) blur(2px);
     }
@@ -159,13 +160,15 @@
       gap:12px;
       background:rgba(255,255,255,.92);
 
-      /* ✅ grüner Rand */
-      border:1px solid var(--greenBorder);
+      /* ✅ kräftiger + “zweite Linie” innen */
+      border:2px solid var(--greenBorder);
+      box-shadow:
+        0 10px 26px rgba(0,0,0,.06),
+        inset 0 0 0 2px rgba(255,255,255,.55);
 
       border-radius:999px;
       padding:14px 16px;
       font-weight:900;
-      box-shadow:0 10px 26px rgba(0,0,0,.06);
       backdrop-filter:saturate(120%) blur(2px);
       overflow:hidden;
     }
@@ -212,9 +215,8 @@
     .tw24-illus-card{
       border-radius:20px;
       background:linear-gradient(180deg, var(--g1) 0%, rgba(102,178,29,.06) 55%, rgba(102,178,29,.04) 100%);
-      border:1px solid var(--greenBorder);
-      box-shadow:none;
-
+      border:2px solid var(--greenBorder);
+      box-shadow: inset 0 0 0 2px rgba(255,255,255,.55);
       position:relative;
       overflow:visible;
 
@@ -241,7 +243,7 @@
       top:10px;
       transform:translateX(-50%);
       background:rgba(102,178,29,.14);
-      border:1px solid rgba(102,178,29,.28);
+      border:2px solid var(--greenBorder);
       border-radius:999px;
       padding:7px 12px;
       font-weight:950;
@@ -260,7 +262,7 @@
       transform:translateX(-50%);
       bottom:8px;
       background:rgba(102,178,29,.14);
-      border:1px solid rgba(102,178,29,.28);
+      border:2px solid var(--greenBorder);
       border-radius:14px;
       padding:8px 16px;
       color:var(--text);
@@ -348,7 +350,6 @@
 
         <div class="tw24-hero-right">
           <div class="tw24-illus-card">
-
             <div class="tw24-illus-dropdown">Jahresabrechnung ✓</div>
 
             <svg viewBox="0 0 520 360" class="tw24-illus" aria-hidden="true">
@@ -364,9 +365,9 @@
               </defs>
 
               <rect x="20" y="22" width="480" height="316" rx="22"
-                    fill="url(#gOuter)" stroke="rgba(102,178,29,.28)" />
+                    fill="url(#gOuter)" stroke="rgba(102,178,29,.55)" stroke-width="2"/>
               <rect x="48" y="56" width="424" height="232" rx="18"
-                    fill="url(#gGreen)" stroke="rgba(102,178,29,.22)" />
+                    fill="url(#gGreen)" stroke="rgba(102,178,29,.40)" stroke-width="2"/>
 
               <circle cx="118" cy="128" r="44" fill="rgba(16,24,40,.12)"/>
               <rect x="190" y="96"  width="240" height="22" rx="11" fill="rgba(16,24,40,.18)"/>
@@ -378,7 +379,6 @@
               <div class="tw24-illus-badge-top">Schnell geprüft</div>
               <div class="tw24-illus-badge-sub">in wenigen Minuten</div>
             </div>
-
           </div>
         </div>
       </div>
