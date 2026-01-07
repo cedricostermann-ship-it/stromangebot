@@ -123,18 +123,19 @@
     .hidden{display:none;}
 
     /* =========================================================
-       ✅ BELOW-FORM SECTION — "besondere" Optik, aber in deiner CI
-       Hintergrund bleibt beige (var(--bg)), keine Navy/Yellow mehr
+       ✅ BELOW-FORM SECTION — CI, beige bleibt, nix "kaputt"
        ========================================================= */
     .tw24-below{
       margin-top:18px;
       border-radius:22px;
       overflow:hidden;
       border:1px solid rgba(16,24,40,.12);
+
+      /* ✅ Ruhiger, sauberer Hintergrund (kein "broken" Look) */
       background:
-        radial-gradient(900px 320px at 15% 10%, rgba(0,112,215,.08), transparent 60%),
-        radial-gradient(700px 320px at 85% 15%, rgba(102,178,29,.08), transparent 60%),
-        linear-gradient(180deg, rgba(255,255,255,.30), rgba(255,255,255,.10));
+        radial-gradient(900px 340px at 12% 8%, rgba(0,112,215,.06), transparent 62%),
+        radial-gradient(820px 340px at 88% 12%, rgba(102,178,29,.06), transparent 62%),
+        linear-gradient(180deg, rgba(255,255,255,.55), rgba(255,255,255,.12));
       box-shadow:0 14px 40px rgba(0,0,0,.08);
       position:relative;
     }
@@ -145,14 +146,13 @@
 
     .tw24-hero{
       display:grid;
-      grid-template-columns: 1.25fr .75fr;
+      grid-template-columns: 1.35fr .65fr; /* ✅ links etwas mehr Platz -> Title bleibt eher 1 Zeile */
       gap:16px;
       align-items:stretch;
     }
 
     .tw24-hero-title{
       margin:0 0 10px;
-      font-size:30px;
       line-height:1.1;
       letter-spacing:-0.02em;
       color:var(--text);
@@ -165,6 +165,26 @@
       margin:0 0 14px;
       color:var(--muted);
       font-weight:650;
+    }
+
+    /* ✅ Screen 2: Desktop lieber 1 Zeile + etwas kleiner */
+    @media (min-width: 760px){
+      .tw24-hero-title{
+        font-size:clamp(22px, 2.25vw, 28px);
+        white-space:nowrap;
+        overflow:hidden;
+        text-overflow:ellipsis;
+      }
+      .tw24-hero-sub{
+        font-size:15px;
+        white-space:nowrap;
+        overflow:hidden;
+        text-overflow:ellipsis;
+      }
+    }
+    @media (max-width: 759px){
+      .tw24-hero-title{ font-size:26px; white-space:normal; }
+      .tw24-hero-sub{ font-size:15px; white-space:normal; }
     }
 
     .tw24-pills{
@@ -218,14 +238,14 @@
       font-size:13px;
     }
 
-    /* Right illustration card - light, CI-friendly */
+    /* ✅ Screen 1: Illustration Card sauberer (SVG-Gradient valid, Background ruhig) */
     .tw24-illus-card{
       border-radius:20px;
       border:1px solid rgba(16,24,40,.12);
       background:
-        radial-gradient(260px 220px at 30% 30%, rgba(0,112,215,.14), transparent 60%),
-        radial-gradient(260px 220px at 70% 70%, rgba(102,178,29,.14), transparent 60%),
-        rgba(255,255,255,.70);
+        radial-gradient(320px 260px at 25% 25%, rgba(0,112,215,.10), transparent 60%),
+        radial-gradient(320px 260px at 75% 75%, rgba(102,178,29,.10), transparent 60%),
+        rgba(255,255,255,.84);
       box-shadow:0 14px 34px rgba(0,0,0,.10);
       position:relative;
       overflow:hidden;
@@ -241,14 +261,14 @@
       max-width:420px;
       height:auto;
       display:block;
-      opacity:.95;
+      opacity:.96;
     }
 
     .tw24-illus-badge{
       position:absolute;
       left:14px;
       bottom:14px;
-      background:rgba(255,255,255,.90);
+      background:rgba(255,255,255,.92);
       border:1px solid rgba(16,24,40,.12);
       border-radius:16px;
       padding:10px 12px;
@@ -284,17 +304,8 @@
       gap:16px;
     }
 
-    @media (min-width: 760px){
-      .tw24-timeline::before{
-        content:"";
-        position:absolute;
-        top:0; bottom:0;
-        left:50%;
-        width:2px;
-        background:rgba(16,24,40,.12);
-        transform:translateX(-1px);
-      }
-    }
+    /* ✅ Screen 3: Nerviger Mittel-Strich komplett raus */
+    /* (vorher: .tw24-timeline::before ...) */
 
     .tw24-stepcard{
       display:flex;
@@ -336,13 +347,6 @@
       color:var(--muted);
       font-weight:850;
       font-size:13px;
-    }
-
-    @media (max-width: 759px){
-      .tw24-hero{ grid-template-columns: 1fr; }
-      .tw24-hero-title{ font-size:26px; }
-      .tw24-steps-title{ font-size:24px; }
-      .tw24-stepcard{ max-width:100%; }
     }
 
     @media (max-width:420px){
@@ -522,24 +526,24 @@
 
           <div>
             <div class="tw24-illus-card">
-              <!-- Light, neutral illustration placeholder (CI-fit). Replace anytime with an image. -->
+              <!-- ✅ Valid SVG gradient (kein rgba() im stop-color) -->
               <svg viewBox="0 0 520 360" class="tw24-illus" aria-hidden="true">
                 <defs>
                   <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-                    <stop offset="0" stop-color="rgba(0,112,215,.20)"/>
-                    <stop offset="1" stop-color="rgba(102,178,29,.18)"/>
+                    <stop offset="0" stop-color="#0070D7" stop-opacity=".18"></stop>
+                    <stop offset="1" stop-color="#66b21d" stop-opacity=".16"></stop>
                   </linearGradient>
                 </defs>
 
-                <rect x="20" y="22" width="480" height="316" rx="22" fill="rgba(255,255,255,.55)" stroke="rgba(16,24,40,.12)" />
-                <rect x="48" y="56" width="424" height="232" rx="18" fill="url(#g)" opacity=".35" />
+                <rect x="20" y="22" width="480" height="316" rx="22" fill="rgba(255,255,255,.60)" stroke="rgba(16,24,40,.12)" />
+                <rect x="48" y="56" width="424" height="232" rx="18" fill="url(#g)" opacity=".42" />
 
                 <circle cx="118" cy="128" r="44" fill="rgba(16,24,40,.10)"/>
                 <rect x="190" y="96" width="240" height="22" rx="11" fill="rgba(16,24,40,.12)"/>
                 <rect x="190" y="132" width="200" height="16" rx="8" fill="rgba(16,24,40,.10)"/>
                 <rect x="190" y="162" width="220" height="16" rx="8" fill="rgba(16,24,40,.10)"/>
 
-                <rect x="92" y="214" width="336" height="52" rx="16" fill="rgba(255,255,255,.55)" stroke="rgba(16,24,40,.12)"/>
+                <rect x="92" y="214" width="336" height="52" rx="16" fill="rgba(255,255,255,.62)" stroke="rgba(16,24,40,.12)"/>
                 <text x="115" y="246" font-size="16" fill="rgba(16,24,40,.72)" font-family="system-ui, -apple-system, Segoe UI, Roboto">
                   Jahresabrechnung ✓
                 </text>
