@@ -13,17 +13,11 @@
       --border:rgba(16,24,40,.14);
       --primary:#0070D7;
       --green:#66b21d;
-      --radius:18px;
 
-      /* Grüntöne */
       --g1: rgba(102,178,29,.22);
-      --g2: rgba(102,178,29,.14);
-      --g3: rgba(102,178,29,.10);
-      --g4: rgba(102,178,29,.08);
 
-      /* ✅ Kontur deutlich sichtbarer */
-      --greenBorder: rgba(102,178,29,.55);   /* vorher .30 */
-      --greenBorderSoft: rgba(102,178,29,.22);
+      /* Kontur */
+      --greenBorder: rgba(102,178,29,.55);
     }
 
     *{box-sizing:border-box;}
@@ -69,11 +63,8 @@
       background:rgba(255,255,255,.92);
       border-radius:18px;
       padding:16px 16px;
-
-      /* ✅ kräftiger + doppelte Kontur (Inset) */
       border:2px solid var(--greenBorder);
       box-shadow:0 10px 26px rgba(0,0,0,.06), inset 0 0 0 2px rgba(255,255,255,.55);
-
       max-width:440px;
       backdrop-filter:saturate(120%) blur(2px);
     }
@@ -159,13 +150,8 @@
       align-items:center;
       gap:12px;
       background:rgba(255,255,255,.92);
-
-      /* ✅ kräftiger + “zweite Linie” innen */
       border:2px solid var(--greenBorder);
-      box-shadow:
-        0 10px 26px rgba(0,0,0,.06),
-        inset 0 0 0 2px rgba(255,255,255,.55);
-
+      box-shadow:0 10px 26px rgba(0,0,0,.06), inset 0 0 0 2px rgba(255,255,255,.55);
       border-radius:999px;
       padding:14px 16px;
       font-weight:900;
@@ -256,11 +242,14 @@
       backdrop-filter:saturate(120%) blur(2px);
     }
 
+    /* ✅ Mehr Abstand: Badge tiefer + kleiner + mehr Bottom-Padding der Karte */
+    .tw24-illus-card{ padding-bottom:26px; } /* vorher 14px */
+
     .tw24-illus-badge{
       position:absolute;
       left:50%;
       transform:translateX(-50%);
-      bottom:8px;
+      bottom:10px;               /* bleibt sauber unten */
       background:rgba(102,178,29,.14);
       border:2px solid var(--greenBorder);
       border-radius:14px;
