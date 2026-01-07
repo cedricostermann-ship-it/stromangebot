@@ -473,6 +473,15 @@
     window.addEventListener("load", () => {
       go("1");
       scheduleHeight();
+
+        // ✅ Parent kann aktiv "Height bitte senden" anfordern (iOS fix)
+    window.addEventListener("message", (event) => {
+      if (!event.data || event.data.type !== "TW24_PING") return;
+      // sofort & nochmal kurz danach (fonts/layout)
+      sendEmbedHeight();
+      setTimeout(sendEmbedHeight, 120);
+    });
+
     });
   </script>
 </body>
