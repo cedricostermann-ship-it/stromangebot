@@ -7,19 +7,15 @@
 
   <style>
     :root{
+      /* ✅ Deine CI (wie Formular) */
       --bg:#f6f0e6;
       --card:#ffffff;
       --text:#101828;
       --muted:#475467;
       --border:rgba(16,24,40,.18);
-      --primary:#0070D7;
-      --green:#66b21d;
+      --primary:#0070D7;   /* Blau */
+      --green:#66b21d;     /* Grün */
       --radius:16px;
-
-      /* NEW section colors (match screenshot 2 vibe) */
-      --tw24-navy-1:#123f73;
-      --tw24-navy-2:#0b2e59;
-      --tw24-yellow:#ffe600;
     }
 
     *{box-sizing:border-box;}
@@ -126,38 +122,32 @@
     a{color:var(--primary);text-decoration:underline;}
     .hidden{display:none;}
 
-    /* =========================
-       PREMIUM BELOW-FORM SECTION
-       ========================= */
+    /* =========================================================
+       ✅ BELOW-FORM SECTION — "besondere" Optik, aber in deiner CI
+       Hintergrund bleibt beige (var(--bg)), keine Navy/Yellow mehr
+       ========================================================= */
     .tw24-below{
       margin-top:18px;
       border-radius:22px;
       overflow:hidden;
-      background:linear-gradient(180deg,var(--tw24-navy-1) 0%, var(--tw24-navy-2) 100%);
-      box-shadow:0 18px 50px rgba(0,0,0,.14);
-      position:relative;
-    }
-
-    .tw24-below::before{
-      content:"";
-      position:absolute; inset:0;
+      border:1px solid rgba(16,24,40,.12);
       background:
-        radial-gradient(700px 280px at 15% 10%, rgba(255,255,255,.10), transparent 60%),
-        radial-gradient(520px 260px at 85% 20%, rgba(255,255,255,.08), transparent 65%),
-        radial-gradient(520px 280px at 70% 90%, rgba(255,255,255,.06), transparent 60%);
-      pointer-events:none;
+        radial-gradient(900px 320px at 15% 10%, rgba(0,112,215,.08), transparent 60%),
+        radial-gradient(700px 320px at 85% 15%, rgba(102,178,29,.08), transparent 60%),
+        linear-gradient(180deg, rgba(255,255,255,.30), rgba(255,255,255,.10));
+      box-shadow:0 14px 40px rgba(0,0,0,.08);
+      position:relative;
     }
 
     .tw24-below-inner{
-      position:relative;
-      padding:26px 22px 22px;
+      padding:24px 22px 18px;
     }
 
     .tw24-hero{
       display:grid;
       grid-template-columns: 1.25fr .75fr;
-      gap:18px;
-      align-items:start;
+      gap:16px;
+      align-items:stretch;
     }
 
     .tw24-hero-title{
@@ -165,101 +155,131 @@
       font-size:30px;
       line-height:1.1;
       letter-spacing:-0.02em;
-      color:#fff;
+      color:var(--text);
     }
 
+    .tw24-accent-green{ color: var(--green); }
+    .tw24-accent-blue{ color: var(--primary); }
+
     .tw24-hero-sub{
-      margin:0 0 16px;
-      color:rgba(255,255,255,.82);
+      margin:0 0 14px;
+      color:var(--muted);
       font-weight:650;
     }
 
-    .tw24-accent{ color: var(--tw24-yellow); }
+    .tw24-pills{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      margin-top:10px;
+    }
 
-    .tw24-pills{ display:flex; flex-direction:column; gap:12px; margin-top:10px; }
     .tw24-pill{
-      display:flex; align-items:center; gap:12px;
-      background:rgba(255,255,255,.98);
+      display:flex;
+      align-items:center;
+      gap:12px;
+      background:rgba(255,255,255,.92);
+      border:1px solid rgba(16,24,40,.12);
       border-radius:999px;
       padding:14px 16px;
       font-weight:900;
-      box-shadow:0 10px 28px rgba(0,0,0,.10);
+      box-shadow:0 10px 26px rgba(0,0,0,.08);
     }
+
     .tw24-pill-ico{
-      width:28px; height:28px; display:grid; place-items:center;
-      border-radius:12px;
-      background:rgba(18,63,115,.10);
+      width:32px;height:32px;
+      border-radius:14px;
+      display:grid;place-items:center;
+      border:1px solid rgba(16,24,40,.10);
+      background:rgba(0,112,215,.08);
+      color:var(--primary);
+      flex:0 0 auto;
+      font-weight:900;
+    }
+    .tw24-pill-ico.green{
+      background:rgba(102,178,29,.12);
+      color:var(--green);
     }
 
     .tw24-hero-cta{
       display:inline-block;
       margin-top:14px;
-      color:#fff;
+      color:var(--primary);
       font-weight:900;
       text-decoration:none;
-      border-bottom:2px solid rgba(255,255,255,.35);
+      border-bottom:2px solid rgba(0,112,215,.25);
     }
-    .tw24-hero-cta:hover{ border-bottom-color:rgba(255,255,255,.65); }
+    .tw24-hero-cta:hover{ border-bottom-color:rgba(0,112,215,.45); }
 
     .tw24-trust{
       margin-top:10px;
-      color:rgba(255,255,255,.75);
+      color:var(--muted);
       font-weight:800;
       font-size:13px;
     }
 
+    /* Right illustration card - light, CI-friendly */
     .tw24-illus-card{
-      border-radius:22px;
-      border:1px solid rgba(255,255,255,.14);
-      background:rgba(0,0,0,.10);
-      box-shadow:0 18px 45px rgba(0,0,0,.18);
+      border-radius:20px;
+      border:1px solid rgba(16,24,40,.12);
+      background:
+        radial-gradient(260px 220px at 30% 30%, rgba(0,112,215,.14), transparent 60%),
+        radial-gradient(260px 220px at 70% 70%, rgba(102,178,29,.14), transparent 60%),
+        rgba(255,255,255,.70);
+      box-shadow:0 14px 34px rgba(0,0,0,.10);
       position:relative;
       overflow:hidden;
       min-height:260px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:14px;
     }
+
     .tw24-illus{
       width:100%;
+      max-width:420px;
       height:auto;
       display:block;
       opacity:.95;
     }
+
     .tw24-illus-badge{
       position:absolute;
-      left:16px;
-      bottom:16px;
-      background:rgba(0,0,0,.22);
-      border:1px solid rgba(255,255,255,.16);
-      backdrop-filter: blur(8px);
+      left:14px;
+      bottom:14px;
+      background:rgba(255,255,255,.90);
+      border:1px solid rgba(16,24,40,.12);
       border-radius:16px;
       padding:10px 12px;
-      color:#fff;
+      color:var(--text);
+      box-shadow:0 10px 26px rgba(0,0,0,.10);
     }
     .tw24-illus-badge-top{ font-weight:950; }
-    .tw24-illus-badge-sub{ font-weight:750; opacity:.85; font-size:13px; }
+    .tw24-illus-badge-sub{ font-weight:750; color:var(--muted); font-size:13px; }
 
+    /* Steps / Timeline */
     .tw24-steps{
-      margin-top:20px;
-      padding-top:18px;
-      border-top:1px solid rgba(255,255,255,.14);
+      margin-top:18px;
+      padding-top:16px;
+      border-top:1px solid rgba(16,24,40,.10);
     }
+
     .tw24-steps-title{
-      margin:0 0 16px;
+      margin:0 0 14px;
       text-align:center;
-      color:#fff;
+      color:var(--text);
       font-size:28px;
       letter-spacing:-0.02em;
     }
-    .tw24-steps-foot{
-      margin-top:14px;
-      text-align:center;
-      color:rgba(255,255,255,.75);
-      font-weight:850;
-      font-size:13px;
+
+    .tw24-steps-title .em{
+      color:var(--green);
     }
 
     .tw24-timeline{
       position:relative;
-      padding:8px 0;
+      padding:10px 0 6px;
       display:grid;
       gap:16px;
     }
@@ -271,7 +291,7 @@
         top:0; bottom:0;
         left:50%;
         width:2px;
-        background:rgba(255,255,255,.18);
+        background:rgba(16,24,40,.12);
         transform:translateX(-1px);
       }
     }
@@ -280,31 +300,42 @@
       display:flex;
       gap:12px;
       align-items:flex-start;
-      background:rgba(255,255,255,.98);
+      background:rgba(255,255,255,.92);
       border-radius:18px;
       padding:16px 16px;
-      box-shadow:0 14px 35px rgba(0,0,0,.12);
-      border:1px solid rgba(16,24,40,.10);
-      max-width:430px;
+      border:1px solid rgba(16,24,40,.12);
+      box-shadow:0 12px 30px rgba(0,0,0,.08);
+      max-width:440px;
     }
 
     .tw24-dot{
       width:34px; height:34px;
       border-radius:999px;
       display:grid; place-items:center;
-      background:var(--tw24-yellow);
-      color:#0b2e59;
+      background:var(--primary);
+      color:#fff;
       font-weight:950;
       flex:0 0 auto;
-      box-shadow:0 10px 25px rgba(0,0,0,.18);
+      box-shadow:0 10px 22px rgba(0,0,0,.14);
+    }
+    .tw24-dot.green{
+      background:var(--green);
     }
 
     .tw24-step-head{ font-weight:950; }
-    .tw24-step-sub{ margin-top:4px; color:#475467; font-weight:650; }
+    .tw24-step-sub{ margin-top:4px; color:var(--muted); font-weight:650; }
 
     @media (min-width: 760px){
       .tw24-stepcard:nth-child(odd){ margin-right:auto; }
       .tw24-stepcard:nth-child(even){ margin-left:auto; }
+    }
+
+    .tw24-steps-foot{
+      margin-top:12px;
+      text-align:center;
+      color:var(--muted);
+      font-weight:850;
+      font-size:13px;
     }
 
     @media (max-width: 759px){
@@ -314,7 +345,6 @@
       .tw24-stepcard{ max-width:100%; }
     }
 
-    /* mobile */
     @media (max-width:420px){
       .btnrow.nav{flex-wrap:wrap;}
       .btnrow.nav button{flex:unset;width:100%;}
@@ -454,22 +484,22 @@
       </section>
     </div>
 
-    <!-- BELOW FORM (premium section like screenshot 2) -->
+    <!-- ✅ BELOW FORM (CI-friendly, beige background stays) -->
     <section class="tw24-below" id="howitworks">
       <div class="tw24-below-inner">
 
         <div class="tw24-hero">
-          <div class="tw24-hero-left">
+          <div>
             <h2 class="tw24-hero-title">
-              Deswegen setzen so viele auf <span class="tw24-accent">Tarifwechsel24</span>
+              Deswegen setzen so viele auf <span class="tw24-accent-green">Tarifwechsel24</span>
             </h2>
             <p class="tw24-hero-sub">
-              Verständlich, persönlich und ohne unnötigen Aufwand – kostenlos & unverbindlich.
+              Verständlich, persönlich und ohne unnötigen Aufwand – <b>kostenlos</b> & unverbindlich.
             </p>
 
             <div class="tw24-pills">
               <div class="tw24-pill">
-                <span class="tw24-pill-ico">🌱</span>
+                <span class="tw24-pill-ico green">🌿</span>
                 <span>Nachhaltig weniger bezahlen</span>
               </div>
               <div class="tw24-pill">
@@ -481,7 +511,7 @@
                 <span>Persönlicher Support</span>
               </div>
               <div class="tw24-pill">
-                <span class="tw24-pill-ico">✅</span>
+                <span class="tw24-pill-ico green">✅</span>
                 <span>Persönlich geprüft – kein Algorithmus-Blindflug</span>
               </div>
             </div>
@@ -490,23 +520,27 @@
             <div class="tw24-trust">Kostenlos · unverbindlich · kein Spam</div>
           </div>
 
-          <div class="tw24-hero-right">
+          <div>
             <div class="tw24-illus-card">
-              <!-- Replace this SVG with your own image if you want -->
+              <!-- Light, neutral illustration placeholder (CI-fit). Replace anytime with an image. -->
               <svg viewBox="0 0 520 360" class="tw24-illus" aria-hidden="true">
                 <defs>
-                  <linearGradient id="g" x1="0" x2="1">
-                    <stop offset="0" stop-color="rgba(255,255,255,.22)"/>
-                    <stop offset="1" stop-color="rgba(255,255,255,.08)"/>
+                  <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0" stop-color="rgba(0,112,215,.20)"/>
+                    <stop offset="1" stop-color="rgba(102,178,29,.18)"/>
                   </linearGradient>
                 </defs>
-                <rect x="18" y="18" width="484" height="324" rx="22" fill="url(#g)" />
-                <circle cx="140" cy="150" r="54" fill="rgba(255,255,255,.25)"/>
-                <rect x="220" y="110" width="220" height="26" rx="13" fill="rgba(255,255,255,.25)"/>
-                <rect x="220" y="150" width="180" height="18" rx="9" fill="rgba(255,255,255,.18)"/>
-                <rect x="220" y="185" width="200" height="18" rx="9" fill="rgba(255,255,255,.18)"/>
-                <rect x="90" y="230" width="350" height="56" rx="18" fill="rgba(255,255,255,.22)"/>
-                <text x="115" y="266" font-size="18" fill="rgba(255,255,255,.85)" font-family="system-ui, -apple-system, Segoe UI, Roboto">
+
+                <rect x="20" y="22" width="480" height="316" rx="22" fill="rgba(255,255,255,.55)" stroke="rgba(16,24,40,.12)" />
+                <rect x="48" y="56" width="424" height="232" rx="18" fill="url(#g)" opacity=".35" />
+
+                <circle cx="118" cy="128" r="44" fill="rgba(16,24,40,.10)"/>
+                <rect x="190" y="96" width="240" height="22" rx="11" fill="rgba(16,24,40,.12)"/>
+                <rect x="190" y="132" width="200" height="16" rx="8" fill="rgba(16,24,40,.10)"/>
+                <rect x="190" y="162" width="220" height="16" rx="8" fill="rgba(16,24,40,.10)"/>
+
+                <rect x="92" y="214" width="336" height="52" rx="16" fill="rgba(255,255,255,.55)" stroke="rgba(16,24,40,.12)"/>
+                <text x="115" y="246" font-size="16" fill="rgba(16,24,40,.72)" font-family="system-ui, -apple-system, Segoe UI, Roboto">
                   Jahresabrechnung ✓
                 </text>
               </svg>
@@ -520,7 +554,7 @@
         </div>
 
         <div class="tw24-steps">
-          <h3 class="tw24-steps-title">So <span class="tw24-accent">einfach</span> geht’s</h3>
+          <h3 class="tw24-steps-title">So <span class="em">einfach</span> geht’s</h3>
 
           <div class="tw24-timeline">
             <div class="tw24-stepcard">
@@ -532,7 +566,7 @@
             </div>
 
             <div class="tw24-stepcard">
-              <div class="tw24-dot">2</div>
+              <div class="tw24-dot green">2</div>
               <div>
                 <div class="tw24-step-head">Angebot bekommen</div>
                 <div class="tw24-step-sub">Passende Tarife für Ihre Situation – verständlich erklärt.</div>
