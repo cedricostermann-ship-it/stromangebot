@@ -7,13 +7,12 @@
 
   <style>
     :root{
-      /* ✅ Deine CI */
       --bg:#f6f0e6;
       --text:#101828;
       --muted:#475467;
       --border:rgba(16,24,40,.14);
-      --primary:#0070D7;   /* Blau */
-      --green:#66b21d;     /* Grün */
+      --primary:#0070D7;
+      --green:#66b21d;
       --radius:18px;
     }
 
@@ -27,7 +26,6 @@
 
     .wrap{max-width:920px;margin:0 auto;padding:16px;}
 
-    /* ✅ KEIN weißer Container mehr um beide Blöcke */
     .tw24-section{
       margin-top:18px;
       padding:0;
@@ -36,11 +34,11 @@
       box-shadow:none;
     }
 
-    /* Optional: ganz dezente Trennlinie zwischen Bereichen */
+    /* ✅ MEHR PLATZ zwischen den beiden Bereichen */
     .tw24-divider{
       height:1px;
       background:rgba(16,24,40,.08);
-      margin:18px 0;
+      margin:44px 0;              /* vorher 18px -> deutlich mehr Luft */
       border-radius:999px;
     }
 
@@ -128,8 +126,6 @@
       font-weight:650;
     }
 
-    /* ✅ Keine gelben Glows / Schatten im Hintergrund mehr */
-    /* (nur typografie + cards, alles auf Beige „verschmilzt“) */
     @media (min-width: 760px){
       .tw24-hero-title{
         font-size:clamp(22px, 2.25vw, 28px);
@@ -202,7 +198,6 @@
       font-size:13px;
     }
 
-    /* Illustration Card (darf „weißlich“ sein, aber ohne gelbe Aura außenrum) */
     .tw24-illus-card{
       border-radius:20px;
       border:1px solid rgba(16,24,40,.12);
@@ -278,6 +273,7 @@
       <div class="tw24-steps-foot">Kostenlos & unverbindlich · Persönlich geprüft</div>
     </section>
 
+    <!-- ✅ MEHR LUFT -->
     <div class="tw24-divider"></div>
 
     <!-- ✅ BLOCK 2 (unten): DESWEGEN... -->
@@ -310,7 +306,7 @@
             </div>
           </div>
 
-          <!-- ✅ an dein separates Formular anpassen (Anchor/URL) -->
+          <!-- ✅ an dein separates Formular anpassen -->
           <a class="tw24-hero-cta" href="#formular">Zum Formular ↑</a>
           <div class="tw24-trust">Kostenlos · unverbindlich · kein Spam</div>
         </div>
@@ -334,7 +330,12 @@
               <rect x="190" y="162" width="220" height="16" rx="8" fill="rgba(16,24,40,.10)"/>
 
               <rect x="92" y="214" width="336" height="52" rx="16" fill="rgba(255,255,255,.62)" stroke="rgba(16,24,40,.12)"/>
-              <text x="115" y="246" font-size="16" fill="rgba(16,24,40,.72)" font-family="system-ui, -apple-system, Segoe UI, Roboto">
+              <!-- ✅ "Jahresabrechnung" größer -->
+              <text x="118" y="248"
+                    font-size="20"
+                    font-weight="750"
+                    fill="rgba(16,24,40,.78)"
+                    font-family="system-ui, -apple-system, Segoe UI, Roboto">
                 Jahresabrechnung ✓
               </text>
             </svg>
@@ -351,14 +352,11 @@
   </div>
 
   <script>
-    /* ✅ iFrame Auto-Height (falls du es wie vorher brauchst) */
     function sendEmbedHeight(){
       const root = document.getElementById("tw24Content");
       if(!root) return;
-
       const rect = root.getBoundingClientRect();
       const h = Math.ceil(rect.height + 32);
-
       window.parent && window.parent.postMessage({ type: "TW24_HEIGHT", height: h }, "*");
     }
 
