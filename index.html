@@ -130,13 +130,12 @@
     a{color:var(--primary);text-decoration:underline;}
     .hidden{display:none;}
 
-    /* ✅ MOBILE: kompakter */
+    /* ✅ MOBILE */
     @media (max-width: 480px){
       .wrap{padding:12px 12px;}
       .card{padding:16px;border-radius:14px;}
       .progress{margin:0 0 14px;}
 
-      /* Standard h1 etwas kleiner */
       h1{
         font-size:18px;
         line-height:1.15;
@@ -144,18 +143,17 @@
         letter-spacing:-0.01em;
       }
 
-      /* ✅ NUR Step-1 Headline: noch kleiner + sicher ohne "..." (gewinnt immer) */
+      /* ✅ NUR Step-1 Headline: sicher klein + ohne "..." */
       .step[data-step="1"] h1.h1line{
         font-size:16px !important;
         line-height:1.15 !important;
         margin:0 0 8px !important;
-
         white-space:normal !important;
         overflow:visible !important;
         text-overflow:clip !important;
       }
 
-      /* andere h1line dürfen normal umbrechen (optional) */
+      /* Rest darf auch umbrechen */
       .h1line{
         white-space:normal;
         overflow:visible;
@@ -163,21 +161,15 @@
       }
 
       .sub{font-size:13px;}
-
       label{margin:12px 0 6px;}
       input{padding:11px 12px; border-radius:12px;}
-
       button{padding:12px 14px; font-size:15px; border-radius:12px;}
-
       .chip{padding:12px 12px; border-radius:13px;}
       .small{font-size:12px;}
     }
 
-    /* ✅ Extra klein (iPhone SE etc.) */
     @media (max-width: 360px){
-      .step[data-step="1"] h1.h1line{
-        font-size:15px !important;
-      }
+      .step[data-step="1"] h1.h1line{ font-size:15px !important; }
     }
 
     @media (max-width:420px){
@@ -189,8 +181,6 @@
 
 <body>
   <div class="wrap">
-    <!-- ✅ Logo/“Tarifwechsel24” oben entfernt -->
-
     <div class="card">
       <div class="progress"><div class="bar" id="bar"></div></div>
       <div id="err" class="error"></div>
@@ -334,6 +324,7 @@
       err.textContent = msg;
       err.style.display = "block";
       window.scrollTo({ top: 0, behavior: "smooth" });
+      setTimeout(sendEmbedHeight, 30);
     }
     function clearError(){ err.style.display = "none"; err.textContent=""; }
 
@@ -347,11 +338,22 @@
       bar.style.width = (map[stepKey] || 0) + "%";
     }
 
+    /* ✅ Stabiler Height-Post (verhindert "runterrutschen") */
+    let __lastSentH = 0;
     function sendEmbedHeight(){
-      const h = Math.max(
-        document.documentElement.scrollHeight,
-        document.body.scrollHeight
-      );
+      const card = document.querySelector(".card");
+      if(!card) return;
+
+      const bodyTop = document.body.getBoundingClientRect().top;
+      const cardBottom = card.getBoundingClientRect().bottom;
+
+      const h = Math.ceil(cardBottom - bodyTop) + 24; // Puffer
+      if(!h || h < 300) return;
+
+      // Micro-Jitter ignorieren
+      if (Math.abs(h - __lastSentH) < 8) return;
+      __lastSentH = h;
+
       window.parent && window.parent.postMessage({ type: "TW24_HEIGHT", height: h }, "*");
     }
 
@@ -362,35 +364,35 @@
       currentProgress(stepKey);
 
       setTimeout(sendEmbedHeight, 20);
-      setTimeout(sendEmbedHeight, 120);
+      setTimeout(sendEmbedHeight, 140);
     }
 
     $("customerType").addEventListener("click", (e)=>{
       const chip = e.target.closest(".chip"); if(!chip) return;
       state.type = chip.dataset.value;
       setActive("customerType", state.type);
-      setTimeout(sendEmbedHeight, 20);
+      setTimeout(sendEmbedHeight, 30);
     });
 
     $("usagePrivate").addEventListener("click", (e)=>{
       const chip = e.target.closest(".chip"); if(!chip) return;
       state.usage = chip.dataset.value;
       setActive("usagePrivate", state.usage);
-      setTimeout(sendEmbedHeight, 20);
+      setTimeout(sendEmbedHeight, 30);
     });
 
     $("usageBusiness").addEventListener("click", (e)=>{
       const chip = e.target.closest(".chip"); if(!chip) return;
       state.usage = chip.dataset.value;
       setActive("usageBusiness", state.usage);
-      setTimeout(sendEmbedHeight, 20);
+      setTimeout(sendEmbedHeight, 30);
     });
 
     $("contactPref").addEventListener("click", (e)=>{
       const chip = e.target.closest(".chip"); if(!chip) return;
       state.pref = chip.dataset.value;
       setActive("contactPref", state.pref);
-      setTimeout(sendEmbedHeight, 20);
+      setTimeout(sendEmbedHeight, 30);
     });
 
     $("to2").onclick = () => {
@@ -464,9 +466,11 @@
 
     window.addEventListener("load", () => {
       go("1");
-      setTimeout(sendEmbedHeight, 120);
+      setTimeout(sendEmbedHeight, 160);
     });
-    window.addEventListener("resize", () => setTimeout(sendEmbedHeight, 80));
+
+    /* ✅ wichtig: KEIN resize listener mehr (Safari verursacht sonst Ratchet/Jitter) */
+    window.addEventListener("orientationchange", () => setTimeout(sendEmbedHeight, 220));
   </script>
 </body>
 </html>
