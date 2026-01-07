@@ -118,7 +118,7 @@
       cursor:pointer;
       font-weight:800;
 
-      /* linksbündig (auch “letzte Seite Auswahl”/Kontaktpräferenz) */
+      /* linksbündig (auch Kontaktpräferenz) */
       text-align:left;
 
       box-shadow:0 1px 0 rgba(16,24,40,.04);
@@ -157,7 +157,6 @@
 <body>
   <div class="wrap">
     <div class="logo">
-      <!-- optional: dein Logo als Bild -->
       <strong style="font-size:22px;">Tarifwechsel<span style="color:#66b21d;">24</span></strong>
     </div>
 
@@ -292,11 +291,7 @@
   </div>
 
 <script>
-  // 1) HIER deine Webhook-URL eintragen (Google Apps Script / Zapier / Make)
   const WEBHOOK_URL = "PASTE_YOUR_WEBHOOK_URL_HERE";
-
-  // 2) HIER deine WhatsApp Nummer (international, ohne +, ohne Leerzeichen)
-  // Beispiel: 4917672530039
   const WA_NUMBER = "4917672530039";
 
   const state = { plz:"", type:"", usage:"", name:"", phone:"", pref:"" };
@@ -323,11 +318,30 @@
     bar.style.width = (map[stepKey] || 0) + "%";
   }
 
+  // ✅ Height sender (nur sichtbarer Inhalt, nicht scrollHeight)
+  function sendEmbedHeight(){
+    const wrap = document.querySelector(".wrap");
+    const card = document.querySelector(".card");
+    if(!wrap || !card) return;
+
+    const wrapRect = wrap.getBoundingClientRect();
+    const cardRect = card.getBoundingClientRect();
+
+    // Höhe = von oben wrap bis unten card + bisschen Luft
+    const h = Math.ceil((cardRect.bottom - wrapRect.top) + 16);
+
+    window.parent && window.parent.postMessage({ type: "TW24_HEIGHT", height: h }, "*");
+  }
+
   function go(stepKey){
     clearError();
     steps.forEach(s => s.classList.add("hidden"));
     document.querySelector(`.step[data-step="${stepKey}"]`).classList.remove("hidden");
     currentProgress(stepKey);
+
+    // ✅ wichtig: nach jedem Stepwechsel neue Höhe schicken
+    setTimeout(sendEmbedHeight, 20);
+    setTimeout(sendEmbedHeight, 120);
   }
 
   // Step 2 selection
@@ -335,6 +349,7 @@
     const chip = e.target.closest(".chip"); if(!chip) return;
     state.type = chip.dataset.value;
     setActive("customerType", state.type);
+    setTimeout(sendEmbedHeight, 20);
   });
 
   // Usage selections
@@ -342,11 +357,13 @@
     const chip = e.target.closest(".chip"); if(!chip) return;
     state.usage = chip.dataset.value;
     setActive("usagePrivate", state.usage);
+    setTimeout(sendEmbedHeight, 20);
   });
   $("usageBusiness").addEventListener("click", (e)=>{
     const chip = e.target.closest(".chip"); if(!chip) return;
     state.usage = chip.dataset.value;
     setActive("usageBusiness", state.usage);
+    setTimeout(sendEmbedHeight, 20);
   });
 
   // Contact pref (optional)
@@ -354,6 +371,7 @@
     const chip = e.target.closest(".chip"); if(!chip) return;
     state.pref = chip.dataset.value;
     setActive("contactPref", state.pref);
+    setTimeout(sendEmbedHeight, 20);
   });
 
   // Buttons
@@ -407,7 +425,6 @@
       source: location.href
     };
 
-    // WhatsApp link
     const msg = encodeURIComponent(`Hi, ich habe gerade ein Stromangebot angefordert. PLZ: ${state.plz}`);
     $("waLink").href = `https://wa.me/${WA_NUMBER}?text=${msg}`;
 
@@ -427,44 +444,13 @@
     }
   };
 
-  // start
-  go("1");
+  // initial
+  window.addEventListener("load", () => {
+    go("1");
+    setTimeout(sendEmbedHeight, 120);
+  });
+  window.addEventListener("resize", () => setTimeout(sendEmbedHeight, 80));
 </script>
 
-  <script>
-  // Send current document height to parent (for embeds)
-  (function () {
-    function sendHeight() {
-      const h = Math.max(
-        document.body.scrollHeight,
-        document.documentElement.scrollHeight,
-        document.body.offsetHeight,
-        document.documentElement.offsetHeight
-      );
-      window.parent && window.parent.postMessage({ type: "TW24_HEIGHT", height: h }, "*");
-    }
-
-    // initial + after layout changes
-    window.addEventListener("load", sendHeight);
-    window.addEventListener("resize", sendHeight);
-
-    // call whenever step changes (we hook into your go() if it exists)
-    const _go = window.go;
-    if (typeof _go === "function") {
-      window.go = function(stepKey){
-        const res = _go.apply(this, arguments);
-        setTimeout(sendHeight, 50);
-        setTimeout(sendHeight, 250);
-        return res;
-      };
-    } else {
-      // fallback: observe DOM changes
-      const mo = new MutationObserver(() => sendHeight());
-      mo.observe(document.body, { childList: true, subtree: true, attributes: true });
-    }
-  })();
-</script>
-
-  
 </body>
 </html>
