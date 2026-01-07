@@ -15,6 +15,11 @@
       --primary:#0070D7;
       --green:#66b21d;
       --radius:16px;
+
+      /* NEW section colors (match screenshot 2 vibe) */
+      --tw24-navy-1:#123f73;
+      --tw24-navy-2:#0b2e59;
+      --tw24-yellow:#ffe600;
     }
 
     *{box-sizing:border-box;}
@@ -26,6 +31,7 @@
     }
 
     .wrap{max-width:920px;margin:0 auto;padding:16px;}
+
     .card{
       background:var(--card);
       border:1px solid var(--border);
@@ -120,67 +126,192 @@
     a{color:var(--primary);text-decoration:underline;}
     .hidden{display:none;}
 
-    /* Mid-section (between form and FAQ) — NOW STACKED + FULL WIDTH LIKE FORM */
-    .section{
+    /* =========================
+       PREMIUM BELOW-FORM SECTION
+       ========================= */
+    .tw24-below{
       margin-top:18px;
+      border-radius:22px;
+      overflow:hidden;
+      background:linear-gradient(180deg,var(--tw24-navy-1) 0%, var(--tw24-navy-2) 100%);
+      box-shadow:0 18px 50px rgba(0,0,0,.14);
+      position:relative;
+    }
+
+    .tw24-below::before{
+      content:"";
+      position:absolute; inset:0;
+      background:
+        radial-gradient(700px 280px at 15% 10%, rgba(255,255,255,.10), transparent 60%),
+        radial-gradient(520px 260px at 85% 20%, rgba(255,255,255,.08), transparent 65%),
+        radial-gradient(520px 280px at 70% 90%, rgba(255,255,255,.06), transparent 60%);
+      pointer-events:none;
+    }
+
+    .tw24-below-inner{
+      position:relative;
+      padding:26px 22px 22px;
+    }
+
+    .tw24-hero{
       display:grid;
-      grid-template-columns: 1fr;  /* ✅ undereinander */
-      gap:14px;
+      grid-template-columns: 1.25fr .75fr;
+      gap:18px;
+      align-items:start;
     }
-    .section .box{
-      background:var(--card);       /* ✅ same as form card */
-      border:1px solid var(--border);
-      border-radius:var(--radius);
-      box-shadow:0 10px 30px rgba(0,0,0,.06);
-      padding:22px;
-    }
-    .section h2{
+
+    .tw24-hero-title{
       margin:0 0 10px;
-      font-size:20px;
-      letter-spacing:-0.01em;
-      line-height:1.2;
-    }
-    .accent{color:var(--green);}
-    .lead{margin:0 0 12px;color:var(--muted);font-weight:600}
-    .steps{display:flex;flex-direction:column;gap:10px;margin:0;padding:0;list-style:none;}
-    .step{
-      display:flex;gap:10px;align-items:flex-start;
-      border:1px solid rgba(16,24,40,.12);
-      border-radius:14px;
-      padding:12px 12px;
-      background:#fff;
-    }
-    .badge{
-      min-width:28px;height:28px;border-radius:999px;
-      display:flex;align-items:center;justify-content:center;
-      background:rgba(0,112,215,.10);
-      color:var(--primary);
-      font-weight:900;
-    }
-    .step b{display:block;margin-bottom:2px}
-    .step span{color:var(--muted);font-weight:600}
-
-    .bullets{display:flex;flex-direction:column;gap:10px;margin:0;padding:0;list-style:none;}
-    .bullet{
-      display:flex;gap:10px;align-items:flex-start;
-      border:1px solid rgba(16,24,40,.12);
-      border-radius:14px;
-      padding:12px 12px;
-      background:#fff;
-    }
-    .icon{
-      min-width:28px;height:28px;border-radius:10px;
-      display:flex;align-items:center;justify-content:center;
-      background:rgba(102,178,29,.12);
-      color:var(--green);
-      font-weight:900;
+      font-size:30px;
+      line-height:1.1;
+      letter-spacing:-0.02em;
+      color:#fff;
     }
 
-    .trustline{
-      margin-top:12px;
+    .tw24-hero-sub{
+      margin:0 0 16px;
+      color:rgba(255,255,255,.82);
+      font-weight:650;
+    }
+
+    .tw24-accent{ color: var(--tw24-yellow); }
+
+    .tw24-pills{ display:flex; flex-direction:column; gap:12px; margin-top:10px; }
+    .tw24-pill{
+      display:flex; align-items:center; gap:12px;
+      background:rgba(255,255,255,.98);
+      border-radius:999px;
+      padding:14px 16px;
+      font-weight:900;
+      box-shadow:0 10px 28px rgba(0,0,0,.10);
+    }
+    .tw24-pill-ico{
+      width:28px; height:28px; display:grid; place-items:center;
+      border-radius:12px;
+      background:rgba(18,63,115,.10);
+    }
+
+    .tw24-hero-cta{
+      display:inline-block;
+      margin-top:14px;
+      color:#fff;
+      font-weight:900;
+      text-decoration:none;
+      border-bottom:2px solid rgba(255,255,255,.35);
+    }
+    .tw24-hero-cta:hover{ border-bottom-color:rgba(255,255,255,.65); }
+
+    .tw24-trust{
+      margin-top:10px;
+      color:rgba(255,255,255,.75);
+      font-weight:800;
       font-size:13px;
-      color:var(--muted);
-      font-weight:700;
+    }
+
+    .tw24-illus-card{
+      border-radius:22px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(0,0,0,.10);
+      box-shadow:0 18px 45px rgba(0,0,0,.18);
+      position:relative;
+      overflow:hidden;
+      min-height:260px;
+    }
+    .tw24-illus{
+      width:100%;
+      height:auto;
+      display:block;
+      opacity:.95;
+    }
+    .tw24-illus-badge{
+      position:absolute;
+      left:16px;
+      bottom:16px;
+      background:rgba(0,0,0,.22);
+      border:1px solid rgba(255,255,255,.16);
+      backdrop-filter: blur(8px);
+      border-radius:16px;
+      padding:10px 12px;
+      color:#fff;
+    }
+    .tw24-illus-badge-top{ font-weight:950; }
+    .tw24-illus-badge-sub{ font-weight:750; opacity:.85; font-size:13px; }
+
+    .tw24-steps{
+      margin-top:20px;
+      padding-top:18px;
+      border-top:1px solid rgba(255,255,255,.14);
+    }
+    .tw24-steps-title{
+      margin:0 0 16px;
+      text-align:center;
+      color:#fff;
+      font-size:28px;
+      letter-spacing:-0.02em;
+    }
+    .tw24-steps-foot{
+      margin-top:14px;
+      text-align:center;
+      color:rgba(255,255,255,.75);
+      font-weight:850;
+      font-size:13px;
+    }
+
+    .tw24-timeline{
+      position:relative;
+      padding:8px 0;
+      display:grid;
+      gap:16px;
+    }
+
+    @media (min-width: 760px){
+      .tw24-timeline::before{
+        content:"";
+        position:absolute;
+        top:0; bottom:0;
+        left:50%;
+        width:2px;
+        background:rgba(255,255,255,.18);
+        transform:translateX(-1px);
+      }
+    }
+
+    .tw24-stepcard{
+      display:flex;
+      gap:12px;
+      align-items:flex-start;
+      background:rgba(255,255,255,.98);
+      border-radius:18px;
+      padding:16px 16px;
+      box-shadow:0 14px 35px rgba(0,0,0,.12);
+      border:1px solid rgba(16,24,40,.10);
+      max-width:430px;
+    }
+
+    .tw24-dot{
+      width:34px; height:34px;
+      border-radius:999px;
+      display:grid; place-items:center;
+      background:var(--tw24-yellow);
+      color:#0b2e59;
+      font-weight:950;
+      flex:0 0 auto;
+      box-shadow:0 10px 25px rgba(0,0,0,.18);
+    }
+
+    .tw24-step-head{ font-weight:950; }
+    .tw24-step-sub{ margin-top:4px; color:#475467; font-weight:650; }
+
+    @media (min-width: 760px){
+      .tw24-stepcard:nth-child(odd){ margin-right:auto; }
+      .tw24-stepcard:nth-child(even){ margin-left:auto; }
+    }
+
+    @media (max-width: 759px){
+      .tw24-hero{ grid-template-columns: 1fr; }
+      .tw24-hero-title{ font-size:26px; }
+      .tw24-steps-title{ font-size:24px; }
+      .tw24-stepcard{ max-width:100%; }
     }
 
     /* mobile */
@@ -196,7 +327,7 @@
   <div class="wrap">
 
     <!-- FORM CARD -->
-    <div class="card">
+    <div class="card" id="top">
       <div class="progress"><div class="bar" id="bar"></div></div>
       <div id="err" class="error"></div>
 
@@ -321,68 +452,107 @@
         <div class="spacer"></div>
         <div class="small">Hinweis: WhatsApp ist freiwillig.</div>
       </section>
-
     </div>
 
-    <!-- BETWEEN FORM & FAQ -->
-    <div class="section" id="howitworks">
+    <!-- BELOW FORM (premium section like screenshot 2) -->
+    <section class="tw24-below" id="howitworks">
+      <div class="tw24-below-inner">
 
-      <div class="box">
-        <h2>So <span class="accent">einfach</span> geht’s</h2>
-        <p class="lead">In 3 Schritten zu Ihrem passenden Tarif – kostenlos & unverbindlich.</p>
+        <div class="tw24-hero">
+          <div class="tw24-hero-left">
+            <h2 class="tw24-hero-title">
+              Deswegen setzen so viele auf <span class="tw24-accent">Tarifwechsel24</span>
+            </h2>
+            <p class="tw24-hero-sub">
+              Verständlich, persönlich und ohne unnötigen Aufwand – kostenlos & unverbindlich.
+            </p>
 
-        <ul class="steps">
-          <li class="step">
-            <div class="badge">1</div>
-            <div>
-              <b>Anfrage senden</b>
-              <span>PLZ & Verbrauch angeben – dauert 2 Minuten.</span>
+            <div class="tw24-pills">
+              <div class="tw24-pill">
+                <span class="tw24-pill-ico">🌱</span>
+                <span>Nachhaltig weniger bezahlen</span>
+              </div>
+              <div class="tw24-pill">
+                <span class="tw24-pill-ico">🔁</span>
+                <span>Automatischer Wechsel, kein Aufwand</span>
+              </div>
+              <div class="tw24-pill">
+                <span class="tw24-pill-ico">🎧</span>
+                <span>Persönlicher Support</span>
+              </div>
+              <div class="tw24-pill">
+                <span class="tw24-pill-ico">✅</span>
+                <span>Persönlich geprüft – kein Algorithmus-Blindflug</span>
+              </div>
             </div>
-          </li>
-          <li class="step">
-            <div class="badge">2</div>
-            <div>
-              <b>Persönlicher Tarif-Check</b>
-              <span>Wir prüfen passende Optionen für Ihre Situation.</span>
-            </div>
-          </li>
-          <li class="step">
-            <div class="badge">3</div>
-            <div>
-              <b>Wechsel bequem erledigen</b>
-              <span>Wenn alles passt, unterstützen wir beim Wechsel – transparent & stressfrei.</span>
-            </div>
-          </li>
-        </ul>
 
-        <div class="trustline">Kostenlos & unverbindlich · Kein Spam · Persönlich geprüft</div>
+            <a class="tw24-hero-cta" href="#top">Zum Formular ↑</a>
+            <div class="tw24-trust">Kostenlos · unverbindlich · kein Spam</div>
+          </div>
+
+          <div class="tw24-hero-right">
+            <div class="tw24-illus-card">
+              <!-- Replace this SVG with your own image if you want -->
+              <svg viewBox="0 0 520 360" class="tw24-illus" aria-hidden="true">
+                <defs>
+                  <linearGradient id="g" x1="0" x2="1">
+                    <stop offset="0" stop-color="rgba(255,255,255,.22)"/>
+                    <stop offset="1" stop-color="rgba(255,255,255,.08)"/>
+                  </linearGradient>
+                </defs>
+                <rect x="18" y="18" width="484" height="324" rx="22" fill="url(#g)" />
+                <circle cx="140" cy="150" r="54" fill="rgba(255,255,255,.25)"/>
+                <rect x="220" y="110" width="220" height="26" rx="13" fill="rgba(255,255,255,.25)"/>
+                <rect x="220" y="150" width="180" height="18" rx="9" fill="rgba(255,255,255,.18)"/>
+                <rect x="220" y="185" width="200" height="18" rx="9" fill="rgba(255,255,255,.18)"/>
+                <rect x="90" y="230" width="350" height="56" rx="18" fill="rgba(255,255,255,.22)"/>
+                <text x="115" y="266" font-size="18" fill="rgba(255,255,255,.85)" font-family="system-ui, -apple-system, Segoe UI, Roboto">
+                  Jahresabrechnung ✓
+                </text>
+              </svg>
+
+              <div class="tw24-illus-badge">
+                <div class="tw24-illus-badge-top">Schnell geprüft</div>
+                <div class="tw24-illus-badge-sub">in wenigen Minuten</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tw24-steps">
+          <h3 class="tw24-steps-title">So <span class="tw24-accent">einfach</span> geht’s</h3>
+
+          <div class="tw24-timeline">
+            <div class="tw24-stepcard">
+              <div class="tw24-dot">1</div>
+              <div>
+                <div class="tw24-step-head">Gespräch vereinbaren</div>
+                <div class="tw24-step-sub">Kurz Daten angeben – wir melden uns persönlich.</div>
+              </div>
+            </div>
+
+            <div class="tw24-stepcard">
+              <div class="tw24-dot">2</div>
+              <div>
+                <div class="tw24-step-head">Angebot bekommen</div>
+                <div class="tw24-step-sub">Passende Tarife für Ihre Situation – verständlich erklärt.</div>
+              </div>
+            </div>
+
+            <div class="tw24-stepcard">
+              <div class="tw24-dot">3</div>
+              <div>
+                <div class="tw24-step-head">Wechsel erledigen</div>
+                <div class="tw24-step-sub">Wenn alles passt: Wir unterstützen – transparent & stressfrei.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tw24-steps-foot">Kostenlos & unverbindlich · Persönlich geprüft</div>
+        </div>
+
       </div>
-
-      <div class="box">
-        <h2>Darum <span class="accent">Tarifwechsel24</span></h2>
-        <p class="lead">Kurz gesagt: verständlich, persönlich und ohne unnötigen Aufwand.</p>
-
-        <ul class="bullets">
-          <li class="bullet">
-            <div class="icon">✓</div>
-            <div><b>Persönlich geprüft</b><br><span style="color:var(--muted);font-weight:600;">Nicht nur ein Algorithmus – wir schauen aktiv drauf.</span></div>
-          </li>
-          <li class="bullet">
-            <div class="icon">✓</div>
-            <div><b>Passend zu Ihrem Verbrauch</b><br><span style="color:var(--muted);font-weight:600;">Privat oder Gewerbe – wir filtern sinnvoll vor.</span></div>
-          </li>
-          <li class="bullet">
-            <div class="icon">✓</div>
-            <div><b>Wechselhilfe auf Wunsch</b><br><span style="color:var(--muted);font-weight:600;">Wir begleiten den Wechsel, wenn Sie möchten.</span></div>
-          </li>
-          <li class="bullet">
-            <div class="icon">✓</div>
-            <div><b>Einfach erklärt</b><br><span style="color:var(--muted);font-weight:600;">Ohne Fachchinesisch – klar & transparent.</span></div>
-          </li>
-        </ul>
-      </div>
-
-    </div>
+    </section>
 
   </div>
 
@@ -416,8 +586,8 @@
 
     function sendEmbedHeight(){
       const wrap = document.querySelector(".wrap");
-      const card = document.querySelector(".card");
       const section = document.getElementById("howitworks");
+      const card = document.querySelector(".card");
       if(!wrap || !card) return;
 
       const wrapRect = wrap.getBoundingClientRect();
