@@ -417,7 +417,7 @@
       if(!state.name) return showError("Bitte Vor- & Nachname eintragen.");
       if(state.phone.length < 6) return showError("Bitte eine gültige Telefonnummer eintragen.");
       if(!consent) return showError("Bitte bestätigen Sie die Datenschutzeinwilligung.");
-
+ 
       const payload = {
         plz: state.plz,
         kundentyp: state.type,
