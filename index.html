@@ -179,7 +179,7 @@
 
 <body>
   <div class="wrap" id="wrap">
-    <div class="card">
+    <div class="card" id="card">
       <div class="progress"><div class="bar" id="bar"></div></div>
       <div id="err" class="error"></div>
 
@@ -336,17 +336,19 @@
       bar.style.width = (map[stepKey] || 0) + "%";
     }
 
-    /* ✅ Anti-Loop Height Messaging: misst nur CONTENT (wrap.offsetHeight), nicht viewport */
+    /* ✅ Stable Height: misst die CARD (nicht wrap), kein Drift */
     let __lastSent = 0;
     let __raf = 0;
 
     function sendEmbedHeight(){
       __raf = 0;
-      const wrap = document.getElementById("wrap");
-      const h = (wrap ? wrap.offsetHeight : document.documentElement.offsetHeight) + 2; // +2 gegen rounding
+      const card = document.getElementById("card");
+      if(!card) return;
+
+      const h = Math.ceil(card.getBoundingClientRect().height) + 32; // kleiner Puffer
       if (!h || h < 300) return;
 
-      if (Math.abs(h - __lastSent) < 6) return; // jitter ignorieren
+      if (Math.abs(h - __lastSent) < 6) return;
       __lastSent = h;
 
       window.parent && window.parent.postMessage({ type: "TW24_HEIGHT", height: h }, "*");
@@ -355,15 +357,14 @@
     function scheduleHeight(){
       if (__raf) return;
       __raf = requestAnimationFrame(() => {
-        // noch 1x nach layout/fonts
         sendEmbedHeight();
         setTimeout(sendEmbedHeight, 120);
       });
     }
 
-    // ✅ sendet automatisch, wenn Content wirklich seine Größe ändert
+    // ✅ ResizeObserver auf card (präziser)
     const ro = new ResizeObserver(() => scheduleHeight());
-    ro.observe(document.getElementById("wrap"));
+    ro.observe(document.getElementById("card"));
 
     function go(stepKey){
       clearError();
@@ -470,18 +471,16 @@
       }
     };
 
-    window.addEventListener("load", () => {
-      go("1");
-      scheduleHeight();
-
-        // ✅ Parent kann aktiv "Height bitte senden" anfordern (iOS fix)
+    // ✅ PING listener: NICHT im load-Handler, nur 1x global
     window.addEventListener("message", (event) => {
       if (!event.data || event.data.type !== "TW24_PING") return;
-      // sofort & nochmal kurz danach (fonts/layout)
       sendEmbedHeight();
       setTimeout(sendEmbedHeight, 120);
     });
 
+    window.addEventListener("load", () => {
+      go("1");
+      scheduleHeight();
     });
   </script>
 </body>
