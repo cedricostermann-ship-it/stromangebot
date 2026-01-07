@@ -136,7 +136,20 @@
       .card{padding:16px;border-radius:14px;}
       .progress{margin:0 0 14px;}
 
-      h1{font-size:22px; line-height:1.12; margin:0 0 8px;}
+      /* ✅ WICHTIG: Step-1 Headline deutlich kleiner + darf umbrechen */
+      h1{
+        font-size:18px;         /* kleiner = besser lesbar ohne Quetschen */
+        line-height:1.15;
+        margin:0 0 8px;
+        letter-spacing:-0.01em;
+      }
+      /* h1line nicht mehr auf eine Zeile zwingen */
+      .h1line{
+        white-space:normal;
+        overflow:visible;
+        text-overflow:clip;
+      }
+
       .sub{font-size:13px;}
 
       label{margin:12px 0 6px;}
@@ -146,6 +159,11 @@
 
       .chip{padding:12px 12px; border-radius:13px;}
       .small{font-size:12px;}
+    }
+
+    /* ✅ Extra klein (iPhone SE etc.) */
+    @media (max-width: 360px){
+      h1{font-size:16px;}
     }
 
     @media (max-width:420px){
