@@ -21,6 +21,7 @@
     }
 
     *{box-sizing:border-box;}
+    html{ scroll-behavior:smooth; } /* ✅ sanft zum Anfang springen */
     body{
       margin:0;
       font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
@@ -210,7 +211,7 @@
       display:flex;
       align-items:center;
       justify-content:center;
-      padding:10px 14px 14px;
+      padding:10px 14px 26px; /* ✅ etwas mehr Bottom-Padding */
       backdrop-filter:saturate(120%) blur(2px);
     }
 
@@ -242,14 +243,11 @@
       backdrop-filter:saturate(120%) blur(2px);
     }
 
-    /* ✅ Mehr Abstand: Badge tiefer + kleiner + mehr Bottom-Padding der Karte */
-    .tw24-illus-card{ padding-bottom:26px; } /* vorher 14px */
-
     .tw24-illus-badge{
       position:absolute;
       left:50%;
       transform:translateX(-50%);
-      bottom:10px;               /* bleibt sauber unten */
+      bottom:10px;
       background:rgba(102,178,29,.14);
       border:2px solid var(--greenBorder);
       border-radius:14px;
@@ -268,6 +266,8 @@
 
 <body>
   <div class="wrap" id="tw24Content">
+    <!-- ✅ ANKER: Anfang der Seite -->
+    <div id="top"></div>
 
     <!-- ✅ BLOCK 1 (oben): SO EINFACH GEHT'S -->
     <section class="tw24-section" id="howitworks">
@@ -373,19 +373,18 @@
       </div>
 
       <div class="tw24-formlink">
-        <a class="tw24-hero-cta" href="#formular">Zum Formular ↑</a>
+        <!-- ✅ Klick springt zum Anfang der Seite -->
+        <a class="tw24-hero-cta" href="#top">Zum Formular ↑</a>
         <div class="tw24-trust">Kostenlos · unverbindlich · kein Spam</div>
       </div>
     </section>
-
   </div>
 
   <script>
     function sendEmbedHeight(){
       const root = document.getElementById("tw24Content");
       if(!root) return;
-      const rect = root.getBoundingClientRect();
-      const h = Math.ceil(rect.height + 32);
+      const h = Math.ceil(root.scrollHeight + 32);
       window.parent && window.parent.postMessage({ type: "TW24_HEIGHT", height: h }, "*");
     }
 
