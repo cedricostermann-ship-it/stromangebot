@@ -130,20 +130,32 @@
     a{color:var(--primary);text-decoration:underline;}
     .hidden{display:none;}
 
-    /* ✅ MOBILE: Überschrift + Card kompakter (statt alles zu skalieren) */
+    /* ✅ MOBILE: kompakter */
     @media (max-width: 480px){
       .wrap{padding:12px 12px;}
       .card{padding:16px;border-radius:14px;}
       .progress{margin:0 0 14px;}
 
-      /* ✅ WICHTIG: Step-1 Headline deutlich kleiner + darf umbrechen */
+      /* Standard h1 etwas kleiner */
       h1{
-        font-size:18px;         /* kleiner = besser lesbar ohne Quetschen */
+        font-size:18px;
         line-height:1.15;
         margin:0 0 8px;
         letter-spacing:-0.01em;
       }
-      /* h1line nicht mehr auf eine Zeile zwingen */
+
+      /* ✅ NUR Step-1 Headline: noch kleiner + sicher ohne "..." (gewinnt immer) */
+      .step[data-step="1"] h1.h1line{
+        font-size:16px !important;
+        line-height:1.15 !important;
+        margin:0 0 8px !important;
+
+        white-space:normal !important;
+        overflow:visible !important;
+        text-overflow:clip !important;
+      }
+
+      /* andere h1line dürfen normal umbrechen (optional) */
       .h1line{
         white-space:normal;
         overflow:visible;
@@ -163,7 +175,9 @@
 
     /* ✅ Extra klein (iPhone SE etc.) */
     @media (max-width: 360px){
-      h1{font-size:16px;}
+      .step[data-step="1"] h1.h1line{
+        font-size:15px !important;
+      }
     }
 
     @media (max-width:420px){
@@ -417,7 +431,7 @@
       if(!state.name) return showError("Bitte Vor- & Nachname eintragen.");
       if(state.phone.length < 6) return showError("Bitte eine gültige Telefonnummer eintragen.");
       if(!consent) return showError("Bitte bestätigen Sie die Datenschutzeinwilligung.");
- 
+
       const payload = {
         plz: state.plz,
         kundentyp: state.type,
