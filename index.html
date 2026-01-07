@@ -1,0 +1,434 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Tarifwechsel24 – Stromangebot</title>
+  <style>
+    :root{
+      --bg:#f6f0e6;
+      --card:#ffffff;
+      --text:#101828;
+      --muted:#475467;
+
+      /* etwas sichtbarer */
+      --border:rgba(16,24,40,.18);
+
+      --primary:#0070D7;
+      --radius:16px;
+    }
+
+    *{box-sizing:border-box;}
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
+      background:var(--bg);
+      color:var(--text);
+    }
+
+    .wrap{max-width:780px;margin:0 auto;padding:28px 16px;}
+    .logo{display:flex;justify-content:center;margin:8px 0 18px;}
+
+    .card{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow:0 10px 30px rgba(0,0,0,.06);
+      padding:22px;
+    }
+
+    /* Headlines etwas kleiner + “eine Zeile” */
+    h1{
+      font-size:28px;
+      line-height:1.15;
+      margin:0 0 10px;
+      letter-spacing:-0.01em;
+    }
+    .h1line{
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .sub{color:var(--muted);margin:0 0 0;}
+    .spacer{height:12px;}
+
+    .progress{
+      height:6px;
+      background:rgba(0,0,0,.06);
+      border-radius:999px;
+      overflow:hidden;
+      margin:0 0 18px;
+    }
+    .bar{height:100%;width:0;background:var(--primary);transition:width .25s ease;}
+
+    label{display:block;font-weight:700;margin:14px 0 8px;}
+
+    input{
+      width:100%;
+      padding:12px 12px;
+      border:1px solid var(--border);
+      border-radius:12px;
+      font-size:16px;
+      outline:none;
+      background:#fff;
+    }
+    input:focus{
+      border-color:rgba(0,112,215,.55);
+      box-shadow:0 0 0 4px rgba(0,112,215,.12);
+    }
+
+    /* Buttons */
+    .btnrow{display:flex;gap:12px;margin-top:18px;flex-wrap:wrap;}
+    .btnrow button{width:100%;}
+    .btnrow.nav{
+      flex-wrap:nowrap;
+      align-items:stretch;
+    }
+    .btnrow.nav button{
+      width:auto;
+      flex:1;
+    }
+
+    button{
+      border:0;
+      border-radius:12px;
+      padding:14px 14px;
+      font-size:16px;
+      font-weight:800;
+      cursor:pointer;
+    }
+    .primary{background:var(--primary);color:white;}
+    .ghost{background:#f2f4f7;color:var(--text);}
+    .primary:active,.ghost:active{transform:translateY(1px);}
+
+    /* Choices = immer untereinander + mehr Luft + besser erkennbar */
+    .choices{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      margin-top:6px;
+    }
+    .chip{
+      width:100%;
+      border:1px solid var(--border);
+      background:#fff;
+      border-radius:14px;
+      padding:14px 14px;
+      cursor:pointer;
+      font-weight:800;
+
+      /* linksbündig (auch “letzte Seite Auswahl”/Kontaktpräferenz) */
+      text-align:left;
+
+      box-shadow:0 1px 0 rgba(16,24,40,.04);
+    }
+    .chip[data-active="true"]{
+      border-color:rgba(0,112,215,.55);
+      box-shadow:0 0 0 4px rgba(0,112,215,.12);
+      background:rgba(0,112,215,.06);
+    }
+
+    .error{
+      color:#b42318;
+      background:#fef3f2;
+      border:1px solid #fecdca;
+      border-radius:12px;
+      padding:10px;
+      margin-top:12px;
+      display:none;
+      font-weight:700;
+    }
+
+    .small{font-size:13px;color:var(--muted);margin-top:10px}
+    .check{display:flex;gap:10px;align-items:flex-start;margin-top:14px}
+    .check input{width:auto;margin-top:3px}
+    a{color:var(--primary);text-decoration:underline;}
+    .hidden{display:none;}
+
+    /* mobile: bei sehr schmal -> Nav Buttons doch untereinander */
+    @media (max-width:420px){
+      .btnrow.nav{flex-wrap:wrap;}
+      .btnrow.nav button{flex:unset;width:100%;}
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="logo">
+      <!-- optional: dein Logo als Bild -->
+      <strong style="font-size:22px;">Tarifwechsel<span style="color:#66b21d;">24</span></strong>
+    </div>
+
+    <div class="card">
+      <div class="progress"><div class="bar" id="bar"></div></div>
+
+      <div id="err" class="error"></div>
+
+      <!-- STEP 1 -->
+      <section class="step" data-step="1">
+        <h1 class="h1line">🔍 Ihr persönliches Stromangebot in 2&nbsp;Minuten ⚡</h1>
+        <p class="sub">Kostenlos · unverbindlich · persönlich geprüft</p>
+        <div class="spacer"></div>
+
+        <label for="plz">👉 Postleitzahl</label>
+        <input id="plz" inputmode="numeric" autocomplete="postal-code" placeholder="z. B. 10115" maxlength="5" />
+
+        <div class="btnrow">
+          <button class="primary" id="to2">Weiter →</button>
+        </div>
+      </section>
+
+      <!-- STEP 2 -->
+      <section class="step hidden" data-step="2">
+        <h1>Sind Sie Privat- oder Gewerbekunde?</h1>
+        <p class="sub">Gewerbe- und Privatkunden haben unterschiedliche Tarife & Konditionen.</p>
+        <div class="spacer"></div>
+
+        <div class="choices" id="customerType">
+          <div class="chip" data-value="Privat">Privat</div>
+          <div class="chip" data-value="Gewerbe">Gewerbe</div>
+        </div>
+
+        <div class="btnrow nav">
+          <button class="ghost" id="back1">← Zurück</button>
+          <button class="primary" id="to3">Weiter →</button>
+        </div>
+      </section>
+
+      <!-- STEP 3 PRIVAT -->
+      <section class="step hidden" data-step="3p">
+        <h1 class="h1line">Wie hoch ist Ihr jährlicher Stromverbrauch?</h1>
+        <p class="sub">Falls Sie es nicht genau wissen: grobe Schätzung reicht.</p>
+        <div class="spacer"></div>
+
+        <div class="choices" id="usagePrivate">
+          <div class="chip" data-value="Bis 2.000 kWh">Bis 2.000 kWh</div>
+          <div class="chip" data-value="2.000 – 3.500 kWh">2.000 – 3.500 kWh</div>
+          <div class="chip" data-value="3.500 – 5.000 kWh">3.500 – 5.000 kWh</div>
+          <div class="chip" data-value="Über 5.000 kWh">Über 5.000 kWh</div>
+          <div class="chip" data-value="Weiß ich nicht">Weiß ich nicht</div>
+        </div>
+
+        <div class="btnrow nav">
+          <button class="ghost" id="back2a">← Zurück</button>
+          <button class="primary" id="to4a">Weiter →</button>
+        </div>
+      </section>
+
+      <!-- STEP 3 GEWERBE -->
+      <section class="step hidden" data-step="3g">
+        <h1 class="h1line">Wie hoch ist Ihr jährlicher Stromverbrauch?</h1>
+        <p class="sub">Richtwert genügt – wir klären Details im Gespräch.</p>
+        <div class="spacer"></div>
+
+        <div class="choices" id="usageBusiness">
+          <div class="chip" data-value="Bis 50.000 kWh">Bis 50.000 kWh</div>
+          <div class="chip" data-value="50.000 – 100.000 kWh">50.000 – 100.000 kWh</div>
+          <div class="chip" data-value="Über 100.000 kWh">Über 100.000 kWh</div>
+        </div>
+
+        <div class="btnrow nav">
+          <button class="ghost" id="back2b">← Zurück</button>
+          <button class="primary" id="to4b">Weiter →</button>
+        </div>
+      </section>
+
+      <!-- STEP 4 CONTACT -->
+      <section class="step hidden" data-step="4">
+        <h1 class="h1line">⚡ Fast geschafft – wir erstellen jetzt Ihr Stromangebot</h1>
+        <p class="sub">Ein Energieberater meldet sich kurz, um die besten Optionen zu bestätigen.</p>
+        <div class="spacer"></div>
+
+        <label for="name">Vor- & Nachname *</label>
+        <input id="name" autocomplete="name" placeholder="Max Mustermann" />
+
+        <label for="phone">Telefonnummer *</label>
+        <input id="phone" inputmode="tel" autocomplete="tel" placeholder="0176 12345678" />
+
+        <label>Wie möchten Sie kontaktiert werden? (optional)</label>
+        <div class="choices" id="contactPref">
+          <div class="chip" data-value="Telefon">Telefon</div>
+          <div class="chip" data-value="WhatsApp">WhatsApp</div>
+          <div class="chip" data-value="E-Mail">E-Mail</div>
+        </div>
+
+        <div class="check">
+          <input id="consent" type="checkbox" />
+          <div class="small">
+            Ich willige ein, dass meine Angaben zur Erstellung eines Stromangebots verarbeitet werden und ich hierzu telefonisch,
+            per WhatsApp oder per E-Mail kontaktiert werde. Weitere Informationen in der
+            <a href="/datenschutz" target="_blank" rel="noopener">Datenschutzerklärung</a>.
+            <span style="color:#b42318;">*</span>
+          </div>
+        </div>
+
+        <div class="btnrow nav">
+          <button class="ghost" id="back3">← Zurück</button>
+          <button class="primary" id="submit">Stromangebot anfordern →</button>
+        </div>
+
+        <div class="small">Kostenlos & unverbindlich. Kein Spam.</div>
+      </section>
+
+      <!-- THANK YOU -->
+      <section class="step hidden" data-step="5">
+        <h1>✅ Danke! Anfrage erhalten.</h1>
+        <p class="sub">Unser Energieberater setzt sich in Kürze mit Ihnen in Verbindung.</p>
+        <div class="spacer"></div>
+
+        <div class="btnrow">
+          <a class="primary"
+             style="display:inline-block;text-decoration:none;padding:14px 14px;border-radius:12px;width:100%;font-weight:900;"
+             id="waLink" href="#" target="_blank" rel="noopener">Optional: per WhatsApp schreiben</a>
+        </div>
+
+        <div class="spacer"></div>
+        <div class="small">Hinweis: WhatsApp ist freiwillig.</div>
+      </section>
+
+    </div>
+  </div>
+
+<script>
+  // 1) HIER deine Webhook-URL eintragen (Google Apps Script / Zapier / Make)
+  const WEBHOOK_URL = "PASTE_YOUR_WEBHOOK_URL_HERE";
+
+  // 2) HIER deine WhatsApp Nummer (international, ohne +, ohne Leerzeichen)
+  // Beispiel: 4917672530039
+  const WA_NUMBER = "4917672530039";
+
+  const state = { plz:"", type:"", usage:"", name:"", phone:"", pref:"" };
+
+  const $ = (id) => document.getElementById(id);
+  const steps = Array.from(document.querySelectorAll(".step"));
+  const err = $("err");
+  const bar = $("bar");
+
+  function showError(msg){
+    err.textContent = msg;
+    err.style.display = "block";
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+  function clearError(){ err.style.display = "none"; err.textContent=""; }
+
+  function setActive(containerId, value){
+    const el = $(containerId);
+    el.querySelectorAll(".chip").forEach(c => c.dataset.active = (c.dataset.value === value) ? "true" : "false");
+  }
+
+  function currentProgress(stepKey){
+    const map = { "1": 20, "2": 40, "3p": 60, "3g": 60, "4": 85, "5": 100 };
+    bar.style.width = (map[stepKey] || 0) + "%";
+  }
+
+  function go(stepKey){
+    clearError();
+    steps.forEach(s => s.classList.add("hidden"));
+    document.querySelector(`.step[data-step="${stepKey}"]`).classList.remove("hidden");
+    currentProgress(stepKey);
+  }
+
+  // Step 2 selection
+  $("customerType").addEventListener("click", (e)=>{
+    const chip = e.target.closest(".chip"); if(!chip) return;
+    state.type = chip.dataset.value;
+    setActive("customerType", state.type);
+  });
+
+  // Usage selections
+  $("usagePrivate").addEventListener("click", (e)=>{
+    const chip = e.target.closest(".chip"); if(!chip) return;
+    state.usage = chip.dataset.value;
+    setActive("usagePrivate", state.usage);
+  });
+  $("usageBusiness").addEventListener("click", (e)=>{
+    const chip = e.target.closest(".chip"); if(!chip) return;
+    state.usage = chip.dataset.value;
+    setActive("usageBusiness", state.usage);
+  });
+
+  // Contact pref (optional)
+  $("contactPref").addEventListener("click", (e)=>{
+    const chip = e.target.closest(".chip"); if(!chip) return;
+    state.pref = chip.dataset.value;
+    setActive("contactPref", state.pref);
+  });
+
+  // Buttons
+  $("to2").onclick = () => {
+    const plz = $("plz").value.trim();
+    if(!/^\d{5}$/.test(plz)) return showError("Bitte eine gültige Postleitzahl (5 Ziffern) eingeben.");
+    state.plz = plz;
+    go("2");
+  };
+
+  $("back1").onclick = () => go("1");
+
+  $("to3").onclick = () => {
+    if(!state.type) return showError("Bitte wählen Sie Privat oder Gewerbe.");
+    if(state.type === "Privat") go("3p"); else go("3g");
+  };
+
+  $("back2a").onclick = () => go("2");
+  $("back2b").onclick = () => go("2");
+
+  $("to4a").onclick = () => {
+    if(!state.usage) return showError("Bitte wählen Sie eine Verbrauchsangabe.");
+    go("4");
+  };
+  $("to4b").onclick = () => {
+    if(!state.usage) return showError("Bitte wählen Sie eine Verbrauchsangabe.");
+    go("4");
+  };
+
+  $("back3").onclick = () => {
+    if(state.type === "Privat") go("3p"); else go("3g");
+  };
+
+  $("submit").onclick = async () => {
+    state.name = $("name").value.trim();
+    state.phone = $("phone").value.trim();
+    const consent = $("consent").checked;
+
+    if(!state.name) return showError("Bitte Vor- & Nachname eintragen.");
+    if(state.phone.length < 6) return showError("Bitte eine gültige Telefonnummer eintragen.");
+    if(!consent) return showError("Bitte bestätigen Sie die Datenschutzeinwilligung.");
+
+    const payload = {
+      plz: state.plz,
+      kundentyp: state.type,
+      verbrauch: state.usage,
+      name: state.name,
+      telefon: state.phone,
+      kontaktpraeferenz: state.pref || "",
+      timestamp: new Date().toISOString(),
+      source: location.href
+    };
+
+    // WhatsApp link
+    const msg = encodeURIComponent(`Hi, ich habe gerade ein Stromangebot angefordert. PLZ: ${state.plz}`);
+    $("waLink").href = `https://wa.me/${WA_NUMBER}?text=${msg}`;
+
+    try{
+      if(WEBHOOK_URL && WEBHOOK_URL.startsWith("http")){
+        await fetch(WEBHOOK_URL, {
+          method:"POST",
+          headers:{ "Content-Type":"application/json" },
+          body: JSON.stringify(payload),
+          keepalive: true
+        });
+      }
+      go("5");
+    }catch(e){
+      showError("Ups – technisch gab es kurz ein Problem. Bitte versuchen Sie es erneut oder kontaktieren Sie uns direkt.");
+      console.error(e);
+    }
+  };
+
+  // start
+  go("1");
+</script>
+</body>
+</html>
