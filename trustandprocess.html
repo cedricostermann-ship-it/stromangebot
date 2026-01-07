@@ -34,11 +34,11 @@
       box-shadow:none;
     }
 
-    /* ✅ MEHR PLATZ zwischen den beiden Bereichen */
+    /* ✅ MEHR LUFT zwischen "Persönlich geprüft" und "Deswegen setzen..." */
     .tw24-divider{
       height:1px;
       background:rgba(16,24,40,.08);
-      margin:44px 0;              /* vorher 18px -> deutlich mehr Luft */
+      margin:72px 0;              /* vorher 44px -> deutlich mehr Abstand */
       border-radius:999px;
     }
 
@@ -96,6 +96,7 @@
 
     .tw24-steps-foot{
       margin-top:12px;
+      margin-bottom:10px;         /* ✅ bisschen mehr “Luft” unter der Zeile */
       text-align:center;
       color:var(--muted);
       font-weight:850;
@@ -181,9 +182,13 @@
       color:var(--green);
     }
 
+    /* ✅ Unten “Zum Formular” zentriert */
+    .tw24-formlink{
+      margin-top:14px;
+      text-align:center;
+    }
     .tw24-hero-cta{
       display:inline-block;
-      margin-top:14px;
       color:var(--primary);
       font-weight:900;
       text-decoration:none;
@@ -192,10 +197,11 @@
     .tw24-hero-cta:hover{ border-bottom-color:rgba(0,112,215,.45); }
 
     .tw24-trust{
-      margin-top:10px;
+      margin-top:8px;
       color:var(--muted);
       font-weight:800;
       font-size:13px;
+      text-align:center;          /* ✅ ebenfalls zentriert */
     }
 
     .tw24-illus-card{
@@ -306,9 +312,11 @@
             </div>
           </div>
 
-          <!-- ✅ an dein separates Formular anpassen -->
-          <a class="tw24-hero-cta" href="#formular">Zum Formular ↑</a>
-          <div class="tw24-trust">Kostenlos · unverbindlich · kein Spam</div>
+          <!-- ✅ Zentriert -->
+          <div class="tw24-formlink">
+            <a class="tw24-hero-cta" href="#formular">Zum Formular ↑</a>
+            <div class="tw24-trust">Kostenlos · unverbindlich · kein Spam</div>
+          </div>
         </div>
 
         <div>
@@ -329,12 +337,14 @@
               <rect x="190" y="132" width="200" height="16" rx="8" fill="rgba(16,24,40,.10)"/>
               <rect x="190" y="162" width="220" height="16" rx="8" fill="rgba(16,24,40,.10)"/>
 
-              <rect x="92" y="214" width="336" height="52" rx="16" fill="rgba(255,255,255,.62)" stroke="rgba(16,24,40,.12)"/>
-              <!-- ✅ "Jahresabrechnung" größer -->
-              <text x="118" y="248"
+              <!-- ✅ Karte + Text tiefer -->
+              <rect x="92" y="224" width="336" height="52" rx="16" fill="rgba(255,255,255,.62)" stroke="rgba(16,24,40,.12)"/>
+              <!-- ✅ "Jahresabrechnung" größer + zentriert -->
+              <text x="260" y="258"
+                    text-anchor="middle"
                     font-size="20"
-                    font-weight="750"
-                    fill="rgba(16,24,40,.78)"
+                    font-weight="800"
+                    fill="rgba(16,24,40,.80)"
                     font-family="system-ui, -apple-system, Segoe UI, Roboto">
                 Jahresabrechnung ✓
               </text>
