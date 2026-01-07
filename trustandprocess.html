@@ -129,6 +129,13 @@
       .tw24-hero{ grid-template-columns:1fr; }
     }
 
+    /* ✅ Rechte Box weiter runter (nur Desktop) */
+    @media (min-width: 760px){
+      .tw24-hero-right{
+        margin-top: 34px; /* hier kannst du feinjustieren: z.B. 24 / 40 */
+      }
+    }
+
     .tw24-pills{
       display:flex;
       flex-direction:column;
@@ -193,7 +200,6 @@
       box-shadow:0 14px 34px rgba(0,0,0,.08);
       position:relative;
 
-      /* ✅ wichtig: damit der "Jahresabrechnung"-Chip oben rausstehen darf */
       overflow:visible;
 
       min-height:260px;
@@ -204,7 +210,6 @@
       backdrop-filter:saturate(120%) blur(2px);
     }
 
-    /* SVG minimal tiefer, weil oben jetzt ein Chip sitzt */
     .tw24-illus{
       width:100%;
       max-width:420px;
@@ -213,25 +218,24 @@
       opacity:.96;
       transform: translateY(10px);
     }
-    
+
     .tw24-illus-dropdown{
       position:absolute;
       left:50%;
-      top:0px;                 /* ✅ tiefer (vorher -18px) */
+      top:0px;
       transform:translateX(-50%);
       background:rgba(255,255,255,.94);
       border:1px solid rgba(16,24,40,.12);
       border-radius:999px;
-      padding:9px 14px;        /* ✅ kleiner */
+      padding:9px 14px;
       font-weight:950;
-      font-size:18px;          /* ✅ kleiner */
+      font-size:18px;
       line-height:1;
       color:rgba(16,24,40,.84);
       box-shadow:0 10px 26px rgba(0,0,0,.10);
       white-space:nowrap;
       z-index:4;
     }
-
 
     .tw24-illus-badge{
       position:absolute;
@@ -324,10 +328,10 @@
           </div>
         </div>
 
-        <div>
+        <!-- ✅ rechte Spalte bekommt Margin-Top (Desktop) -->
+        <div class="tw24-hero-right">
           <div class="tw24-illus-card">
 
-            <!-- ✅ Jahresabrechnung jetzt außerhalb vom SVG (höher + größer) -->
             <div class="tw24-illus-dropdown">Jahresabrechnung ✓</div>
 
             <svg viewBox="0 0 520 360" class="tw24-illus" aria-hidden="true">
@@ -345,8 +349,6 @@
               <rect x="190" y="96" width="240" height="22" rx="11" fill="rgba(16,24,40,.12)"/>
               <rect x="190" y="132" width="200" height="16" rx="8" fill="rgba(16,24,40,.10)"/>
               <rect x="190" y="162" width="220" height="16" rx="8" fill="rgba(16,24,40,.10)"/>
-
-              <!-- (keine Jahresabrechnung mehr im SVG) -->
             </svg>
 
             <div class="tw24-illus-badge">
