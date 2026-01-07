@@ -7,9 +7,9 @@
 
   <style>
     :root{
-      --bg:#F2EBDF;                 /* ✅ eure Hintergrundfarbe */
-      --card:rgba(242,235,223,.92); /* ✅ gelb auch für alle Boxen */
-      --card2:rgba(242,235,223,.72);/* ✅ etwas „leichter“ für Nav/Footer */
+      --bg:#F2EBDF;      /* ✅ Hintergrund */
+      --card:#F2EBDF;    /* ✅ ALLE Boxen GELB (solid, kein rgba) */
+      --card2:#F7F2EA;   /* ✅ leicht heller für Nav/Footer */
       --text:#101828;
       --muted:#475467;
       --border:rgba(16,24,40,.16);
@@ -22,7 +22,7 @@
     body{
       margin:0;
       font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
-      background:var(--bg);
+      background:var(--bg) !important;
       color:var(--text);
       line-height:1.55;
     }
@@ -44,20 +44,18 @@
       padding:6px 10px;
       border:1px solid var(--border);
       border-radius:999px;
-      background:var(--card);      /* ✅ gelb */
+      background:var(--card) !important;  /* ✅ gelb */
       color:var(--muted);
       white-space:nowrap;
-      backdrop-filter:saturate(120%) blur(2px);
     }
 
-    /* ✅ Haupt-Card gelb */
+    /* ✅ Haupt-Card gelb (hart erzwungen) */
     .card{
-      background:var(--card);
+      background:var(--card) !important;
       border:1px solid var(--border);
       border-radius:var(--radius);
       box-shadow:var(--shadow);
       overflow:hidden;
-      backdrop-filter:saturate(120%) blur(2px);
     }
 
     /* ✅ Header auf gelbem Grund */
@@ -66,7 +64,7 @@
       border-bottom:1px solid var(--border);
       background:
         linear-gradient(180deg, rgba(0,112,215,.07), rgba(0,112,215,0)),
-        var(--card);
+        var(--card) !important;
     }
 
     h1{margin:0;font-size:22px;}
@@ -84,7 +82,7 @@
       border:1px solid var(--border);
       border-radius:16px;
       padding:12px;
-      background:var(--card2);
+      background:var(--card2) !important;
       position:sticky;top:14px;height:fit-content;
     }
     .nav h2{
@@ -111,7 +109,7 @@
       border:1px solid var(--border);
       border-radius:16px;
       margin-bottom:12px;
-      background:var(--card);
+      background:var(--card) !important;
     }
     .section h2{margin:0 0 10px;font-size:16px;}
     .lead{color:var(--muted);margin-top:-4px;margin-bottom:12px;font-size:14px;}
@@ -146,7 +144,7 @@
       justify-content:space-between;
       gap:10px;
       flex-wrap:wrap;
-      background:var(--card2);     /* ✅ gelb */
+      background:var(--card2) !important;
     }
 
     @media (max-width: 860px){
@@ -156,11 +154,11 @@
     }
 
     @media print{
-      body{background:#fff;}
+      body{background:#fff !important;}
       .wrap{padding:0;}
-      .card{box-shadow:none;border:0;background:#fff;}
+      .card{box-shadow:none;border:0;background:#fff !important;}
       .nav{display:none;}
-      .section{background:#fff;}
+      .section{background:#fff !important;}
       a{text-decoration:underline;color:#000;}
     }
   </style>
@@ -189,7 +187,7 @@
           <a href="#zwecke">2. Zwecke & Rechtsgrundlagen</a>
           <a href="#kategorien">3. Datenkategorien</a>
           <a href="#lead">4. Lead-Formular / Anfrage</a>
-          <a href="#google">5. Google Apps Script / Google Sheets</a>
+          <a href="#google">5. Google Apps Script / Sheets</a>
           <a href="#hosting">6. Hosting & Logs</a>
           <a href="#empfaenger">7. Empfänger</a>
           <a href="#dauer">8. Speicherdauer</a>
