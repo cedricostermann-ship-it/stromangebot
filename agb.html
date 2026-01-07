@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Tarifwechsel24 – AGB</title>
+
+  <style>
+    :root{
+      --bg:#F2EBDF;      /* ✅ Hintergrund */
+      --card:#F2EBDF;    /* ✅ ALLE Boxen GELB */
+      --card2:#F7F2EA;   /* ✅ leicht heller für Nav/Footer */
+      --text:#101828;
+      --muted:#475467;
+      --border:rgba(16,24,40,.16);
+      --primary:#0070D7;
+      --radius:18px;
+      --shadow:0 18px 50px rgba(16,24,40,.10);
+    }
+
+    *{box-sizing:border-box;}
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
+      background:var(--bg) !important;
+      color:var(--text);
+      line-height:1.55;
+    }
+    a{color:var(--primary);text-decoration:none;}
+    a:hover{text-decoration:underline;}
+
+    .wrap{max-width:980px;margin:0 auto;padding:18px 16px 40px;}
+
+    .topbar{
+      display:flex;align-items:center;justify-content:space-between;
+      gap:12px;margin:8px 0 14px;
+    }
+    .brand{
+      display:flex;align-items:center;gap:10px;
+      font-weight:800;letter-spacing:.2px;
+    }
+    .badge{
+      font-size:12px;
+      padding:6px 10px;
+      border:1px solid var(--border);
+      border-radius:999px;
+      background:var(--card) !important;
+      color:var(--muted);
+      white-space:nowrap;
+    }
+
+    .card{
+      background:var(--card) !important;
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+
+    .hero{
+      padding:18px 18px 14px;
+      border-bottom:1px solid var(--border);
+      background:
+        linear-gradient(180deg, rgba(0,112,215,.07), rgba(0,112,215,0)),
+        var(--card) !important;
+    }
+
+    h1{margin:0;font-size:22px;}
+    .meta{margin-top:6px;color:var(--muted);font-size:13px;}
+
+    .content{
+      display:grid;
+      grid-template-columns:280px 1fr;
+      gap:16px;
+      padding:16px;
+    }
+
+    .nav{
+      border:1px solid var(--border);
+      border-radius:16px;
+      padding:12px;
+      background:var(--card2) !important;
+      position:sticky;top:14px;height:fit-content;
+    }
+    .nav h2{
+      margin:0 0 8px;
+      font-size:13px;
+      color:var(--muted);
+      text-transform:uppercase;
+      letter-spacing:.08em;
+    }
+    .nav a{
+      display:block;
+      padding:10px 10px;
+      border-radius:12px;
+      color:var(--text);
+    }
+    .nav a:hover{
+      background:rgba(0,112,215,.10);
+      text-decoration:none;
+    }
+
+    .section{
+      padding:14px;
+      border:1px solid var(--border);
+      border-radius:16px;
+      margin-bottom:12px;
+      background:var(--card) !important;
+    }
+    .section h2{margin:0 0 10px;font-size:16px;}
+
+    .lead{color:var(--muted);margin-top:-4px;margin-bottom:12px;font-size:14px;}
+
+    ol{margin:10px 0 0 18px;}
+    ul{margin:10px 0 0 18px;}
+
+    .kv{
+      display:grid;
+      grid-template-columns:200px 1fr;
+      gap:10px 14px;
+      font-size:14px;
+      margin-top:10px;
+    }
+    .k{color:var(--muted);}
+    .v{color:var(--text);word-break:break-word;}
+
+    .note{
+      margin-top:10px;
+      padding:10px 12px;
+      border:1px dashed rgba(16,24,40,.22);
+      border-radius:14px;
+      background:var(--card2) !important;
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    .foot{
+      padding:14px 16px;
+      border-top:1px solid var(--border);
+      color:var(--muted);
+      font-size:12px;
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+      background:var(--card2) !important;
+    }
+
+    @media (max-width: 860px){
+      .content{grid-template-columns:1fr;}
+      .nav{position:relative;top:auto;}
+      .kv{grid-template-columns:1fr;}
+    }
+
+    @media print{
+      body{background:#fff !important;}
+      .wrap{padding:0;}
+      .card{box-shadow:none;border:0;background:#fff !important;}
+      .nav{display:none;}
+      .section{background:#fff !important;}
+      a{text-decoration:underline;color:#000;}
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="brand">
+        <span style="display:inline-flex;width:10px;height:10px;border-radius:3px;background:var(--primary)"></span>
+        Tarifwechsel24
+      </div>
+      <div class="badge">Rechtliches • AGB</div>
+    </div>
+
+    <div class="card">
+      <div class="hero">
+        <h1>Allgemeine Geschäftsbedingungen (AGB)</h1>
+        <div class="meta">für die Nutzung des Lead-Formulars und die Vermittlung von Energie-/Tarifangeboten • Stand: 07.01.2026</div>
+      </div>
+
+      <div class="content">
+        <nav class="nav" aria-label="Inhaltsverzeichnis">
+          <h2>Inhalt</h2>
+          <a href="#g1">1. Geltungsbereich</a>
+          <a href="#g2">2. Anbieter / Kontakt</a>
+          <a href="#g3">3. Ablauf & Leistungsbeschreibung</a>
+          <a href="#g4">4. Mitwirkungspflichten</a>
+          <a href="#g5">5. Vergütung / Kosten</a>
+          <a href="#g6">6. Kein Garantieversprechen</a>
+          <a href="#g7">7. Haftung</a>
+          <a href="#g8">8. Kommunikation</a>
+          <a href="#g9">9. Datenschutz</a>
+          <a href="#g10">10. Schlussbestimmungen</a>
+        </nav>
+
+        <main>
+          <section class="section" id="g1">
+            <h2>1. Geltungsbereich</h2>
+            <p>(1) Diese AGB gelten für die Nutzung unseres Online-Angebots (insbesondere Lead-Formular/Quiz) sowie für vorvertragliche Kommunikation und – soweit zustande kommend – Vermittlungs-/Dienstleistungen im Bereich Strom/Gas/Energieprodukte.</p>
+            <p>(2) Verbraucher ist jede natürliche Person, die ein Rechtsgeschäft zu Zwecken abschließt, die überwiegend weder ihrer gewerblichen noch ihrer selbständigen beruflichen Tätigkeit zugerechnet werden können (§ 13 BGB). Unternehmer ist eine natürliche oder juristische Person oder rechtsfähige Personengesellschaft, die bei Abschluss in Ausübung ihrer gewerblichen oder selbständigen Tätigkeit handelt (§ 14 BGB).</p>
+          </section>
+
+          <section class="section" id="g2">
+            <h2>2. Anbieter / Kontakt</h2>
+            <div class="kv">
+              <div class="k">Anbieter</div><div class="v">Cedric Ostermann, St. Peter Weg 7, 58239 Schwerte</div>
+              <div class="k">E-Mail</div><div class="v"><a href="mailto:C.Ostermann@teleson-vertrieb.de">C.Ostermann@teleson-vertrieb.de</a></div>
+              <div class="k">Telefon</div><div class="v"><a href="tel:+4917672530039">+49 176 72530039</a></div>
+              <div class="k">USt-IdNr.</div><div class="v">DE366172960</div>
+            </div>
+          </section>
+
+          <section class="section" id="g3">
+            <h2>3. Ablauf und Leistungsbeschreibung</h2>
+            <p>(1) Unser Online-Angebot dient der Erfassung deiner Angaben, um dir passende Tarif-/Wechseloptionen zu prüfen und dich hierzu zu kontaktieren.</p>
+            <p>(2) Mit dem Absenden des Formulars gibst du grundsätzlich keine verbindliche Bestellung ab, sondern eine Anfrage zur Kontaktaufnahme und Prüfung.</p>
+            <p>(3) Sofern im weiteren Verlauf ein Vertrag über eine Vermittlungs-/Dienstleistung zustande kommt, richtet sich der konkrete Leistungsumfang nach den individuell vereinbarten Absprachen (z.B. telefonisch, schriftlich, digital).</p>
+          </section>
+
+          <section class="section" id="g4">
+            <h2>4. Mitwirkungspflichten des Nutzers</h2>
+            <p>(1) Du bist verpflichtet, nur wahrheitsgemäße und vollständige Angaben zu machen, soweit diese für die Prüfung erforderlich sind.</p>
+            <p>(2) Du hast Änderungen relevanter Daten (z.B. Kontakt, Anschrift, Verbrauch) unverzüglich mitzuteilen.</p>
+          </section>
+
+          <section class="section" id="g5">
+            <h2>5. Vergütung / Kosten</h2>
+            <p>(1) Sofern nicht ausdrücklich anders vereinbart, entstehen dir für die Anfrage und die tarifbezogene Vorprüfung keine direkten Kosten.</p>
+            <p>(2) Etwaige Vergütung kann – je nach Produkt/Partner – über Provisionen von Anbietern/Partnern erfolgen. Dadurch entstehen dir keine zusätzlichen Kosten gegenüber dem Abschluss beim jeweiligen Anbieter, sofern nicht ausdrücklich anders vereinbart.</p>
+          </section>
+
+          <section class="section" id="g6">
+            <h2>6. Kein Garantieversprechen / Tarif- und Verfügbarkeitsaussagen</h2>
+            <p>(1) Wir schulden keinen bestimmten wirtschaftlichen Erfolg (z.B. garantierte Einsparung) und keine bestimmte Verfügbarkeit einzelner Tarife.</p>
+            <p>(2) Konditionen, Preise und Vertragsannahme liegen im Verantwortungsbereich des jeweiligen Energieanbieters. Maßgeblich sind die dortigen Vertragsunterlagen.</p>
+          </section>
+
+          <section class="section" id="g7">
+            <h2>7. Haftung</h2>
+            <p>(1) Wir haften unbeschränkt bei Vorsatz und grober Fahrlässigkeit sowie bei Verletzung von Leben, Körper oder Gesundheit.</p>
+            <p>(2) Bei leicht fahrlässiger Verletzung wesentlicher Vertragspflichten ist die Haftung auf den vertragstypischen, vorhersehbaren Schaden begrenzt.</p>
+            <p>(3) Im Übrigen ist die Haftung ausgeschlossen, soweit gesetzlich zulässig.</p>
+            <p>(4) Für Inhalte und Bedingungen von Verträgen, die du mit Dritten (Energieanbietern) schließt, übernehmen wir keine Haftung.</p>
+          </section>
+
+          <section class="section" id="g8">
+            <h2>8. Kommunikation / Telefonische Kontaktaufnahme</h2>
+            <p>(1) Die Kontaktaufnahme erfolgt über die von dir angegebenen Kontaktwege.</p>
+            <p>(2) Soweit gesetzlich erforderlich (insbesondere bei werblicher Telefonkontaktaufnahme), erfolgt diese nur, wenn du hierzu eine ausdrückliche Einwilligung erteilt hast (z.B. per Checkbox im Formular). Du kannst diese Einwilligung jederzeit mit Wirkung für die Zukunft widerrufen.</p>
+          </section>
+
+          <section class="section" id="g9">
+            <h2>9. Datenschutz</h2>
+            <p>Es gilt unsere Datenschutzerklärung. Dort findest du Informationen zu Art, Umfang und Zweck der Verarbeitung personenbezogener Daten.</p>
+          </section>
+
+          <section class="section" id="g10">
+            <h2>10. Schlussbestimmungen</h2>
+            <p>(1) Es gilt deutsches Recht unter Ausschluss des UN-Kaufrechts.</p>
+            <p>(2) Für Verbraucher gilt dies nur, soweit dadurch zwingende Verbraucherschutzvorschriften des Staates ihres gewöhnlichen Aufenthalts nicht entzogen werden.</p>
+            <p>(3) Gerichtsstand ist – soweit zulässig – der Wohn-/Geschäftssitz des Anbieters.</p>
+            <p>(4) Sollten einzelne Bestimmungen unwirksam sein oder werden, bleibt die Wirksamkeit der übrigen Bestimmungen unberührt.</p>
+
+            <div class="note">
+              <strong>Hinweis zur Verbraucherstreitbeilegung:</strong><br>
+              Wir sind nicht verpflichtet und nicht bereit, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen (§ 36 VSBG).
+            </div>
+          </section>
+        </main>
+      </div>
+
+      <div class="foot">
+        <div>© <span id="y"></span> Cedric Ostermann</div>
+        <div><a href="#g1">Nach oben</a></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById("y").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
