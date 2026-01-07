@@ -130,7 +130,6 @@
     a{color:var(--primary);text-decoration:underline;}
     .hidden{display:none;}
 
-    /* ✅ MOBILE */
     @media (max-width: 480px){
       .wrap{padding:12px 12px;}
       .card{padding:16px;border-radius:14px;}
@@ -258,6 +257,10 @@
           <div class="chip" data-value="E-Mail">E-Mail</div>
         </div>
 
+        <!-- Honeypot (unsichtbar) -->
+        <input id="website" autocomplete="off" tabindex="-1"
+               style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;" />
+
         <div class="check">
           <input id="consent" type="checkbox" />
           <div class="small">
@@ -295,7 +298,8 @@
   </div>
 
   <script>
-    const WEBHOOK_URL = "PASTE_YOUR_WEBHOOK_URL_HERE";
+    const WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbzNKfNfICW_p__-Lm24vOLnMvR8gcxwHBdhuPJHocBhPIjPC9r_oO-2b4LJDT69ao2V5g/exec";
+    const TOKEN = "3007972026";
     const WA_NUMBER = "4917672530039";
 
     const state = { plz:"", type:"", usage:"", name:"", phone:"", pref:"" };
@@ -305,7 +309,6 @@
     const err = $("err");
     const bar = $("bar");
 
-    // ✅ Height (einfach + stabil)
     let __lastSent = 0;
     let __t = 0;
 
@@ -313,7 +316,7 @@
       const wrap = document.getElementById("wrap");
       if(!wrap) return;
 
-      const h = Math.ceil(wrap.getBoundingClientRect().height) + 2; // echtes Content-Height
+      const h = Math.ceil(wrap.getBoundingClientRect().height) + 2;
       if (!h || h < 280) return;
 
       if (Math.abs(h - __lastSent) < 4) return;
@@ -326,11 +329,10 @@
       clearTimeout(__t);
       __t = setTimeout(() => {
         sendEmbedHeight();
-        setTimeout(sendEmbedHeight, 180); // nach Layout/Fonts
+        setTimeout(sendEmbedHeight, 180);
       }, 30);
     }
 
-    // ✅ Parent darf aktiv pingen (iOS)
     window.addEventListener("message", (event) => {
       if (!event.data || event.data.type !== "TW24_PING") return;
       sendEmbedHeight();
@@ -421,23 +423,39 @@
       if(state.type === "Privat") go("3p"); else go("3g");
     };
 
+    async function postLead(payload){
+      const res = await fetch(WEBHOOK_URL, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" }, // CORS-stabil
+        body: JSON.stringify(payload),
+        keepalive: true
+      });
+
+      const out = await res.json().catch(() => null);
+      if(!res.ok || !out || out.ok !== true){
+        throw new Error("Webhook failed");
+      }
+      return out;
+    }
+
     $("submit").onclick = async () => {
       state.name = $("name").value.trim();
       state.phone = $("phone").value.trim();
       const consent = $("consent").checked;
 
       if(!state.name) return showError("Bitte Vor- & Nachname eintragen.");
-      if(state.phone.length < 6) return showError("Bitte eine gültige Telefonnummer eintragen.");
+      if(state.phone.replace(/\s+/g,"").length < 6) return showError("Bitte eine gültige Telefonnummer eintragen.");
       if(!consent) return showError("Bitte bestätigen Sie die Datenschutzeinwilligung.");
 
       const payload = {
-        plz: state.plz,
-        kundentyp: state.type,
-        verbrauch: state.usage,
+        token: TOKEN,
+        website: ($("website").value || "").trim(), // honeypot
+        timestamp: new Date().toISOString(),
         name: state.name,
         telefon: state.phone,
-        kontaktpraeferenz: state.pref || "",
-        timestamp: new Date().toISOString(),
+        verbrauch: state.usage,         // (wenn du willst: `${state.type} | ${state.usage}`)
+        plz: state.plz,
+        "kontaktmöglichkeit": state.pref || "",
         source: location.href
       };
 
@@ -445,18 +463,11 @@
       $("waLink").href = `https://wa.me/${WA_NUMBER}?text=${msg}`;
 
       try{
-        if(WEBHOOK_URL && WEBHOOK_URL.startsWith("http")){
-          await fetch(WEBHOOK_URL, {
-            method:"POST",
-            headers:{ "Content-Type":"application/json" },
-            body: JSON.stringify(payload),
-            keepalive: true
-          });
-        }
+        await postLead(payload);
         go("5");
       }catch(e){
-        showError("Ups – technisch gab es kurz ein Problem. Bitte versuchen Sie es erneut oder kontaktieren Sie uns direkt.");
         console.error(e);
+        showError("Ups – technisch gab es kurz ein Problem. Bitte versuchen Sie es erneut oder kontaktieren Sie uns direkt.");
       }
     };
 
