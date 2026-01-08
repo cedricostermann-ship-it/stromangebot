@@ -324,7 +324,7 @@
     const TOKEN = "3007972026";
     const WA_NUMBER = "4917672530039";
 
-    // ✅ Google Ads Conversion (Lead-Formular senden) — NEUE ID aus deinem Screenshot
+    // ✅ Google Ads Conversion (Lead-Formular senden)
     const ADS_LEAD_SEND_TO = "AW-17859182984/NPyWCN7ujd8bEIiD9sNC";
     let __leadConvFired = false;
 
@@ -338,7 +338,12 @@
     // Debug toggle: ?debug=1
     const DEBUG = new URLSearchParams(location.search).get("debug") === "1";
 
-    // ✅ Anti-Bot: einfache Session-Challenge (ohne nervige 30s Meldung)
+    // ✅ Session-ID pro Besucher (für Funnel-Tracking)
+    const SESSION_ID = (sessionStorage.getItem("tw24_sid") ||
+      (crypto.randomUUID ? crypto.randomUUID() : (Date.now()+"-"+Math.random().toString(16).slice(2))));
+    sessionStorage.setItem("tw24_sid", SESSION_ID);
+
+    // ✅ Anti-Bot
     const startedAt = Date.now();
     let hadHumanInput = false;
 
@@ -421,38 +426,23 @@
       return s.replace(",", "");
     }
 
-    // ✅ Telefon: akzeptiert +49..., +49 (0)... oder 0... (wird zu +49 normalisiert)
+    // ✅ Telefon normalisieren
     function normalizeDE(phoneRaw){
       let raw = (phoneRaw || "").trim();
-
-      // 00 -> +
       if(raw.startsWith("00")) raw = "+" + raw.slice(2);
-
-      // alles außer Ziffern/+ raus
       let cleaned = raw.replace(/[^\d+]/g, "");
-
-      // Wenn User nur national tippt (030... / 0176...), zu +49 normalisieren
       if(!cleaned.startsWith("+") && cleaned.startsWith("0")){
         cleaned = "+49" + cleaned.replace(/^0+/, "");
       }
-
       if(!cleaned.startsWith("+49")) return null;
-
-      // Optionales (0) nach +49 erlauben: +490... -> +49...
       if(cleaned.startsWith("+490")) cleaned = "+49" + cleaned.slice(4);
-
-      const rest = cleaned.slice(3);
-      if(!rest) return null;
-
-      // Plausible Länge (DE): nach +49 typischerweise 7–14 Ziffern
       if(!/^\+49\d{7,14}$/.test(cleaned)) return null;
-
       return cleaned;
     }
 
     function isValidEmail(v){
       const s = (v || "").trim();
-      if(!s) return true; // optional
+      if(!s) return true;
       return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(s);
     }
 
@@ -463,6 +453,40 @@
       box.style.display = "block";
       box.textContent = typeof obj === "string" ? obj : JSON.stringify(obj, null, 2);
       scheduleHeight();
+    }
+
+    // ✅ Events an Webhook (Step + Lead)
+    function postEvent(payload){
+      return fetch(WEBHOOK_URL, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(payload),
+        keepalive: true
+      });
+    }
+
+    function trackStep(stepName){
+      // Step fire & forget (nicht blockieren)
+      const payload = {
+        token: TOKEN,
+        website: ($("website").value || "").trim(),
+        timestamp: tsBerlin(),
+        event: "step",
+        step: stepName,
+        step_plz_ok: stepName === "plz_ok" ? 1 : "",
+        step_type: stepName === "type" ? (state.type || "") : "",
+        step_usage: stepName === "usage" ? (state.usage || "") : "",
+        step_contact_view: stepName === "contact_view" ? 1 : "",
+        plz: state.plz || "",
+        verbrauch: state.usage || "",
+        source: location.href,
+        session_id: SESSION_ID
+      };
+
+      postEvent(payload)
+        .then(r => r.json().catch(()=>null))
+        .then(out => { if (DEBUG) console.log("[STEP]", stepName, out); })
+        .catch(()=>{});
     }
 
     // Human-Input Flag
@@ -518,6 +542,10 @@
       const plz = $("plz").value.trim();
       if(!/^\d{5}$/.test(plz)) return showError("Bitte eine gültige Postleitzahl (5 Ziffern) eingeben.");
       state.plz = plz;
+
+      // ✅ Step: PLZ ok
+      trackStep("plz_ok");
+
       go("2");
     };
 
@@ -525,6 +553,10 @@
 
     $("to3").onclick = () => {
       if(!state.type) return showError("Bitte wählen Sie Privat oder Gewerbe.");
+
+      // ✅ Step: Typ gewählt
+      trackStep("type");
+
       if(state.type === "Privat") go("3p"); else go("3g");
     };
 
@@ -533,10 +565,20 @@
 
     $("to4a").onclick = () => {
       if(!state.usage) return showError("Bitte wählen Sie eine Verbrauchsangabe.");
+
+      // ✅ Step: Usage gewählt + Contact View erreicht
+      trackStep("usage");
+      trackStep("contact_view");
+
       go("4");
     };
     $("to4b").onclick = () => {
       if(!state.usage) return showError("Bitte wählen Sie eine Verbrauchsangabe.");
+
+      // ✅ Step: Usage gewählt + Contact View erreicht
+      trackStep("usage");
+      trackStep("contact_view");
+
       go("4");
     };
 
@@ -547,18 +589,14 @@
     async function postLead(payload){
       const res = await fetch(WEBHOOK_URL, {
         method: "POST",
-        headers: { "Content-Type": "text/plain;charset=utf-8" }, // CORS-stabil (iframe)
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
         body: JSON.stringify(payload),
         keepalive: true
       });
 
       const out = await res.json().catch(() => null);
-      if(!res.ok || !out){
-        throw new Error("Webhook failed");
-      }
-      if(out.ok !== true){
-        throw new Error(out.error || "Webhook error");
-      }
+      if(!res.ok || !out) throw new Error("Webhook failed");
+      if(out.ok !== true) throw new Error(out.error || "Webhook error");
       return out;
     }
 
@@ -583,7 +621,7 @@
     }
 
     $("submit").onclick = async () => {
-      // --- Anti Bot (Client) ---
+      // Anti Bot
       if(($("website").value || "").trim()){
         return showError("Ups – bitte Seite neu laden und erneut versuchen.");
       }
@@ -591,7 +629,7 @@
         return showError("Bitte füllen Sie das Formular aus, bevor Sie absenden.");
       }
 
-      // --- Validierung ---
+      // Validierung
       state.name = $("name").value.trim();
       const phoneNormalized = normalizeDE($("phone").value);
       state.email = ($("email").value || "").trim();
@@ -614,6 +652,9 @@
         startedAt: ($("tw24_ts").value || "").trim(),
 
         timestamp: tsBerlin(),
+        event: "lead",
+        session_id: SESSION_ID,
+
         name: state.name,
         telefon: phoneNormalized,
         email: state.email,
@@ -625,7 +666,7 @@
       const msg = encodeURIComponent(`Hi, ich habe gerade ein Stromangebot angefordert. PLZ: ${state.plz}`);
       $("waLink").href = `https://wa.me/${WA_NUMBER}?text=${msg}`;
 
-      // ✅ Conversion feuern (nur 1x) + UI weiter
+      // Conversion + UI
       fireLeadConversionOnce();
       go("5");
       showDebug("Sende…");
