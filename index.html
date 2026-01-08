@@ -324,8 +324,8 @@
     const TOKEN = "3007972026";
     const WA_NUMBER = "4917672530039";
 
-    // ✅ Google Ads Conversion (Lead-Formular senden)
-    const ADS_LEAD_SEND_TO = "AW-17859182984/HaNOCNKOko8bEliD9sNC";
+    // ✅ Google Ads Conversion (Lead-Formular senden) — NEUE ID aus deinem Screenshot
+    const ADS_LEAD_SEND_TO = "AW-17859182984/NPyWCN7ujd8bEIiD9sNC";
     let __leadConvFired = false;
 
     const state = { plz:"", type:"", usage:"", name:"", phone:"", email:"" };
@@ -456,6 +456,15 @@
       return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(s);
     }
 
+    function showDebug(obj){
+      if(!DEBUG) return;
+      const box = $("debugBox");
+      if(!box) return;
+      box.style.display = "block";
+      box.textContent = typeof obj === "string" ? obj : JSON.stringify(obj, null, 2);
+      scheduleHeight();
+    }
+
     // Human-Input Flag
     ["plz","name","phone","email"].forEach(id=>{
       const el = $(id);
@@ -553,22 +562,21 @@
       return out;
     }
 
-    function showDebug(obj){
-      if(!DEBUG) return;
-      const box = $("debugBox");
-      if(!box) return;
-      box.style.display = "block";
-      box.textContent = typeof obj === "string" ? obj : JSON.stringify(obj, null, 2);
-      scheduleHeight();
-    }
-
     function fireLeadConversionOnce(){
       if(__leadConvFired) return;
       __leadConvFired = true;
 
       if (typeof window.gtag === "function") {
-        window.gtag('event', 'conversion', { 'send_to': ADS_LEAD_SEND_TO });
-        if (DEBUG) console.log("[ADS] Lead conversion fired:", ADS_LEAD_SEND_TO);
+        window.gtag('event', 'conversion', {
+          'send_to': ADS_LEAD_SEND_TO,
+          'value': 1.0,
+          'currency': 'EUR'
+        });
+
+        if (DEBUG) {
+          console.log("[ADS] Lead conversion fired:", ADS_LEAD_SEND_TO);
+          showDebug({ ads_conversion_fired: true, send_to: ADS_LEAD_SEND_TO });
+        }
       } else {
         if (DEBUG) console.warn("[ADS] gtag() fehlt – Google Tag im <head> eingebaut?");
       }
