@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Tarifwechsel24 – Stromangebot</title>
 
-  <!-- ✅ Google tag (gtag.js) – BASIS (nur 1x im Head) -->
+  <!-- ✅ Google tag (gtag.js) – BASIS -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17859182984"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -24,7 +24,6 @@
       --primary:#0070D7;
       --radius:16px;
     }
-
     *{box-sizing:border-box;}
     body{
       margin:0;
@@ -32,7 +31,6 @@
       background:var(--bg);
       color:var(--text);
     }
-
     .wrap{max-width:780px;margin:0 auto;padding:16px 16px;}
     .card{
       background:var(--card);
@@ -42,33 +40,13 @@
       padding:22px;
       position:relative;
     }
-
-    h1{
-      font-size:28px;
-      line-height:1.15;
-      margin:0 0 10px;
-      letter-spacing:-0.01em;
-    }
-    .h1line{
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-    }
-
+    h1{font-size:28px;line-height:1.15;margin:0 0 10px;letter-spacing:-0.01em;}
+    .h1line{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
     .sub{color:var(--muted);margin:0;}
     .spacer{height:12px;}
-
-    .progress{
-      height:6px;
-      background:rgba(0,0,0,.06);
-      border-radius:999px;
-      overflow:hidden;
-      margin:0 0 18px;
-    }
+    .progress{height:6px;background:rgba(0,0,0,.06);border-radius:999px;overflow:hidden;margin:0 0 18px;}
     .bar{height:100%;width:0;background:var(--primary);transition:width .25s ease;}
-
     label{display:block;font-weight:700;margin:14px 0 8px;}
-
     input{
       width:100%;
       padding:12px 12px;
@@ -78,35 +56,22 @@
       outline:none;
       background:#fff;
     }
-    input:focus{
-      border-color:rgba(0,112,215,.55);
-      box-shadow:0 0 0 4px rgba(0,112,215,.12);
-    }
-
+    input:focus{border-color:rgba(0,112,215,.55);box-shadow:0 0 0 4px rgba(0,112,215,.12);}
     .btnrow{display:flex;gap:12px;margin-top:18px;flex-wrap:wrap;}
     .btnrow button{width:100%;}
     .btnrow.nav{flex-wrap:nowrap;align-items:stretch;}
     .btnrow.nav button{width:auto;flex:1;}
-
     button{
-      border:0;
-      border-radius:12px;
+      border:0;border-radius:12px;
       padding:14px 14px;
-      font-size:16px;
-      font-weight:800;
+      font-size:16px;font-weight:800;
       cursor:pointer;
     }
     .primary{background:var(--primary);color:white;}
     .ghost{background:#f2f4f7;color:var(--text);}
     .primary:active,.ghost:active{transform:translateY(1px);}
     button:disabled{opacity:.65; cursor:not-allowed;}
-
-    .choices{
-      display:flex;
-      flex-direction:column;
-      gap:12px;
-      margin-top:6px;
-    }
+    .choices{display:flex;flex-direction:column;gap:12px;margin-top:6px;}
     .chip{
       width:100%;
       border:1px solid var(--border);
@@ -123,7 +88,6 @@
       box-shadow:0 0 0 4px rgba(0,112,215,.12);
       background:rgba(0,112,215,.06);
     }
-
     .error{
       color:#b42318;
       background:#fef3f2;
@@ -134,7 +98,6 @@
       display:none;
       font-weight:700;
     }
-
     .small{font-size:13px;color:var(--muted);margin-top:10px}
     .hint{margin-top:8px}
     .check{display:flex;gap:10px;align-items:flex-start;margin-top:14px}
@@ -142,12 +105,10 @@
     a{color:var(--primary);text-decoration:underline;}
     .hidden{display:none;}
 
-    /* ✅ MOBILE */
     @media (max-width: 480px){
       .wrap{padding:12px 12px;}
       .card{padding:16px;border-radius:14px;}
       .progress{margin:0 0 14px;}
-
       h1{font-size:18px;line-height:1.15;margin:0 0 8px;}
       .step[data-step="1"] h1.h1line{
         font-size:16px !important;
@@ -156,7 +117,6 @@
         text-overflow:clip !important;
       }
       .h1line{white-space:normal;overflow:visible;text-overflow:clip;}
-
       .sub{font-size:13px;}
       label{margin:12px 0 6px;}
       input{padding:11px 12px;}
@@ -164,11 +124,6 @@
       .chip{padding:12px 12px;}
       .small{font-size:12px;}
     }
-
-    @media (max-width: 360px){
-      .step[data-step="1"] h1.h1line{ font-size:15px !important; }
-    }
-
     @media (max-width:420px){
       .btnrow.nav{flex-wrap:wrap;}
       .btnrow.nav button{flex:unset;width:100%;}
@@ -261,10 +216,7 @@
         <input id="name" autocomplete="name" placeholder="Max Mustermann" />
 
         <label for="phone">Telefonnummer *</label>
-        <input id="phone" inputmode="tel" autocomplete="tel"
-               placeholder="+49 176 12345678"
-               value="+49 "
-        />
+        <input id="phone" inputmode="tel" autocomplete="tel" placeholder="+49 176 12345678" value="+49 " />
         <div class="small hint">Beispiele: <b>+49 176 12345678</b> (Handy) · <b>+49 (0)30 123456</b> (Festnetz)</div>
 
         <label for="email">E-Mail (optional)</label>
@@ -312,7 +264,6 @@
         <div class="spacer"></div>
         <div class="small">Hinweis: WhatsApp ist freiwillig.</div>
 
-        <!-- Debug (nur wenn ?debug=1) -->
         <div id="debugBox" class="small" style="display:none;margin-top:12px;padding:10px;border:1px dashed rgba(16,24,40,.25);border-radius:12px;white-space:pre-wrap;"></div>
       </section>
     </div>
@@ -320,11 +271,11 @@
 
   <script>
     // ✅ DEIN WEBHOOK
-    const WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbwyamH239TC7SFG2bL5ZoxEdHLDzFRNo9vqz991JiPDZp9ssOrpKFT8Y7H2ol21lXxrkg/exec";
+    const WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbzmny_5j_zNtI7gloomEf3W-4EdIJFChG8_kYHqj4rp9l9zIlyRpxFc_H3gcxMyyGZ-Ng/exec";
     const TOKEN = "3007972026";
     const WA_NUMBER = "4917672530039";
 
-    // ✅ Google Ads Conversion (Lead-Formular senden)
+    // ✅ Google Ads Conversion (Lead)
     const ADS_LEAD_SEND_TO = "AW-17859182984/NPyWCN7ujd8bEIiD9sNC";
     let __leadConvFired = false;
 
@@ -335,15 +286,12 @@
     const err = $("err");
     const bar = $("bar");
 
-    // Debug toggle: ?debug=1
     const DEBUG = new URLSearchParams(location.search).get("debug") === "1";
 
-    // ✅ Session-ID pro Besucher (für Funnel-Tracking)
     const SESSION_ID = (sessionStorage.getItem("tw24_sid") ||
       (crypto.randomUUID ? crypto.randomUUID() : (Date.now()+"-"+Math.random().toString(16).slice(2))));
     sessionStorage.setItem("tw24_sid", SESSION_ID);
 
-    // ✅ Anti-Bot
     const startedAt = Date.now();
     let hadHumanInput = false;
 
@@ -354,23 +302,18 @@
       $("tw24_ch").value = btoa(seed + "|" + location.host + "|" + startedAt);
     }
 
-    // ✅ Height (stabil für Durable iframe)
+    // Height for iframe embeds
     let __lastSent = 0;
     let __t = 0;
-
     function sendEmbedHeight(){
       const wrap = document.getElementById("wrap");
       if(!wrap) return;
-
       const h = Math.ceil(wrap.getBoundingClientRect().height) + 2;
       if (!h || h < 280) return;
-
       if (Math.abs(h - __lastSent) < 4) return;
       __lastSent = h;
-
       window.parent && window.parent.postMessage({ type: "TW24_HEIGHT", height: h }, "*");
     }
-
     function scheduleHeight(){
       clearTimeout(__t);
       __t = setTimeout(() => {
@@ -378,12 +321,6 @@
         setTimeout(sendEmbedHeight, 180);
       }, 30);
     }
-
-    window.addEventListener("message", (event) => {
-      if (!event.data || event.data.type !== "TW24_PING") return;
-      sendEmbedHeight();
-      setTimeout(sendEmbedHeight, 180);
-    });
 
     function showError(msg){
       err.textContent = msg;
@@ -406,27 +343,22 @@
     function go(stepKey){
       clearError();
       steps.forEach(s => s.classList.add("hidden"));
-      document.querySelector(`.step[data-step="${stepKey}"]`).classList.remove("hidden");
+      const el = document.querySelector(`.step[data-step="${stepKey}"]`);
+      if (el) el.classList.remove("hidden");
       currentProgress(stepKey);
       scheduleHeight();
     }
 
-    // ✅ Timestamp: Datum + Uhrzeit (Berlin)
     function tsBerlin(){
       const d = new Date();
       const s = new Intl.DateTimeFormat("de-DE", {
         timeZone: "Europe/Berlin",
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit"
+        year: "numeric", month: "2-digit", day: "2-digit",
+        hour: "2-digit", minute: "2-digit", second: "2-digit"
       }).format(d);
       return s.replace(",", "");
     }
 
-    // ✅ Telefon normalisieren
     function normalizeDE(phoneRaw){
       let raw = (phoneRaw || "").trim();
       if(raw.startsWith("00")) raw = "+" + raw.slice(2);
@@ -455,19 +387,18 @@
       scheduleHeight();
     }
 
-    // ✅ Events an Webhook (Step + Lead)
+    // Step events: fire & forget (nicht blockieren, nicht JSON lesen)
     function postEvent(payload){
-      return fetch(WEBHOOK_URL, {
+      fetch(WEBHOOK_URL, {
         method: "POST",
         headers: { "Content-Type": "text/plain;charset=utf-8" },
         body: JSON.stringify(payload),
         keepalive: true
-      });
+      }).catch(()=>{});
     }
 
     function trackStep(stepName){
-      // Step fire & forget (nicht blockieren)
-      const payload = {
+      postEvent({
         token: TOKEN,
         website: ($("website").value || "").trim(),
         timestamp: tsBerlin(),
@@ -481,15 +412,9 @@
         verbrauch: state.usage || "",
         source: location.href,
         session_id: SESSION_ID
-      };
-
-      postEvent(payload)
-        .then(r => r.json().catch(()=>null))
-        .then(out => { if (DEBUG) console.log("[STEP]", stepName, out); })
-        .catch(()=>{});
+      });
     }
 
-    // Human-Input Flag
     ["plz","name","phone","email"].forEach(id=>{
       const el = $(id);
       if(!el) return;
@@ -498,7 +423,6 @@
       el.addEventListener("focus", () => { hadHumanInput = true; });
     });
 
-    // UX: Telefonfeld freundlich halten
     const phoneEl = $("phone");
     phoneEl.addEventListener("focus", () => {
       const v = phoneEl.value.trim();
@@ -508,7 +432,6 @@
       }
       if(!phoneEl.value.startsWith("+49")) phoneEl.value = "+49 ";
     });
-
     phoneEl.addEventListener("input", () => {
       const v = phoneEl.value.trim();
       if(v.startsWith("0")){
@@ -523,14 +446,12 @@
       setActive("customerType", state.type);
       scheduleHeight();
     });
-
     $("usagePrivate").addEventListener("click", (e)=>{
       const chip = e.target.closest(".chip"); if(!chip) return;
       state.usage = chip.dataset.value;
       setActive("usagePrivate", state.usage);
       scheduleHeight();
     });
-
     $("usageBusiness").addEventListener("click", (e)=>{
       const chip = e.target.closest(".chip"); if(!chip) return;
       state.usage = chip.dataset.value;
@@ -542,10 +463,7 @@
       const plz = $("plz").value.trim();
       if(!/^\d{5}$/.test(plz)) return showError("Bitte eine gültige Postleitzahl (5 Ziffern) eingeben.");
       state.plz = plz;
-
-      // ✅ Step: PLZ ok
       trackStep("plz_ok");
-
       go("2");
     };
 
@@ -553,10 +471,7 @@
 
     $("to3").onclick = () => {
       if(!state.type) return showError("Bitte wählen Sie Privat oder Gewerbe.");
-
-      // ✅ Step: Typ gewählt
       trackStep("type");
-
       if(state.type === "Privat") go("3p"); else go("3g");
     };
 
@@ -565,26 +480,28 @@
 
     $("to4a").onclick = () => {
       if(!state.usage) return showError("Bitte wählen Sie eine Verbrauchsangabe.");
-
-      // ✅ Step: Usage gewählt + Contact View erreicht
       trackStep("usage");
       trackStep("contact_view");
-
       go("4");
     };
     $("to4b").onclick = () => {
       if(!state.usage) return showError("Bitte wählen Sie eine Verbrauchsangabe.");
-
-      // ✅ Step: Usage gewählt + Contact View erreicht
       trackStep("usage");
       trackStep("contact_view");
-
       go("4");
     };
 
     $("back3").onclick = () => {
       if(state.type === "Privat") go("3p"); else go("3g");
     };
+
+    function fireLeadConversionOnce(){
+      if(__leadConvFired) return;
+      __leadConvFired = true;
+      if (typeof window.gtag === "function") {
+        window.gtag('event', 'conversion', { send_to: ADS_LEAD_SEND_TO, value: 1.0, currency: 'EUR' });
+      }
+    }
 
     async function postLead(payload){
       const res = await fetch(WEBHOOK_URL, {
@@ -594,34 +511,21 @@
         keepalive: true
       });
 
-      const out = await res.json().catch(() => null);
-      if(!res.ok || !out) throw new Error("Webhook failed");
-      if(out.ok !== true) throw new Error(out.error || "Webhook error");
+      const text = await res.text().catch(()=> "");
+      let out = null;
+      try { out = text ? JSON.parse(text) : null; } catch(_) {}
+
+      if (!res.ok) {
+        throw new Error(`HTTP ${res.status} – ${text.slice(0,300)}`);
+      }
+      if (!out || out.ok !== true) {
+        // Häufigster Fall: WebApp nicht öffentlich → HTML/Login statt JSON
+        throw new Error(out?.error ? String(out.error) : `Bad response – ${text.slice(0,300)}`);
+      }
       return out;
     }
 
-    function fireLeadConversionOnce(){
-      if(__leadConvFired) return;
-      __leadConvFired = true;
-
-      if (typeof window.gtag === "function") {
-        window.gtag('event', 'conversion', {
-          'send_to': ADS_LEAD_SEND_TO,
-          'value': 1.0,
-          'currency': 'EUR'
-        });
-
-        if (DEBUG) {
-          console.log("[ADS] Lead conversion fired:", ADS_LEAD_SEND_TO);
-          showDebug({ ads_conversion_fired: true, send_to: ADS_LEAD_SEND_TO });
-        }
-      } else {
-        if (DEBUG) console.warn("[ADS] gtag() fehlt – Google Tag im <head> eingebaut?");
-      }
-    }
-
     $("submit").onclick = async () => {
-      // Anti Bot
       if(($("website").value || "").trim()){
         return showError("Ups – bitte Seite neu laden und erneut versuchen.");
       }
@@ -629,7 +533,6 @@
         return showError("Bitte füllen Sie das Formular aus, bevor Sie absenden.");
       }
 
-      // Validierung
       state.name = $("name").value.trim();
       const phoneNormalized = normalizeDE($("phone").value);
       state.email = ($("email").value || "").trim();
@@ -650,11 +553,9 @@
         website: ($("website").value || "").trim(),
         ch: ($("tw24_ch").value || "").trim(),
         startedAt: ($("tw24_ts").value || "").trim(),
-
         timestamp: tsBerlin(),
         event: "lead",
         session_id: SESSION_ID,
-
         name: state.name,
         telefon: phoneNormalized,
         email: state.email,
@@ -666,18 +567,17 @@
       const msg = encodeURIComponent(`Hi, ich habe gerade ein Stromangebot angefordert. PLZ: ${state.plz}`);
       $("waLink").href = `https://wa.me/${WA_NUMBER}?text=${msg}`;
 
-      // Conversion + UI
       fireLeadConversionOnce();
       go("5");
-      showDebug("Sende…");
+      showDebug({ sending: true, payload });
 
       try{
         const out = await postLead(payload);
-        console.log("WEBHOOK RESPONSE:", out);
         showDebug(out);
       }catch(e){
-        console.error(e);
+        // Zurück + echte Fehlermeldung im Debug
         go("4");
+        showDebug({ error: String(e) });
         showError("Ups – Senden hat nicht geklappt. Bitte nochmal.");
       }finally{
         btn.disabled = false;
