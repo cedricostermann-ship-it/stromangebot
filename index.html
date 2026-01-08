@@ -5,6 +5,15 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Tarifwechsel24 – Stromangebot</title>
 
+  <!-- ✅ Google tag (gtag.js) – BASIS (nur 1x im Head) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17859182984"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'AW-17859182984');
+  </script>
+
   <style>
     :root{
       --bg:#f6f0e6;
@@ -315,6 +324,10 @@
     const TOKEN = "3007972026";
     const WA_NUMBER = "4917672530039";
 
+    // ✅ Google Ads Conversion (Lead-Formular senden)
+    const ADS_LEAD_SEND_TO = "AW-17859182984/HaNOCNKOko8bEliD9sNC";
+    let __leadConvFired = false;
+
     const state = { plz:"", type:"", usage:"", name:"", phone:"", email:"" };
 
     const $ = (id) => document.getElementById(id);
@@ -549,6 +562,18 @@
       scheduleHeight();
     }
 
+    function fireLeadConversionOnce(){
+      if(__leadConvFired) return;
+      __leadConvFired = true;
+
+      if (typeof window.gtag === "function") {
+        window.gtag('event', 'conversion', { 'send_to': ADS_LEAD_SEND_TO });
+        if (DEBUG) console.log("[ADS] Lead conversion fired:", ADS_LEAD_SEND_TO);
+      } else {
+        if (DEBUG) console.warn("[ADS] gtag() fehlt – Google Tag im <head> eingebaut?");
+      }
+    }
+
     $("submit").onclick = async () => {
       // --- Anti Bot (Client) ---
       if(($("website").value || "").trim()){
@@ -557,7 +582,6 @@
       if(!hadHumanInput){
         return showError("Bitte füllen Sie das Formular aus, bevor Sie absenden.");
       }
-      // ❌ kein 30-Sekunden-Warten mehr
 
       // --- Validierung ---
       state.name = $("name").value.trim();
@@ -577,7 +601,6 @@
 
       const payload = {
         token: TOKEN,
-        // Anti-Bot Infos (auch serverseitig prüfen!)
         website: ($("website").value || "").trim(),
         ch: ($("tw24_ch").value || "").trim(),
         startedAt: ($("tw24_ts").value || "").trim(),
@@ -594,7 +617,8 @@
       const msg = encodeURIComponent(`Hi, ich habe gerade ein Stromangebot angefordert. PLZ: ${state.plz}`);
       $("waLink").href = `https://wa.me/${WA_NUMBER}?text=${msg}`;
 
-      // ✅ UI sofort weiter (kein "Hängen")
+      // ✅ Conversion feuern (nur 1x) + UI weiter
+      fireLeadConversionOnce();
       go("5");
       showDebug("Sende…");
 
